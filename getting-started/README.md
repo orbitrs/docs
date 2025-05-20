@@ -1,5 +1,9 @@
 # 🚀 Getting Started with Orbit
 
+<p align="center">
+  <img src="../../assets/orbitrs.svg" alt="Orbit UI Framework" width="180">
+</p>
+
 This guide will help you get up and running with the Orbit UI Framework quickly.
 
 ## 📋 Prerequisites

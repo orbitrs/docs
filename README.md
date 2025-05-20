@@ -1,5 +1,9 @@
 # 📚 Orbit Framework Documentation
 
+<p align="center">
+  <img src="../assets/orbitrs.svg" alt="Orbit UI Framework" width="200">
+</p>
+
 Welcome to the official documentation for the Orbit UI Framework - a Rust-first, cross-platform UI framework for building Web, Native, and Embedded applications.
 
 ## 🧭 Documentation Structure
