@@ -95,7 +95,7 @@ Ensure all interactive elements can be used with a keyboard alone:
   </div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 
 #[component]
@@ -281,9 +281,9 @@ Ensure all interactive elements are keyboard accessible:
   </div>
 </template>
 
-<script>
+<code lang="rust">
 // Implementation with keyboard navigation handling
-</script>
+</code>
 ```
 
 ### 4. Color and Contrast

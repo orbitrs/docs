@@ -60,7 +60,7 @@ Create specialized versions of more generic components:
   </button>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 
 #[component]
@@ -83,7 +83,7 @@ impl Button {
         self.on_click.emit(event);
     }
 }
-</script>
+</code>
 
 <!-- Creating a specialized component -->
 <template>
@@ -93,7 +93,7 @@ impl Button {
   </Button>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 
 #[component]
@@ -202,7 +202,7 @@ Orbit supports a form of dependency injection via its context system, allowing c
   <div>{{ theme.current }}</div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use orbitrs::context::*;
 use app::services::ThemeService;
@@ -221,7 +221,7 @@ impl ThemeDisplay {
         }
     }
 }
-</script>
+</code>
 
 <!-- Providing context to child components -->
 <template>
@@ -230,7 +230,7 @@ impl ThemeDisplay {
   </ContextProvider>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use app::services::ThemeService;
 
@@ -275,7 +275,7 @@ The render props pattern allows components to customize what they render based o
   </div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use app::api::fetch_data;
 
@@ -350,7 +350,7 @@ Compound components are a set of components that work together to provide a cohe
   </div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 
 #[component]
@@ -394,7 +394,7 @@ impl Tabs {
   </button>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use super::TabContext;
 
@@ -430,7 +430,7 @@ impl TabHeader {
   </div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use super::TabContext;
 
@@ -592,7 +592,7 @@ Create components that render different child components based on props:
   </component>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 
 #[component]
@@ -622,7 +622,7 @@ impl DynamicView {
   </div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use app::views::{ListView, GridView, TableView};
 

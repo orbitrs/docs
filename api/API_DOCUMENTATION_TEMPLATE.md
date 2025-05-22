@@ -25,7 +25,7 @@ use orbitkit::components::ComponentName;
   </ComponentName>
 </template>
 
-<script>
+<code lang="rust">
 use orbitkit::components::ComponentName;
 
 pub struct MyComponent {
@@ -35,7 +35,7 @@ pub struct MyComponent {
 impl Component for MyComponent {
     // implementation details
 }
-</script>
+</code>
 ```
 
 ### Advanced Usage

@@ -72,55 +72,55 @@ Components in Orbit use the `.orbit` file format, which combines markup, styling
 ```rust
 // src/components/counter.orbit
 
-<Component>
-  <Props>
+<template>
+  <div class="counter">
+    <button class="button" on:click={self.decrement}>-</button>
+    <span class="count">{self.state.count}</span>
+    <button class="button" on:click={self.increment}>+</button>
+  </div>
+</template>
+
+<style>
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .count {
+    font-size: 24px;
+    font-weight: bold;
+  }
+</style>
+
+<code lang="rust">
+component Counter {
+  props {
     initial_count: i32 = 0
-  </Props>
+  }
 
-  <State>
+  state {
     count: i32 = self.props.initial_count
-  </State>
+  }
 
-  <Style>
-    .counter {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    
-    .button {
-      padding: 8px 16px;
-      border-radius: 4px;
-      background-color: #3498db;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    
-    .count {
-      font-size: 24px;
-      font-weight: bold;
-    }
-  </Style>
-
-  <Template>
-    <div class="counter">
-      <button class="button" on:click={self.decrement}>-</button>
-      <span class="count">{self.state.count}</span>
-      <button class="button" on:click={self.increment}>+</button>
-    </div>
-  </Template>
-
-  <Script>
-    fn increment(&mut self) {
-        self.state.count += 1;
-    }
-    
-    fn decrement(&mut self) {
-        self.state.count -= 1;
-    }
-  </Script>
-</Component>
+  fn increment(&mut self) {
+    self.state.count += 1;
+  }
+  
+  fn decrement(&mut self) {
+    self.state.count -= 1;
+  }
+}
+</code>
 ```
 
 ## 🔄 Next Steps

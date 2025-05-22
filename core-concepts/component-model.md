@@ -37,7 +37,7 @@ A typical `.orbit` file has three sections:
   }
 </style>
 
-<script>
+<code lang="rust">
   // Rust code
   use orbitrs::prelude::*;
   
@@ -68,7 +68,7 @@ A typical `.orbit` file has three sections:
           println!("Button clicked!");
       }
   }
-</script>
+</code>
 ```
 
 ## Component Lifecycle
@@ -232,7 +232,7 @@ Similar to HTML events, but with Rust handlers:
   <input @input="handleInput" @focus="handleFocus" />
 </template>
 
-<script>
+<code lang="rust">
   impl MyComponent {
       fn handle_click(&mut self, event: ClickEvent) {
           // Handle click event
@@ -247,7 +247,7 @@ Similar to HTML events, but with Rust handlers:
           // Handle focus
       }
   }
-</script>
+</code>
 ```
 
 ### Custom Component Events
@@ -268,13 +268,13 @@ impl ChildComponent {
   <ChildComponent @custom-event="handleCustomEvent" />
 </template>
 
-<script>
+<code lang="rust">
   impl ParentComponent {
       fn handle_custom_event(&mut self, data: CustomEventData) {
           println!("Custom event received with value: {}", data.value);
       }
   }
-</script>
+</code>
 ```
 
 ## Templates and Expressions
@@ -405,7 +405,7 @@ Orbit supports CSS variables for theming:
   </div>
 </template>
 
-<script>
+<code lang="rust">
   use orbitrs::prelude::*;
   use crate::components::{Header, Sidebar, MainContent, Footer};
   
@@ -415,7 +415,7 @@ Orbit supports CSS variables for theming:
   }
   
   // Implementation details...
-</script>
+</code>
 ```
 
 ### Component Registration

@@ -178,7 +178,7 @@ pub fn create_theme_context() -> Context<ThemeContext> {
   </ContextProvider>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use crate::theme::ThemeContext;
 
@@ -193,7 +193,7 @@ impl Component for Root {
         self.theme_context = create_theme_context();
     }
 }
-</script>
+</code>
 ```
 
 ### Consuming Context
@@ -206,7 +206,7 @@ impl Component for Root {
   </div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use crate::theme::ThemeContext;
 

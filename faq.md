@@ -64,7 +64,7 @@ Orbit primarily uses its own rendering engines rather than native UI controls. T
 The `.orbit` file format is a single-file component format that combines:
 - HTML-like markup in the `<template>` section
 - CSS styling in the `<style>` section
-- Rust code in the `<script>` section
+- Rust code in the `<code lang="rust">` section
 
 This unified format allows you to keep related UI code together while maintaining separation of concerns.
 
@@ -91,12 +91,12 @@ Components can be composed by importing and using them in your templates:
   </div>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 use crate::components::{Header, Sidebar, MainContent};
 
 // Component implementation
-</script>
+</code>
 ```
 
 ## Platform Support

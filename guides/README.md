@@ -63,7 +63,7 @@ fn should_update(&self, next_props: &Props, next_state: &State) -> bool {
     last_data_hash: u64 = 0
   </State>
 
-  <Script>
+  <code lang="rust">
     fn get_processed_data(&mut self) -> &ProcessedData {
         let current_hash = hash(&self.props.data);
         
@@ -75,7 +75,7 @@ fn should_update(&self, next_props: &Props, next_state: &State) -> bool {
         
         self.state.cached_result.as_ref().unwrap()
     }
-  </Script>
+  </code>
 </Component>
 ```
 
@@ -238,7 +238,7 @@ Ensure keyboard accessibility:
     </ul>
   </Template>
 
-  <Script>
+  <code lang="rust">
     fn handle_keyboard_navigation(&mut self, e: KeyboardEvent) {
         match e.key.as_str() {
             "ArrowDown" => {
@@ -310,7 +310,7 @@ Provide appropriate text alternatives:
 Detect and adapt to different platforms:
 
 ```rust
-<Script>
+<code lang="rust">
   fn mount(&mut self) {
     self.state.is_mobile = Platform::is_mobile();
     self.state.is_desktop = Platform::is_desktop();
@@ -318,7 +318,7 @@ Detect and adapt to different platforms:
     self.state.is_ios = Platform::is_ios();
     self.state.is_android = Platform::is_android();
   }
-</Script>
+</code>
 ```
 
 ### Adaptive Layouts
@@ -353,7 +353,7 @@ Design layouts that work across devices:
 Handle platform differences gracefully:
 
 ```rust
-<Script>
+<code lang="rust">
   fn get_file_access(&self) -> Result<FileAccess, Error> {
     #[cfg(feature = "desktop")]
     {
@@ -372,7 +372,7 @@ Handle platform differences gracefully:
     
     Err(Error::PlatformNotSupported)
   }
-</Script>
+</code>
 ```
 
 ---
@@ -384,13 +384,15 @@ Handle platform differences gracefully:
 For component-specific state:
 
 ```rust
-<Component>
-  <State>
+<code lang="rust">
+component Example {
+  state {
     count: i32 = 0
     loading: bool = false
     error: Option<String> = None
-  </State>
-</Component>
+  }
+}
+</code>
 ```
 
 ### Context API
@@ -415,7 +417,7 @@ For state that needs to be shared among a component tree:
     </CreateContext>
   </Template>
 
-  <Script>
+  <code lang="rust">
     fn get_context_value(&self) -> AppContext {
       AppContext {
         user: self.state.user.clone(),
@@ -440,7 +442,7 @@ For state that needs to be shared among a component tree:
         Theme::Dark => Theme::Light,
       };
     }
-  </Script>
+  </code>
 </Component>
 
 // Consumer Component
@@ -515,32 +517,32 @@ pub fn set_user(store: &Store<AppState>, user: User) {
 }
 
 // In your component
-<Component>
-  <Template>
-    <div>
-      <UseStore store={store} select={select_counter} as="counter">
-        Counter: {counter}
-        <button on:click={|_| increment(&store)}>Increment</button>
-      </UseStore>
-      
-      <UseStore store={store} select={select_user} as="user">
-        {#if user.is_some() }
-          <p>Welcome, {user.unwrap().name}!</p>
-        {#else}
-          <button on:click={|_| self.login()}>Login</button>
-        {/if}
-      </UseStore>
-    </div>
-  </Template>
+<template>
+  <div>
+    <UseStore store={store} select={select_counter} as="counter">
+      Counter: {counter}
+      <button on:click={|_| increment(&store)}>Increment</button>
+    </UseStore>
+    
+    <UseStore store={store} select={select_user} as="user">
+      {#if user.is_some() }
+        <p>Welcome, {user.unwrap().name}!</p>
+      {#else}
+        <button on:click={|_| self.login()}>Login</button>
+      {/if}
+    </UseStore>
+  </div>
+</template>
 
-  <Script>
-    fn login(&self) {
-      // After authentication
-      let user = User { name: "John Doe".to_string(), /* ... */ };
-      set_user(&store, user);
-    }
-  </Script>
-</Component>
+<code lang="rust">
+component StoreExample {
+  fn login(&self) {
+    // After authentication
+    let user = User { name: "John Doe".to_string(), /* ... */ };
+    set_user(&store, user);
+  }
+}
+</code>
 ```
 
 ---

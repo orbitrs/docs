@@ -36,9 +36,9 @@ The core component API that powers the Orbit framework.
     // UI template
   </Template>
 
-  <Script>
+  <code lang="rust">
     // Component logic
-  </Script>
+  </code>
 </Component>
 ```
 

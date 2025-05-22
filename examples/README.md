@@ -1,6 +1,22 @@
-# 🌟 Examples
+# 🌟 Examp```rust
+// src/app.orbit
+<template>
+  <div>Hello, Orbit!</div>
+</template>
 
-This section contains a variety of examples to help you learn how to use the Orbit Framework effectively. Each example demonstrates specific features and patterns.
+<code lang="rust">
+component App {}
+</code>
+
+// src/main.rs
+use orbitrs::prelude::*;
+
+fn main() {
+    App::new()
+        .with_component::<app::App>()
+        .run();
+}
+``` contains a variety of examples to help you learn how to use the Orbit Framework effectively. Each example demonstrates specific features and patterns.
 
 ## 🚀 Quick Start Examples
 
@@ -32,29 +48,41 @@ A basic counter that demonstrates state management:
 
 ```rust
 // src/components/counter.orbit
-<Component>
-  <State>
+<template>
+  <div>
+    <button on:click={self.decrement}>-</button>
+    <span>{self.state.count}</span>
+    <button on:click={self.increment}>+</button>
+  </div>
+</template>
+
+<style>
+  button {
+    padding: 4px 12px;
+    margin: 0 4px;
+  }
+  
+  span {
+    font-size: 18px;
+    margin: 0 8px;
+  }
+</style>
+
+<code lang="rust">
+component Counter {
+  state {
     count: i32 = 0
-  </State>
+  }
 
-  <Template>
-    <div>
-      <button on:click={self.decrement}>-</button>
-      <span>{self.state.count}</span>
-      <button on:click={self.increment}>+</button>
-    </div>
-  </Template>
-
-  <Script>
-    fn increment(&mut self) {
-        self.state.count += 1;
-    }
-    
-    fn decrement(&mut self) {
-        self.state.count -= 1;
-    }
-  </Script>
-</Component>
+  fn increment(&mut self) {
+    self.state.count += 1;
+  }
+  
+  fn decrement(&mut self) {
+    self.state.count -= 1;
+  }
+}
+</code>
 ```
 
 ### 3. Todo List
@@ -93,7 +121,7 @@ A simple todo list application:
     </div>
   </Template>
 
-  <Script>
+  <code lang="rust">
     fn update_new_todo(&mut self, e: InputEvent) {
         self.state.new_todo = e.value;
     }
@@ -108,7 +136,7 @@ A simple todo list application:
     fn remove_todo(&mut self, index: usize) {
         self.state.todos.remove(index);
     }
-  </Script>
+  </code>
 </Component>
 ```
 
@@ -194,7 +222,7 @@ A simple todo list application:
     dark_mode: bool = false
   </Props>
 
-  <Script>
+  <code lang="rust">
     fn get_theme_context(&self) -> ThemeContext {
       ThemeContext {
         dark_mode: self.props.dark_mode,
@@ -203,7 +231,7 @@ A simple todo list application:
         text_color: if self.props.dark_mode { "#ffffff" } else { "#121212" },
       }
     }
-  </Script>
+  </code>
 
   <Template>
     <CreateContext id="theme" value={self.get_theme_context()}>
@@ -276,14 +304,14 @@ A simple todo list application:
     </div>
   </Template>
 
-  <Script>
+  <code lang="rust">
     fn mount(&mut self) {
       // Subscribe to platform changes
       self.subscribe_to_platform_changes(|platform| {
         self.state.platform = platform;
       });
     }
-  </Script>
+  </code>
 </Component>
 ```
 
@@ -315,7 +343,7 @@ A simple todo list application:
     </div>
   </Template>
 
-  <Script>
+  <code lang="rust">
     fn handle_web_file_selection(&mut self, e: InputEvent) {
       // Web-specific file handling
       let file = e.files.get(0).unwrap();
@@ -404,11 +432,11 @@ A simple todo list application:
     }
   </Style>
 
-  <Script>
+  <code lang="rust">
     fn toggle_expand(&mut self) {
       self.state.is_expanded = !self.state.is_expanded;
     }
-  </Script>
+  </code>
 </Component>
 ```
 
@@ -465,7 +493,7 @@ A simple todo list application:
     }
   </Style>
 
-  <Script>
+  <code lang="rust">
     fn start_drag(&mut self, index: usize) {
       self.state.dragging_index = Some(index);
     }
@@ -494,7 +522,7 @@ A simple todo list application:
         self.state.items_copy = self.props.items.clone();
       }
     }
-  </Script>
+  </code>
 </Component>
 ```
 

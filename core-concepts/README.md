@@ -95,7 +95,7 @@ pub struct AppStore {
 }
 
 // component.orbit
-<Script>
+<code lang="rust">
   use crate::store;
   
   fn increment(&mut self) {
@@ -122,11 +122,11 @@ Orbit provides a unified event system across platforms:
     value_change: i32
   </Events>
   
-  <Script>
+  <code lang="rust">
     fn update_value(&mut self, new_value: i32) {
       self.emit("value_change", new_value);
     }
-  </Script>
+  </code>
 </Component>
 ```
 

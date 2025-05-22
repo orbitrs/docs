@@ -87,7 +87,7 @@ component.dispatch_event(event);
   </button>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 
 #[component]
@@ -146,7 +146,7 @@ Orbit uses event delegation for efficient event handling, particularly for lists
   </ul>
 </template>
 
-<script>
+<code lang="rust">
 use orbitrs::prelude::*;
 
 #[component]

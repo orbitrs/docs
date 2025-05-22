@@ -35,7 +35,7 @@ The `.orbit` file format is the heart of the Orbit framework. It combines HTML-l
   }
 </style>
 
-<script>
+<code lang="rust">
   // Rust code
   use orbit::prelude::*;
   

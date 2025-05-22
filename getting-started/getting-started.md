@@ -59,7 +59,7 @@ Orbit uses a single-file component format with `.orbit` files. Each file contain
 
 - `<template>` - HTML-like markup for the component
 - `<style>` - CSS styles for the component
-- `<script>` - Rust code for the component logic
+- `<code lang="rust">` - Rust code for the component logic
 
 Let's create a simple "Hello, World" component:
 
@@ -94,7 +94,7 @@ p {
 }
 </style>
 
-<script>
+<code lang="rust">
 use orbit::prelude::*;
 
 pub struct HelloWorld {
@@ -140,7 +140,7 @@ Now let's use our new component in the application. Open `src/components/app.orb
 }
 </style>
 
-<script>
+<code lang="rust">
 use orbit::prelude::*;
 use crate::components::hello_world::HelloWorld;
 
