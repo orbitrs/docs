@@ -82,7 +82,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: cargo install orbiton
       - run: orbiton build --target web
       - uses: peaceiris/actions-gh-pages@v3

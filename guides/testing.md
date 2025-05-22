@@ -546,7 +546,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
