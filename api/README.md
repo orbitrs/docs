@@ -9,6 +9,11 @@ This section provides detailed API documentation for the Orbit Framework and its
 - [orbiton](#orbiton-cli-tools)
 - [orlint](#orlint-static-analysis)
 
+## 📄 API Reference Docs
+
+- [Component API Reference](./component-reference.md) - Comprehensive reference for component structure, lifecycle, and usage patterns
+- [Orbiton CLI Reference](./orbiton-cli.md) - Command-line tool documentation
+
 ---
 
 ## orbit (Core Framework)

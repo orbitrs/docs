@@ -4,7 +4,11 @@ This section explains the fundamental concepts and architecture of the Orbit UI 
 
 ## 🧩 Component Model
 
-Orbit's component model is built on a unified file format (`.orbit`) that combines markup, styling, and logic in a single cohesive unit. For detailed information, see the [Component Model](./component-model.md) documentation and [.orbit File Format](./orbit-file-format.md) specification.
+Orbit's component model is built on a unified file format (`.orbit`) that combines markup, styling, and logic in a single cohesive unit. For detailed information, see:
+
+- [Component Model](./component-model.md) - Basic component structure and lifecycle
+- [.orbit File Format](./orbit-file-format.md) - Specification for the unified component file format
+- [Advanced Component Patterns](./advanced-component-patterns.md) - Advanced patterns and techniques for building complex components
 
 ### Component Lifecycle
 

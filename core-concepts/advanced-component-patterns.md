@@ -658,9 +658,500 @@ impl ViewSwitcher {
 </script>
 ```
 
+## 🛡️ Error Boundaries
+
+Error Boundaries are components that catch JavaScript errors in their child component tree and display a fallback UI instead of crashing the entire application.
+
+```rust
+use orbit::prelude::*;
+
+#[component]
+pub struct ErrorBoundary {
+    has_error: State<bool>,
+    error_info: State<Option<ErrorInfo>>,
+    children: Children,
+    fallback: Option<Box<dyn Fn(&ErrorInfo) -> Node>>,
+}
+
+impl ErrorBoundary {
+    pub fn new() -> Self {
+        Self {
+            has_error: State::new(false),
+            error_info: State::new(None),
+            children: Children::new(),
+            fallback: None,
+        }
+    }
+    
+    // Called when an error occurs in a descendant component
+    pub fn catch_error(&self, error: Error, component_stack: String) {
+        self.has_error.set(true);
+        self.error_info.set(Some(ErrorInfo {
+            error,
+            component_stack,
+        }));
+    }
+    
+    // Reset the error state to try rendering children again
+    pub fn reset(&self) {
+        self.has_error.set(false);
+        self.error_info.set(None);
+    }
+}
+
+impl Component for ErrorBoundary {
+    fn render(&self) -> Node {
+        if *self.has_error.get() {
+            if let Some(fallback) = &self.fallback {
+                return fallback(self.error_info.get().as_ref().unwrap());
+            } else {
+                return html! {
+                    <div class="error-boundary">
+                        <h2>Something went wrong.</h2>
+                        <button @click="reset">Try again</button>
+                    </div>
+                };
+            }
+        }
+        
+        // Render children normally if no error
+        self.children.render()
+    }
+}
+```
+
+Usage example:
+
+```orbit
+<template>
+  <ErrorBoundary>
+    <template #fallback="{ error }">
+      <div class="error-container">
+        <h2>Component Error</h2>
+        <p>{{ error.message }}</p>
+        <button @click="retry">Retry</button>
+      </div>
+    </template>
+    
+    <UserProfile :id="user_id" />
+  </ErrorBoundary>
+</template>
+
+<code lang="rust">
+use orbit::prelude::*;
+
+#[component]
+pub struct UserPage {
+    user_id: Prop<String>,
+    
+    pub fn retry(&self) {
+        // Reset the error boundary and try again
+        self.$refs.error_boundary.reset();
+    }
+}
+</code>
+```
+
+## 🌐 Context API
+
+The Context API provides a way to share values between components without having to explicitly pass props through every level of the component tree.
+
+```rust
+use orbit::prelude::*;
+use orbit::context::{ProvideContext, ConsumeContext};
+
+// Define your context type
+pub struct ThemeContext {
+    pub theme: String,
+    pub toggle_theme: Box<dyn Fn()>,
+}
+
+// Provider component
+#[component]
+pub struct ThemeProvider {
+    theme: State<String>,
+    children: Children,
+}
+
+impl ThemeProvider {
+    pub fn new() -> Self {
+        Self {
+            theme: State::new("light".to_string()),
+            children: Children::new(),
+        }
+    }
+    
+    pub fn toggle_theme(&self) {
+        let current = self.theme.get();
+        if current == "light" {
+            self.theme.set("dark".to_string());
+        } else {
+            self.theme.set("light".to_string());
+        }
+    }
+}
+
+impl Component for ThemeProvider {
+    fn render(&self) -> Node {
+        let theme_context = ThemeContext {
+            theme: self.theme.get().clone(),
+            toggle_theme: Box::new(move || self.toggle_theme()),
+        };
+        
+        html! {
+            <ProvideContext value={theme_context}>
+                {self.children.render()}
+            </ProvideContext>
+        }
+    }
+}
+
+// Consumer component
+#[component]
+pub struct ThemedButton {
+    label: Prop<String>,
+    on_click: EventEmitter<ClickEvent>,
+}
+
+impl ThemedButton {
+    pub fn new() -> Self {
+        Self {
+            label: Prop::with_default("Click me".to_string()),
+            on_click: EventEmitter::new(),
+        }
+    }
+}
+
+impl Component for ThemedButton {
+    fn render(&self) -> Node {
+        html! {
+            <ConsumeContext<ThemeContext>>
+                {|context| {
+                    let theme_class = format!("button-{}", context.theme);
+                    
+                    html! {
+                        <button 
+                            class={theme_class} 
+                            @click="handle_click">
+                            {self.label.get()}
+                        </button>
+                    }
+                }}
+            </ConsumeContext>
+        }
+    }
+    
+    fn handle_click(&self, event: &ClickEvent) {
+        self.on_click.emit(event);
+    }
+}
+```
+
+Usage example:
+
+```orbit
+<template>
+  <ThemeProvider>
+    <div class="app">
+      <ThemedHeader title="My App" />
+      <ThemedButton label="Toggle Theme" @click="handle_toggle" />
+      <ThemedContent>
+        <!-- App content -->
+      </ThemedContent>
+    </div>
+  </ThemeProvider>
+</template>
+
+<code lang="rust">
+use orbit::prelude::*;
+use orbit::context::ConsumeContext;
+use app::theme::ThemeContext;
+
+#[component]
+pub struct App {}
+
+impl App {
+    fn handle_toggle(&self) {
+        // The actual toggle is handled by the ThemeProvider
+    }
+}
+</code>
+```
+
+## 🧩 State Machines in Components
+
+Using state machines to manage complex component behavior:
+
+```rust
+use orbit::prelude::*;
+use state_machine::{StateMachine, Transition, State};
+
+#[derive(Clone, PartialEq)]
+enum FormState {
+    Editing,
+    Submitting,
+    Success,
+    Error,
+}
+
+#[derive(Clone)]
+enum FormEvent {
+    Submit,
+    Reset,
+    ApiSuccess,
+    ApiFailure,
+}
+
+#[component]
+pub struct ComplexForm {
+    machine: StateMachine<FormState, FormEvent>,
+    form_data: State<FormData>,
+    error: State<Option<String>>,
+}
+
+impl ComplexForm {
+    pub fn new() -> Self {
+        // Define the state machine transitions
+        let mut machine = StateMachine::new(FormState::Editing);
+        
+        machine
+            .add_transition(FormState::Editing, FormEvent::Submit, FormState::Submitting)
+            .add_transition(FormState::Submitting, FormEvent::ApiSuccess, FormState::Success)
+            .add_transition(FormState::Submitting, FormEvent::ApiFailure, FormState::Error)
+            .add_transition(FormState::Error, FormEvent::Reset, FormState::Editing)
+            .add_transition(FormState::Success, FormEvent::Reset, FormState::Editing);
+        
+        Self {
+            machine,
+            form_data: State::new(FormData::default()),
+            error: State::new(None),
+        }
+    }
+    
+    pub fn submit(&self) {
+        self.machine.send(FormEvent::Submit);
+        
+        // Start API submission
+        orbit::spawn(async move {
+            match submit_form_data(self.form_data.get()).await {
+                Ok(_) => {
+                    self.machine.send(FormEvent::ApiSuccess);
+                },
+                Err(e) => {
+                    self.error.set(Some(e.to_string()));
+                    self.machine.send(FormEvent::ApiFailure);
+                }
+            }
+        });
+    }
+    
+    pub fn reset(&self) {
+        self.form_data.set(FormData::default());
+        self.error.set(None);
+        self.machine.send(FormEvent::Reset);
+    }
+}
+
+impl Component for ComplexForm {
+    fn render(&self) -> Node {
+        match self.machine.current_state() {
+            FormState::Editing => html! {
+                <form @submit="handle_submit">
+                    <!-- Form fields -->
+                    <button type="submit">Submit</button>
+                </form>
+            },
+            FormState::Submitting => html! {
+                <div class="loading">
+                    <Spinner />
+                    <p>Submitting your data...</p>
+                </div>
+            },
+            FormState::Success => html! {
+                <div class="success">
+                    <Icon name="check-circle" />
+                    <p>Form submitted successfully!</p>
+                    <button @click="reset">Start Over</button>
+                </div>
+            },
+            FormState::Error => html! {
+                <div class="error">
+                    <Icon name="alert-triangle" />
+                    <p>Error: {self.error.get().clone().unwrap_or_default()}</p>
+                    <button @click="reset">Try Again</button>
+                </div>
+            },
+        }
+    }
+}
+```
+
+## 🌟 Lazy Loading Components
+
+Implementing lazy loading for better performance:
+
+```rust
+use orbit::prelude::*;
+use orbit::lazy::{LazyComponent, load_component};
+
+#[component]
+pub struct LazyLoadedPage {
+    is_loaded: State<bool>,
+    component: State<Option<Box<dyn Component>>>,
+}
+
+impl LazyLoadedPage {
+    pub fn new() -> Self {
+        Self {
+            is_loaded: State::new(false),
+            component: State::new(None),
+        }
+    }
+    
+    pub fn mounted(&self) {
+        // Load the component only when this component is mounted
+        orbit::spawn(async move {
+            let component = load_component("analytics_dashboard").await;
+            self.component.set(Some(component));
+            self.is_loaded.set(true);
+        });
+    }
+}
+
+impl Component for LazyLoadedPage {
+    fn render(&self) -> Node {
+        if *self.is_loaded.get() {
+            if let Some(component) = &*self.component.get() {
+                return component.render();
+            }
+        }
+        
+        html! {
+            <div class="loading">
+                <Spinner />
+                <p>Loading dashboard...</p>
+            </div>
+        }
+    }
+}
+```
+
+Usage in routing:
+
+```rust
+use orbit::prelude::*;
+use orbit::router::{Router, Route};
+use orbit::lazy::LazyRoute;
+
+fn setup_router() -> Router {
+    Router::new()
+        .route("/", Route::component(HomePage::new))
+        .route("/about", Route::component(AboutPage::new))
+        // Lazy loaded routes
+        .route("/dashboard", LazyRoute::new("dashboard_module"))
+        .route("/reports", LazyRoute::new("reports_module"))
+        .route("/settings", LazyRoute::new("settings_module"))
+}
+```
+
+## 🚀 Real-World Component Integration Example
+
+Putting it all together with a complex example that uses multiple patterns:
+
+```rust
+use orbit::prelude::*;
+use app::components::*;
+use app::context::*;
+use app::state::*;
+
+// Main application component
+#[component]
+pub struct AnalyticsApplication {
+    store: Store<AppState, AppAction>,
+    auth: AuthState,
+}
+
+impl AnalyticsApplication {
+    pub fn new() -> Self {
+        Self {
+            store: Store::new(AppState::default()),
+            auth: AuthState::new(),
+        }
+    }
+}
+
+impl Component for AnalyticsApplication {
+    fn render(&self) -> Node {
+        html! {
+            // Error boundary at the app level
+            <ErrorBoundary>
+                // Global context providers
+                <AuthProvider :state={self.auth.clone()}>
+                <ThemeProvider>
+                <StoreProvider :store={self.store.clone()}>
+                    
+                    <AppLayout>
+                        <template #header>
+                            <AppHeader />
+                        </template>
+                        
+                        <template #sidebar>
+                            <ConsumeContext<AuthContext>>
+                                {|auth_context| {
+                                    if auth_context.is_authenticated() {
+                                        html! { <NavigationSidebar /> }
+                                    } else {
+                                        html! { <GuestSidebar /> }
+                                    }
+                                }}
+                            </ConsumeContext>
+                        </template>
+                        
+                        <template #main>
+                            // Lazy load routes based on authentication
+                            <ConsumeContext<AuthContext>>
+                                {|auth_context| {
+                                    if auth_context.is_authenticated() {
+                                        html! {
+                                            <Router>
+                                                <Route path="/" component={Dashboard} />
+                                                <LazyRoute path="/reports" module="reports_module" />
+                                                <LazyRoute path="/settings" module="settings_module" />
+                                                <Route path="*" component={NotFound} />
+                                            </Router>
+                                        }
+                                    } else {
+                                        html! {
+                                            <Router>
+                                                <Route path="/" component={Welcome} />
+                                                <Route path="/login" component={Login} />
+                                                <Route path="/register" component={Register} />
+                                                <Route path="*" component={RedirectToLogin} />
+                                            </Router>
+                                        }
+                                    }
+                                }}
+                            </ConsumeContext>
+                        </template>
+                        
+                        <template #footer>
+                            <AppFooter />
+                        </template>
+                    </AppLayout>
+                    
+                </StoreProvider>
+                </ThemeProvider>
+                </AuthProvider>
+            </ErrorBoundary>
+        }
+    }
+}
+```
+
 ## 🔄 Related Topics
 
 - [Component Model](./component-model.md) - Learn about the basic component model
 - [State Management](./state-management.md) - Understand how to manage and update component state
 - [Event Handling](./event-handling.md) - Learn about Orbit's event system
 - [Rendering Architecture](./rendering-architecture.md) - Dive into the rendering process
+- [Performance Optimization](../guides/performance-optimization.md) - Techniques for optimizing component performance

@@ -8,9 +8,10 @@ This section contains comprehensive guides and best practices for developing wit
 - [Accessibility](#accessibility)
 - [Cross-Platform Development](#cross-platform-development)
 - [State Management Patterns](#state-management-patterns)
-- [Testing Strategies](#testing-strategies)
+- [Testing Strategies](testing-strategies.md)
 - [Styling Best Practices](#styling-best-practices)
-- [Deployment](deployment.md)
+- [Debugging Guide](debugging-guide.md)
+- [Deployment Guide](deployment-guide.md)
 - [Migration](migration.md)
 
 ---

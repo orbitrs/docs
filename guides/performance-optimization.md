@@ -461,6 +461,261 @@ impl RectPool {
 }
 ```
 
+## WebAssembly-Specific Optimizations
+
+Orbit's WebAssembly foundation requires special optimization considerations:
+
+### Minimize WASM/JS Boundary Crossing
+
+Each time you cross the boundary between WebAssembly and JavaScript, there's a performance cost:
+
+```rust
+// Inefficient: Multiple boundary crossings
+fn process_items(&mut self) {
+    for item in &self.items {
+        let js_result = self.js_bridge.call_js_function("processItem", item);
+        self.results.push(js_result);
+    }
+}
+
+// Efficient: Single boundary crossing with batched data
+fn process_items(&mut self) {
+    let all_results = self.js_bridge.call_js_function("processAllItems", &self.items);
+    self.results = all_results;
+}
+```
+
+### Optimize Data Serialization
+
+When data needs to cross the WASM/JS boundary, optimize serialization:
+
+```rust
+// Use shared memory for large data transfers
+fn share_large_dataset(&mut self, data: &[f32]) {
+    let memory = SharedArrayBuffer::new(data.len() * std::mem::size_of::<f32>());
+    memory.copy_from_slice(data);
+    
+    // Now JS can access the data without copying
+    self.js_bridge.set_shared_buffer("dataset", memory);
+}
+
+// Use appropriate types to minimize conversion costs
+fn process_image(&mut self, image_data: &ImageData) {
+    // Use Uint8Array/Uint8ClampedArray for image data
+    let array = TypedArray::<u8>::new(image_data.as_bytes());
+    self.js_bridge.process_image_data(array);
+}
+```
+
+### Memory Management Techniques
+
+WebAssembly memory management is crucial for performance:
+
+```rust
+// Use a custom allocator optimized for your usage patterns
+#[global_allocator]
+static ALLOC: MyWasmOptimizedAllocator = MyWasmOptimizedAllocator::new();
+
+// Pool frequently used objects to reduce allocation pressure
+struct ObjectPool<T> {
+    free: Vec<T>,
+    create_fn: fn() -> T,
+}
+
+impl<T> ObjectPool<T> {
+    pub fn get(&mut self) -> T {
+        self.free.pop().unwrap_or_else(|| (self.create_fn)())
+    }
+    
+    pub fn release(&mut self, obj: T) {
+        self.free.push(obj);
+    }
+}
+
+// In your component
+fn mounted(&mut self) {
+    self.rect_pool = ObjectPool::new(|| Rect::default());
+}
+```
+
+### WebAssembly Compilation Optimization
+
+Optimize how your WebAssembly code is compiled and loaded:
+
+```rust
+// In your main.rs or lib.rs
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::prelude::*;
+
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen(start)]
+pub fn wasm_main() {
+    // Enable WebAssembly optimizations
+    #[cfg(feature = "wasm-opt")]
+    wasm_opt::set_optimized_for_size();
+    
+    // Initialize logging with appropriate levels for production
+    #[cfg(debug_assertions)]
+    console_log::init_with_level(log::Level::Debug).unwrap();
+    #[cfg(not(debug_assertions))]
+    console_log::init_with_level(log::Level::Error).unwrap();
+    
+    // Use streaming instantiation when supported
+    orbit::start_with_options(StartOptions {
+        streaming_instantiation: true,
+        ..Default::default()
+    });
+}
+```
+
+## Advanced Benchmarking Techniques
+
+### Orbit Performance Profiler
+
+Use Orbit's built-in performance profiler for detailed insights:
+
+```bash
+# Enable detailed profiling
+orbiton dev --profile=detailed
+
+# Generate flamegraph visualization
+orbiton profile --flamegraph
+
+# Compare performance between builds
+orbiton benchmark --compare v1.0 v2.0
+```
+
+### Custom Performance Metrics
+
+Define and track custom metrics that are relevant to your application:
+
+```rust
+use orbit::performance::{register_metric, record_metric};
+
+fn main() {
+    // Register custom metrics
+    register_metric("data_processing_time", MetricType::Duration);
+    register_metric("items_rendered", MetricType::Count);
+    register_metric("memory_usage", MetricType::Bytes);
+    
+    // Start application
+    orbit::start::<App>();
+}
+
+impl Component for MyDataTable {
+    fn update(&mut self) {
+        let start = std::time::Instant::now();
+        self.process_data();
+        
+        // Record metrics
+        record_metric("data_processing_time", start.elapsed().as_micros() as f64);
+        record_metric("items_rendered", self.visible_items.len() as f64);
+        record_metric("memory_usage", self.estimate_memory_usage() as f64);
+    }
+}
+```
+
+### Automated Performance Testing
+
+Integrate performance testing into your CI pipeline:
+
+```yaml
+# In your CI configuration
+performance_test:
+  script:
+    - orbiton build --release
+    - orbiton test --performance
+    - orbiton benchmark --threshold "fps > 55" --threshold "memory < 50MB"
+  artifacts:
+    paths:
+      - performance-report.html
+```
+
+### Real User Monitoring
+
+Collect performance data from real users:
+
+```rust
+use orbit::monitoring::UserMetrics;
+
+fn main() {
+    if cfg!(not(debug_assertions)) {
+        UserMetrics::init()
+            .with_sampling_rate(0.1) // 10% of users
+            .with_metrics(&["fps", "ttfr", "memory_usage"])
+            .start();
+    }
+    
+    orbit::start::<App>();
+}
+```
+
+## Bundle Size Optimization
+
+### Code Splitting Strategies
+
+```rust
+// Dynamic imports for route-based code splitting
+fn main() {
+    let router = Router::new()
+        .route("/", |_| html! { <Home /> })
+        .route("/dashboard", |_| {
+            let dashboard = orbit::import("./dashboard").unwrap_or_else(|| html! { <Loading /> });
+            dashboard()
+        });
+        
+    orbit::start_with_router::<App>(router);
+}
+
+// Feature flags for conditional compilation
+#[cfg(feature = "advanced_charting")]
+mod charts {
+    // Advanced charting components
+}
+
+#[cfg(not(feature = "advanced_charting"))]
+mod charts {
+    // Basic charting fallbacks
+}
+```
+
+### Tree Shaking Optimization
+
+Ensure your code is optimized for tree shaking:
+
+```rust
+// Export individual functions instead of whole modules
+// Good for tree shaking
+pub fn function_a() {}
+pub fn function_b() {}
+
+// Avoid re-exporting entire modules
+// Bad for tree shaking
+pub mod utils;
+```
+
+### Dependency Optimization
+
+```toml
+# In Cargo.toml
+
+[dependencies]
+# Use lighter alternatives when possible
+smallvec = { version = "1.8", optional = true }
+smartstring = { version = "0.2", optional = true }
+
+# Define feature flags for optional components
+[features]
+default = ["standard_components"]
+standard_components = ["button", "input", "card"]
+button = []
+input = []
+card = []
+advanced_components = ["standard_components", "data_table", "charts"]
+data_table = ["virtualization"]
+charts = ["advanced_charting"]
+```
+
 ## Performance Checklist
 
 Use this checklist when optimizing your application:
@@ -491,8 +746,16 @@ Use this checklist when optimizing your application:
    - Apply web-specific optimizations
    - Leverage native capabilities
    - Use appropriate threading models
+   - Optimize WASM/JS boundary crossings
 
-6. **Validate Improvements**
+6. **Bundle Optimization**
+   - Implement code splitting
+   - Optimize tree shaking
+   - Audit dependencies
+   - Enable compression
+
+7. **Validate Improvements**
    - Re-measure after each optimization
    - Focus on user-perceptible improvements
    - Document optimization strategies
+   - Monitor real-user performance

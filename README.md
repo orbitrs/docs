@@ -16,14 +16,18 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
 
 - **[Core Concepts](./core-concepts/README.md)**
   - [Component Model](./core-concepts/component-model.md)
+  - [Advanced Component Patterns](./core-concepts/advanced-component-patterns.md)
+  - [.orbit File Format](./core-concepts/orbit-file-format.md)
   - [Rendering Architecture](./core-concepts/rendering-architecture.md)
-  - State management
-  - Event handling
+  - [State Management](./core-concepts/state-management.md)
+  - [Event Handling](./core-concepts/event-handling.md)
 
 - **[Guides](./guides/README.md)**
-  - Best practices
-  - Performance optimization
-  - Accessibility
+  - [Performance Optimization](./guides/performance-optimization.md)
+  - [Accessibility](./guides/accessibility.md)
+  - [Deployment Guide](./guides/deployment-guide.md)
+  - [Testing Strategies](./guides/testing-strategies.md)
+  - [Debugging Guide](./guides/debugging-guide.md)
   - Cross-platform development
 
 - **[API Reference](./api/README.md)**
