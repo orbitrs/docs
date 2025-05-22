@@ -61,7 +61,7 @@ Create specialized versions of more generic components:
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct Button {
@@ -94,7 +94,7 @@ impl Button {
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct DeleteButton {
@@ -123,7 +123,7 @@ impl DeleteButton {
 Higher-Order Components are functions that take a component and return a new component with additional functionality. This pattern is useful for cross-cutting concerns like authentication, logging, or data fetching.
 
 ```rust
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 // HOC for adding authentication to a component
 pub fn with_authentication<T: Component>(component: T) -> impl Component {
@@ -164,7 +164,7 @@ let protected_dashboard = with_authentication(Dashboard::new());
 Component factories are functions or objects that create components dynamically based on input parameters:
 
 ```rust
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 // Component factory function
 fn create_dialog(title: String, content: String, is_closable: bool) -> impl Component {
@@ -203,8 +203,8 @@ Orbit supports a form of dependency injection via its context system, allowing c
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
-use orbitui::context::*;
+use orbit::prelude::*;
+use orbit::context::*;
 use app::services::ThemeService;
 
 #[component]
@@ -231,7 +231,7 @@ impl ThemeDisplay {
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 use app::services::ThemeService;
 
 #[component]
@@ -276,7 +276,7 @@ The render props pattern allows components to customize what they render based o
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 use app::api::fetch_data;
 
 #[component]
@@ -351,7 +351,7 @@ Compound components are a set of components that work together to provide a cohe
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct Tabs {
@@ -395,7 +395,7 @@ impl Tabs {
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 use super::TabContext;
 
 #[component]
@@ -431,7 +431,7 @@ impl TabHeader {
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 use super::TabContext;
 
 #[component]
@@ -482,8 +482,8 @@ impl TabPanel {
 Hooks allow for reusing stateful logic across components:
 
 ```rust
-use orbitui::prelude::*;
-use orbitui::hooks::*;
+use orbit::prelude::*;
+use orbit::hooks::*;
 
 // Custom hook for handling form state
 pub fn use_form<T: Default + Clone>(initial_values: Option<T>) -> FormHook<T> {
@@ -538,7 +538,7 @@ impl LoginForm {
 Prevent unnecessary re-renders with memoization:
 
 ```rust
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct ExpensiveComponent {
@@ -593,7 +593,7 @@ Create components that render different child components based on props:
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct DynamicView {
@@ -623,7 +623,7 @@ impl DynamicView {
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 use app::views::{ListView, GridView, TableView};
 
 #[component]

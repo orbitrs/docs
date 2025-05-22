@@ -57,7 +57,7 @@ Orbit supports several categories of events:
 Define your own events to communicate between components:
 
 ```rust
-use orbitui::events::{Event, EventData};
+use orbit::events::{Event, EventData};
 
 // Define custom event data
 struct ItemSelectedEvent {
@@ -88,7 +88,7 @@ component.dispatch_event(event);
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct Counter {
@@ -147,7 +147,7 @@ Orbit uses event delegation for efficient event handling, particularly for lists
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct ItemList {
@@ -189,8 +189,8 @@ Behind the scenes, Orbit maps these events to the appropriate platform-specific 
 Orbit provides utilities for testing event handlers:
 
 ```rust
-use orbitui::testing::*;
-use orbitui::events::*;
+use orbit::testing::*;
+use orbit::events::*;
 
 #[test]
 fn test_click_handler() {

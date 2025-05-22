@@ -11,7 +11,7 @@ Comprehensive testing is crucial for building reliable Orbit applications. This 
 Unit tests verify that individual components and functions work correctly in isolation:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 use my_app::components::Counter;
 
 #[test]
@@ -35,7 +35,7 @@ fn test_counter_increment() {
 Component tests focus on testing the rendering and behavior of individual components:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 use my_app::components::UserCard;
 
 #[test]
@@ -67,7 +67,7 @@ fn test_user_card_renders_correctly() {
 Integration tests verify that multiple components work together correctly:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 use my_app::components::{TodoList, TodoForm};
 
 #[test]
@@ -97,7 +97,7 @@ fn test_adding_todo_item() {
 End-to-end tests verify that entire user flows work correctly:
 
 ```rust
-use orbitui::testing::e2e::*;
+use orbit::testing::e2e::*;
 
 #[tokio::test]
 async fn test_user_registration_flow() {
@@ -132,7 +132,7 @@ async fn test_user_registration_flow() {
 Orbit provides several test renderers optimized for different testing scenarios:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 
 // Memory renderer - fastest, minimal overhead
 let memory_renderer = MemoryRenderer::new();
@@ -159,7 +159,7 @@ let screenshot = component.take_screenshot();
 Find elements and inspect the component structure:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 
 // Render a component for testing
 let component = render_component(MyComponent::new, |props| {
@@ -185,8 +185,8 @@ assert!(submit_button.is_visible());
 Simulate user interactions:
 
 ```rust
-use orbitui::testing::*;
-use orbitui::events::*;
+use orbit::testing::*;
+use orbit::events::*;
 
 // Render component
 let component = render_component(SearchForm::new, |_| {});
@@ -221,7 +221,7 @@ component.dispatch_custom_event("custom-event", json!({
 Test component state and props:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 
 // Create a testable component
 let mut component = TestComponent::<Counter>::new();
@@ -249,7 +249,7 @@ assert_eq!(*updated_count, 11);
 Verify that component rendering doesn't change unexpectedly:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 
 #[test]
 fn test_button_snapshot() {
@@ -404,7 +404,7 @@ my_app/
 Test components that perform asynchronous operations:
 
 ```rust
-use orbitui::testing::*;
+use orbit::testing::*;
 
 #[tokio::test]
 async fn test_async_data_loading() {
@@ -439,8 +439,8 @@ async fn test_async_data_loading() {
 Mock dependencies to isolate component testing:
 
 ```rust
-use orbitui::testing::*;
-use orbitui::mocks::*;
+use orbit::testing::*;
+use orbit::mocks::*;
 
 #[test]
 fn test_theme_context() {
@@ -474,7 +474,7 @@ fn test_theme_context() {
 Ensure UI appearance doesn't change unexpectedly:
 
 ```rust
-use orbitui::testing::visual::*;
+use orbit::testing::visual::*;
 
 #[test]
 fn test_button_appearance() {

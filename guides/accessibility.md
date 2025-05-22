@@ -96,7 +96,7 @@ Ensure all interactive elements can be used with a keyboard alone:
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 
 #[component]
 pub struct TogglePanel {
@@ -130,8 +130,8 @@ impl TogglePanel {
 Implement proper focus management for interactive components and dynamic content:
 
 ```rust
-use orbitui::prelude::*;
-use orbitui::accessibility::focus;
+use orbit::prelude::*;
+use orbit::accessibility::focus;
 
 #[component]
 pub struct Dialog {
@@ -173,7 +173,7 @@ Orbit provides built-in tools to check for common accessibility issues:
 
 ```rust
 // In your development environment
-use orbitui::accessibility::checker;
+use orbit::accessibility::checker;
 
 // Run a check on your component
 fn check_component_accessibility() {
@@ -194,7 +194,7 @@ fn check_component_accessibility() {
 Use the announcement API to notify screen readers of important updates:
 
 ```rust
-use orbitui::accessibility::announcer;
+use orbit::accessibility::announcer;
 
 fn update_search_results(query: &str, result_count: usize) {
     // Update the UI with new results
@@ -360,8 +360,8 @@ Orbit provides integration with accessibility testing tools:
 
 ```rust
 // In your test suite
-use orbitui::testing::*;
-use orbitui::accessibility::testing::*;
+use orbit::testing::*;
+use orbit::accessibility::testing::*;
 
 #[test]
 fn test_component_accessibility() {

@@ -179,7 +179,7 @@ pub fn create_theme_context() -> Context<ThemeContext> {
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 use crate::theme::ThemeContext;
 
 pub struct Root {
@@ -207,7 +207,7 @@ impl Component for Root {
 </template>
 
 <code lang="rust">
-use orbitui::prelude::*;
+use orbit::prelude::*;
 use crate::theme::ThemeContext;
 
 pub struct ThemedComponent {
