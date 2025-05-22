@@ -10,7 +10,8 @@ This section contains comprehensive guides and best practices for developing wit
 - [State Management Patterns](#state-management-patterns)
 - [Testing Strategies](#testing-strategies)
 - [Styling Best Practices](#styling-best-practices)
-- [Deployment](#deployment)
+- [Deployment](deployment.md)
+- [Migration](migration.md)
 
 ---
 

@@ -4,7 +4,7 @@ This section explains the fundamental concepts and architecture of the Orbit UI 
 
 ## 🧩 Component Model
 
-Orbit's component model is built on a unified file format (`.orbit`) that combines markup, styling, and logic in a single cohesive unit.
+Orbit's component model is built on a unified file format (`.orbit`) that combines markup, styling, and logic in a single cohesive unit. For detailed information, see the [Component Model](./component-model.md) documentation.
 
 ### Component Lifecycle
 
@@ -28,7 +28,7 @@ Components can be composed and nested to create complex UIs:
 
 ## 🎨 Rendering Architecture
 
-Orbit uses a hybrid rendering approach that combines different rendering engines:
+Orbit uses a hybrid rendering approach that combines different rendering engines. For in-depth information, see the [Rendering Architecture](./rendering-architecture.md) documentation.
 
 ### Skia Rendering Engine
 
@@ -52,7 +52,7 @@ Both rendering engines are integrated into a unified pipeline that allows seamle
 
 ## 📊 State Management
 
-Orbit provides several approaches to state management:
+Orbit provides several approaches to state management. For complete details and best practices, see the [State Management](./state-management.md) documentation.
 
 ### Component State
 

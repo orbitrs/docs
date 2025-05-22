@@ -9,14 +9,14 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
 ## 🧭 Documentation Structure
 
 - **[Getting Started](./getting-started/README.md)**
-  - Installation and setup
-  - Your first Orbit application
+  - [Installation and setup](./getting-started/getting-started.md)
+  - [Building your first Orbit application](./getting-started/tutorial-task-manager.md)
   - Development workflow
   - Project structure
 
 - **[Core Concepts](./core-concepts/README.md)**
-  - Component model
-  - Rendering architecture
+  - [Component Model](./core-concepts/component-model.md)
+  - [Rendering Architecture](./core-concepts/rendering-architecture.md)
   - State management
   - Event handling
 
@@ -27,6 +27,7 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
   - Cross-platform development
 
 - **[API Reference](./api/README.md)**
+  - [API Documentation Template](./api/API_DOCUMENTATION_TEMPLATE.md)
   - orbit core API
   - orbitkit components
   - orbiton CLI
@@ -38,6 +39,7 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
   - Integration examples
 
 - **[Roadmap](./roadmap/README.md)**
+  - [Documentation Improvement Plan](./DOCUMENTATION_PLAN.md)
   - Development plan
   - Milestones
   - Feature timeline
