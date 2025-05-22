@@ -16,6 +16,7 @@ This document provides a comprehensive reference for the Orbit Framework's compo
 - [Standard Components](#standard-components)
   - [Button](#button)
   - [UserCard](#usercard)
+  - [Card](#card)
 - [Custom Component Development](#custom-component-development)
   - [Component Composition](#component-composition)
   - [Integration with OrbitKit](#integration-with-orbitkit)
@@ -453,6 +454,114 @@ This component follows the [WAI-ARIA Card Pattern](https://www.w3.org/WAI/ARIA/a
 - Proper heading hierarchy
 - `tabindex="0"` for keyboard focusability
 - `aria-selected="true|false"` when used in a selectable context
+
+### Card
+
+**Package:** `orbit::kit::components::card` (Note: path adjusted from orbitkit to orbit/kit)
+**Version:** 0.1.0 (Assumed, based on other components)
+**Status:** Beta (As per CONTENT_GAP_ANALYSIS.md)
+
+A flexible content container component. It can be used to group related information or provide a distinct visual boundary for sections of UI.
+
+#### Import
+
+```rust
+use orbit::kit::components::Card;
+```
+
+#### Examples
+
+##### Basic Usage
+
+```orbit
+<template>
+  <Card title="My Card Title">
+    <p>This is the content of the card.</p>
+  </Card>
+</template>
+
+<code lang="rust">
+use orbit::kit::components::Card;
+
+pub struct MyComponent {}
+
+impl Component for MyComponent {
+    // implementation details
+}
+</code>
+```
+
+##### Card with Custom Styling
+
+```orbit
+<template>
+  <Card 
+    elevation={3} 
+    border_radius="8px" 
+    bordered={true} 
+    padding="24px"
+  >
+    <h4>Advanced Card</h4>
+    <p>This card has custom styling applied through props.</p>
+  </Card>
+</template>
+```
+
+#### Props
+
+| Name            | Type           | Required | Default          | Description                                        |
+|-----------------|----------------|----------|------------------|----------------------------------------------------|
+| `title`         | `Option<String>` | ❌        | `None`           | The title displayed at the top of the card.        |
+| `elevation`     | `Option<u8>`   | ❌        | `1`              | The shadow level of the card (e.g., 0-5).          |
+| `border_radius` | `Option<String>` | ❌        | `"4px"`          | The border radius of the card (e.g., "4px", "8px"). |
+| `bordered`      | `Option<bool>` | ❌        | `false`          | If true, the card will have a visible border.      |
+| `padding`       | `Option<String>` | ❌        | `"16px"`         | The internal padding of the card.                  |
+| `children`      | `Option<String>` | ❌        | `None`           | The content to be rendered inside the card.        |
+
+#### Events
+
+No specific events are emitted by the Card component itself. Events would typically originate from child components within the card.
+
+#### Slots
+
+| Name      | Props | Description                                     |
+|-----------|-------|-------------------------------------------------|
+| `default` | -     | The main content area of the card.              |
+| `header`  | -     | Optional slot for a custom header or title area. |
+| `footer`  | -     | Optional slot for a custom footer area.         |
+
+#### Methods
+
+No public methods are exposed by the Card component.
+
+#### Style API
+
+| CSS Variable             | Default                            | Description                                  |
+|--------------------------|------------------------------------|----------------------------------------------|
+| `--card-padding`         | `16px` (from prop default)         | Internal padding of the card.                |
+| `--card-background`      | `#ffffff` (typical default)        | Background color of the card.                |
+| `--card-border-radius`   | `4px` (from prop default)          | Border radius of the card.                   |
+| `--card-border-color`    | `#e0e0e0` (typical default if bordered) | Color of the border when `bordered` is true. |
+| `--card-shadow-elevation-1` | `0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)` (example) | Shadow for elevation 1. Specific values depend on theme. |
+| `--card-title-color`     | `#333333` (typical default)        | Color of the card title.                     |
+| `--card-title-font-size` | `1.25rem` (typical default)        | Font size of the card title.                 |
+
+##### CSS Classes
+
+| Class             | Description                                       |
+|-------------------|---------------------------------------------------|
+| `.orbit-card`       | Base class applied to the card component.         |
+| `.orbit-card-bordered` | Applied when the `bordered` prop is true.         |
+| `.orbit-card-elevation-{n}` | Applied based on the `elevation` prop (e.g., `.orbit-card-elevation-3`). |
+
+#### Accessibility
+
+- Ensure the card's content structure is logical and uses appropriate heading levels if the card contains sections.
+- If the card is interactive (e.g., clickable as a whole), it should have appropriate `role` (e.g., `button`, `link`) and keyboard interaction (`tabindex`, `Enter`/`Space` key handling). The base `Card` component itself is not interactive by default.
+- The `title` prop, if used, should provide a meaningful heading for the card's content.
+
+#### Related Components
+- `UserCard`: A specialized card for displaying user profiles.
 
 ## Custom Component Development
 
