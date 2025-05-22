@@ -17,6 +17,7 @@ This document provides a comprehensive reference for the Orbit Framework's compo
   - [Button](#button)
   - [UserCard](#usercard)
   - [Card](#card)
+  - [Input](#input)
 - [Custom Component Development](#custom-component-development)
   - [Component Composition](#component-composition)
   - [Integration with OrbitKit](#integration-with-orbitkit)
@@ -562,6 +563,170 @@ No public methods are exposed by the Card component.
 
 #### Related Components
 - `UserCard`: A specialized card for displaying user profiles.
+
+### Input
+
+**Package:** `orbit::kit::components::input` (Note: path adjusted from orbitkit to orbit/kit)
+**Version:** 0.1.0 (Assumed, based on other components)
+**Status:** Beta (As per CONTENT_GAP_ANALYSIS.md)
+
+A versatile input component for capturing user text input, supporting various types, validation, and states.
+
+#### Import
+
+```rust
+use orbit::kit::components::Input;
+```
+
+#### Examples
+
+##### Basic Text Input
+
+```orbit
+<template>
+  <Input 
+    label="Your Name" 
+    placeholder="Enter your full name" 
+    :value="name" 
+    @change="handleNameChange" 
+  />
+</template>
+
+<code lang="rust">
+use orbit::kit::components::Input;
+
+pub struct MyForm {
+    name: String,
+}
+
+impl Component for MyForm {
+    // ... implementation ...
+    fn handle_name_change(&mut self, new_value: String) {
+        self.name = new_value;
+        // Potentially trigger validation or other actions
+    }
+}
+</code>
+```
+
+##### Input with Validation (Error State)
+
+```orbit
+<template>
+  <Input 
+    input_type="email" 
+    label="Email Address" 
+    placeholder="you@example.com" 
+    :value="email" 
+    @change="handleEmailChange" 
+    :error="email_error" 
+    helper_text="Please enter a valid email address." 
+    required={true}
+  />
+</template>
+
+<code lang="rust">
+use orbit::kit::components::Input;
+
+pub struct SignUpForm {
+    email: String,
+    email_error: Option<String>,
+}
+
+impl Component for SignUpForm {
+    // ... implementation ...
+    fn handle_email_change(&mut self, new_value: String) {
+        self.email = new_value;
+        if !self.email.contains('@') {
+            self.email_error = Some("Invalid email format".to_string());
+        } else {
+            self.email_error = None;
+        }
+    }
+}
+</code>
+```
+
+#### Props
+
+| Name          | Type                  | Required | Default      | Description                                      |
+|---------------|-----------------------|----------|--------------|--------------------------------------------------|
+| `input_type`  | `Option<String>`      | ❌        | `"text"`     | Type of input (e.g., "text", "password", "email", "number"). |
+| `value`       | `String`              | ✅        | `""` (empty) | The current value of the input field.            |
+| `placeholder` | `Option<String>`      | ❌        | `None`       | Placeholder text shown when the input is empty.  |
+| `disabled`    | `Option<bool>`        | ❌        | `false`      | If true, the input field is disabled.            |
+| `required`    | `Option<bool>`        | ❌        | `false`      | If true, the input field is marked as required.  |
+| `label`       | `Option<String>`      | ❌        | `None`       | A label displayed above or beside the input.     |
+| `error`       | `Option<String>`      | ❌        | `None`       | An error message displayed below the input.      |
+| `helper_text` | `Option<String>`      | ❌        | `None`       | Additional helper text displayed below the input.|
+| `on_change`   | `Option<fn(String)>`  | ❌        | `None`       | Callback function triggered when the input value changes. Provides the new value as a String. |
+
+#### Events
+
+| Name      | Payload Type | Description                                                        |
+|-----------|--------------|--------------------------------------------------------------------|
+| `change`  | `String`     | Triggered when the value of the input changes. (Handled via `on_change` prop) |
+| `input`   | `String`     | Typically triggered on each keystroke. (May need explicit Orbit event) |
+| `focus`   | `FocusEvent` | Triggered when the input receives focus. (Standard HTML event)     |
+| `blur`    | `FocusEvent` | Triggered when the input loses focus. (Standard HTML event)        |
+
+#### Slots
+
+| Name         | Props | Description                                              |
+|--------------|-------|----------------------------------------------------------|
+| `before`     | -     | Slot for content to be placed before the input element.  |
+| `after`      | -     | Slot for content to be placed after the input element.   |
+| `label_extra`| -     | Slot for additional content next to the label.           |
+
+#### Methods
+
+| Name    | Signature | Description                               |
+|---------|-----------|-------------------------------------------|
+| `focus` | `fn focus(&self)` | Programmatically focuses the input field. |
+| `blur`  | `fn blur(&self)`  | Programmatically removes focus from the input. |
+
+#### Style API
+
+| CSS Variable                | Default                            | Description                                      |
+|-----------------------------|------------------------------------|--------------------------------------------------|
+| `--input-padding`           | `0.5rem 0.75rem` (typical)         | Padding within the input field.                  |
+| `--input-background`        | `#ffffff` (typical)                | Background color of the input.                   |
+| `--input-border-color`      | `#cccccc` (typical)                | Border color of the input.                       |
+| `--input-border-radius`     | `0.25rem` (typical)                | Border radius of the input.                      |
+| `--input-text-color`        | `#333333` (typical)                | Text color within the input.                     |
+| `--input-placeholder-color` | `#aaaaaa` (typical)                | Color of the placeholder text.                   |
+| `--input-focus-border-color`| `#0070f3` (theme primary)          | Border color when the input is focused.          |
+| `--input-disabled-background`| `#f0f0f0` (typical)                | Background color when disabled.                  |
+| `--input-disabled-text-color`| `#999999` (typical)                | Text color when disabled.                        |
+| `--input-error-border-color`| `#ff0000` (theme error)           | Border color when in an error state.             |
+| `--input-error-text-color`  | `#ff0000` (theme error)           | Color of the error message text.                 |
+| `--input-label-color`       | `#333333` (typical)                | Color of the label text.                         |
+| `--input-helper-text-color` | `#666666` (typical)                | Color of the helper text.                        |
+
+##### CSS Classes
+
+| Class                   | Description                                          |
+|-------------------------|------------------------------------------------------|
+| `.orbit-input`            | Base class for the input component wrapper.          |
+| `.orbit-input-field`      | Class for the actual `<input>` element.              |
+| `.orbit-input-disabled`   | Applied when the input is disabled.                  |
+| `.orbit-input-required`   | Applied when the input is required.                  |
+| `.orbit-input-error`      | Applied when the input has an error.                 |
+| `.orbit-input-label`      | Class for the label element.                         |
+| `.orbit-input-helper-text`| Class for the helper text element.                   |
+| `.orbit-input-error-text` | Class for the error message element.                 |
+
+#### Accessibility
+
+- The `label` prop is crucial for accessibility. If a visible label is not desired, ensure an `aria-label` or `aria-labelledby` is provided.
+- The `id` of the input should be linked to the `for` attribute of its label.
+- Error messages (`error` prop) should be programmatically associated with the input using `aria-describedby` and `aria-invalid="true"`.
+- Helper text (`helper_text` prop) can also be associated via `aria-describedby`.
+- Ensure sufficient color contrast for text, borders, and states (focus, error, disabled).
+
+#### Related Components
+- `Button`: Often used with inputs in forms.
+- `FormGroup` (if it exists or is planned): For grouping labels, inputs, and messages.
 
 ## Custom Component Development
 
