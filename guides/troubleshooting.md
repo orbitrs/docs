@@ -365,6 +365,37 @@ This guide helps you diagnose and resolve common issues when working with the Or
    orbiton dev --desktop-debug
    ```
 
+### Windows Registry API linking errors
+
+**Symptoms:**
+- Build fails on Windows with errors about missing Registry API functions:
+  - `__imp_RegOpenKeyExW`
+  - `__imp_RegQueryInfoKeyW`
+  - `__imp_RegCloseKey`
+  - And similar functions
+
+**Cause:**
+- The Skia ICU library used for text rendering requires Windows Registry API functions, which are in `advapi32.lib`
+
+**Solutions:**
+1. Add a `build.rs` file to explicitly link with the Windows API:
+   ```rust
+   fn main() {
+       #[cfg(all(target_os = "windows", target_env = "msvc"))]
+       {
+           println!("cargo:rustc-link-lib=dylib=advapi32");
+       }
+   }
+   ```
+
+2. Add linking flags in `.cargo/config.toml`:
+   ```toml
+   [target.x86_64-pc-windows-msvc]
+   rustflags = ["-C", "link-arg=/DEFAULTLIB:advapi32.lib"]
+   ```
+
+3. See the detailed guide at [Windows Linking Issues and Solutions](windows-linking.md)
+
 ## Common Error Messages
 
 ### "Component not found: XYZ"
