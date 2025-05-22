@@ -80,7 +80,7 @@ fn expensive_operation(&mut self) {
 For more comprehensive profiling, use the built-in performance API:
 
 ```rust
-use orbitrs::profiling;
+use orbitui::profiling;
 
 fn render_complex_view(&mut self) {
     let _span = profiling::span("render_complex_view");

@@ -39,7 +39,7 @@ static HUMIDITY: Signal<f32> = Signal::new(0.0);
 static PRESSURE: Signal<f32> = Signal::new(0.0);
 static CURRENT_PAGE: Signal<usize> = Signal::new(0);
 
-#[orbitrs::embedded_component]
+#[orbitui::embedded_component]
 fn weather_app() -> impl Component {
     view! {
         <Container>
@@ -273,7 +273,7 @@ static BEDROOM_LIGHT: Signal<bool> = Signal::new(false);
 static THERMOSTAT_TEMP: Signal<f32> = Signal::new(21.0);
 static CURRENT_TAB: Signal<usize> = Signal::new(0);
 
-#[orbitrs::embedded_component]
+#[orbitui::embedded_component]
 fn home_control_app() -> impl Component {
     view! {
         <Container>
@@ -503,7 +503,7 @@ static CALORIES: Signal<u32> = Signal::new(0);
 static ACTIVE_MINUTES: Signal<u32> = Signal::new(0);
 static CURRENT_VIEW: Signal<u8> = Signal::new(0);
 
-#[orbitrs::embedded_component]
+#[orbitui::embedded_component]
 fn fitness_app() -> impl Component {
     view! {
         <Container>

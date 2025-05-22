@@ -19,8 +19,8 @@ This guide helps you migrate Orbit projects between major versions, ensuring com
 ### v1.0.0 → v2.0.0
 
 - Module path changes:
-  - `orbitrs::prelude::*` split into granular imports
-  - `orbitrs::hooks` moved to `orbitrs::state`
+  - `orbitui::prelude::*` split into granular imports
+  - `orbitui::hooks` moved to `orbitui::state`
 - CLI tool `orbiton`:
   - `orbiton new` flags renamed (`--template` → `--preset`)
   - `orbiton build` now requires `--config` for custom configs

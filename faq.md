@@ -92,7 +92,7 @@ Components can be composed by importing and using them in your templates:
 </template>
 
 <code lang="rust">
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 use crate::components::{Header, Sidebar, MainContent};
 
 // Component implementation

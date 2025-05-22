@@ -9,7 +9,7 @@ component App {}
 </code>
 
 // src/main.rs
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 
 fn main() {
     App::new()

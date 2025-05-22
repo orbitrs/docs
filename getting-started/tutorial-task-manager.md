@@ -126,7 +126,7 @@ Now update `src/main.rs` to include this module:
 mod models;
 mod components;
 
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 use components::app::App;
 
 fn main() {
@@ -191,7 +191,7 @@ Now, let's create a component for adding new tasks. Create a new file `src/compo
 </style>
 
 <code lang="rust">
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 
 pub struct TaskInput {
     new_task_title: String,
@@ -294,7 +294,7 @@ Next, let's create a component to display individual tasks. Create `src/componen
 </style>
 
 <code lang="rust">
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 use crate::models::task::Task;
 
 pub struct TaskItem {
@@ -375,7 +375,7 @@ Now, let's create a component that lists all tasks. Create `src/components/task_
 </style>
 
 <code lang="rust">
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 use crate::models::task::{Task, TaskFilter};
 use crate::components::task_item::TaskItem;
 
@@ -485,7 +485,7 @@ Now, let's create a component for filtering tasks. Create `src/components/task_f
 </style>
 
 <code lang="rust">
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 use crate::models::task::TaskFilter;
 
 pub struct TaskFilterComponent {
@@ -572,7 +572,7 @@ Now, let's update the main app component to use our new components. Replace the 
 </style>
 
 <code lang="rust">
-use orbitrs::prelude::*;
+use orbitui::prelude::*;
 use crate::models::task::{Task, TaskFilter};
 use crate::components::task_input::TaskInput;
 use crate::components::task_list::TaskList;

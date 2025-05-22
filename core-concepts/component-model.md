@@ -39,7 +39,7 @@ A typical `.orbit` file has three sections:
 
 <code lang="rust">
   // Rust code
-  use orbitrs::prelude::*;
+  use orbitui::prelude::*;
   
   pub struct MyComponent {
       name: String,
@@ -406,7 +406,7 @@ Orbit supports CSS variables for theming:
 </template>
 
 <code lang="rust">
-  use orbitrs::prelude::*;
+  use orbitui::prelude::*;
   use crate::components::{Header, Sidebar, MainContent, Footer};
   
   pub struct App {
@@ -550,7 +550,7 @@ For long lists, use virtualization to only render visible items:
 #[cfg(test)]
 mod tests {
     use super::*;
-    use orbitrs::test_utils::*;
+    use orbitui::test_utils::*;
     
     #[test]
     fn test_counter_increment() {

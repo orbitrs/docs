@@ -163,7 +163,7 @@ pub trait Renderer {
 
 ```rust
 // Example of compile-time UI generation
-#[orbitrs::embedded_component]
+#[orbitui::embedded_component]
 fn counter() -> impl Component {
     static COUNT: Signal<u32> = Signal::new(0);
     
@@ -239,7 +239,7 @@ use orbitrs_embedded::{prelude::*, display::Ssd1306};
 use rp2040_hal::{pac, sio::Sio, Clock, Watchdog};
 use panic_halt as _;
 
-#[orbitrs::embedded_component]
+#[orbitui::embedded_component]
 fn counter_app() -> impl Component {
     // Static allocation for state
     static COUNT: Signal<i32> = Signal::new(0);
