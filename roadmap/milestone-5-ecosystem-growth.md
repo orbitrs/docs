@@ -61,7 +61,7 @@ Foster a vibrant ecosystem around the Orbit framework by improving third-party i
   - 🔴 Add premium component marketplace
   - 🔴 Create customization API for community extensions
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 - **Ecosystem Analysis**
   - 🔴 Implement third-party component analysis

@@ -15,7 +15,7 @@ The Orbit Framework follows a phased release approach:
 5. **Stable Release**: Production-ready software
 6. **Maintenance Updates**: Bug fixes and minor improvements
 
-Each component (orbit, orbiton, orbitkit, orbit-analyzer) may have slightly different release timelines, but they are coordinated to provide a cohesive ecosystem.
+Each component (orbit, orbiton, orbitkit, orlint) may have slightly different release timelines, but they are coordinated to provide a cohesive ecosystem.
 
 ## 📋 Current Release Timeline
 
@@ -26,7 +26,7 @@ Each component (orbit, orbiton, orbitkit, orbit-analyzer) may have slightly diff
 | orbit | July 2025 | September 2025 | November 2025 |
 | orbiton | June 2025 | August 2025 | October 2025 |
 | orbitkit | N/A | N/A | N/A |
-| orbit-analyzer | N/A | N/A | N/A |
+| orlint | N/A | N/A | N/A |
 
 ### Milestone 2: Developer Experience
 
@@ -35,7 +35,7 @@ Each component (orbit, orbiton, orbitkit, orbit-analyzer) may have slightly diff
 | orbit | December 2025 | February 2026 | April 2026 |
 | orbiton | November 2025 | January 2026 | March 2026 |
 | orbitkit | N/A | N/A | N/A |
-| orbit-analyzer | January 2026 | March 2026 | May 2026 |
+| orlint | January 2026 | March 2026 | May 2026 |
 
 ### Milestone 3: Component Library
 
@@ -44,7 +44,7 @@ Each component (orbit, orbiton, orbitkit, orbit-analyzer) may have slightly diff
 | orbit | N/A | N/A | N/A |
 | orbiton | N/A | N/A | N/A |
 | orbitkit | April 2026 | June 2026 | August 2026 |
-| orbit-analyzer | N/A | N/A | N/A |
+| orlint | N/A | N/A | N/A |
 
 ### Milestone 4: Platform Expansion
 
@@ -53,7 +53,7 @@ Each component (orbit, orbiton, orbitkit, orbit-analyzer) may have slightly diff
 | orbit | September 2026 | November 2026 | January 2027 |
 | orbiton | October 2026 | December 2026 | February 2027 |
 | orbitkit | November 2026 | January 2027 | March 2027 |
-| orbit-analyzer | N/A | N/A | N/A |
+| orlint | N/A | N/A | N/A |
 
 ### Milestone 5: Ecosystem Growth
 
@@ -62,7 +62,7 @@ Each component (orbit, orbiton, orbitkit, orbit-analyzer) may have slightly diff
 | orbit | February 2027 | April 2027 | June 2027 |
 | orbiton | March 2027 | May 2027 | July 2027 |
 | orbitkit | April 2027 | June 2027 | August 2027 |
-| orbit-analyzer | April 2027 | June 2027 | August 2027 |
+| orlint | April 2027 | June 2027 | August 2027 |
 
 ### Milestone 6: Enterprise Readiness
 
@@ -71,7 +71,7 @@ Each component (orbit, orbiton, orbitkit, orbit-analyzer) may have slightly diff
 | orbit | September 2027 | November 2027 | January 2028 |
 | orbiton | September 2027 | November 2027 | January 2028 |
 | orbitkit | September 2027 | November 2027 | January 2028 |
-| orbit-analyzer | September 2027 | November 2027 | January 2028 |
+| orlint | September 2027 | November 2027 | January 2028 |
 
 ## 🔄 Release Cadence
 

@@ -17,7 +17,7 @@ The development of the Orbit Framework follows these main phases:
 5. **Ecosystem Growth Phase**: Supporting third-party integrations and community contributions
 6. **Enterprise Readiness Phase**: Adding features required for production use in enterprise environments
 
-Each project component (orbit, orbiton, orbitkit, orbit-analyzer) has its own timeline but is synchronized to deliver integrated value at each milestone.
+Each project component (orbit, orbiton, orbitkit, orlint) has its own timeline but is synchronized to deliver integrated value at each milestone.
 
 ## 🚀 Current Status
 

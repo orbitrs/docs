@@ -112,7 +112,7 @@
 | File system interaction | Unassigned | 🔴 Not Started | Q4 2026 | |
 | Capability detection | Unassigned | 🔴 Not Started | Q4 2026 | |
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 #### Platform Compatibility Analysis
 

@@ -45,7 +45,7 @@ Create a seamless, intuitive developer experience that makes building applicatio
   - 🔴 Create initial set of official plugins
   - 🔴 Add plugin discovery and installation features
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 - **Analysis Capabilities**
   - 🔴 Implement full type checking for components

@@ -5,7 +5,7 @@
 Orbit is a Rust-first cross-platform UI framework designed to build web, native, and embedded applications from a unified component format. The framework consists of several key parts:
 
 1. **orbit** - Core UI framework with rendering engine, component model, and framework APIs
-2. **orbit-analyzer** - Static analysis tool for .orbit files
+2. **orlint** - Static analysis tool for .orbit files
 3. **orbitkit** - Pre-built component library with UI elements
 4. **orbiton** - CLI tooling for project management, development, and deployment
 

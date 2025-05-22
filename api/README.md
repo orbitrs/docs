@@ -7,7 +7,7 @@ This section provides detailed API documentation for the Orbit Framework and its
 - [orbit](#orbit-core-framework)
 - [orbitkit](#orbitkit-component-library)
 - [orbiton](#orbiton-cli-tools)
-- [orbit-analyzer](#orbit-analyzer-static-analysis)
+- [orlint](#orlint-static-analysis)
 
 ---
 
@@ -257,7 +257,7 @@ module.exports = {
 
 ---
 
-## orbit-analyzer (Static Analysis)
+## orlint (Static Analysis)
 
 ### Lint Rules
 
@@ -286,10 +286,10 @@ impl LintRule for UnusedProps {
 
 ```bash
 # Analyze a component or directory
-orbit-analyzer [path] [--fix] [--config <config-file>]
+orlint [path] [--fix] [--config <config-file>]
 
 # Generate a report
-orbit-analyzer --report [html|json|text] --output report.html
+orlint --report [html|json|text] --output report.html
 ```
 
 ---

@@ -70,7 +70,7 @@ Extend the Orbit framework to support a wider range of platforms and environment
   - 🔴 Create file system interaction components
   - 🔴 Add platform capability detection
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 - **Platform Compatibility Analysis**
   - 🔴 Implement platform compatibility checking

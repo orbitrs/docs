@@ -99,7 +99,7 @@
 | Premium component marketplace | Unassigned | 🔴 Not Started | Q2 2027 | |
 | Customization API | Unassigned | 🔴 Not Started | Q2 2027 | |
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 #### Ecosystem Analysis
 

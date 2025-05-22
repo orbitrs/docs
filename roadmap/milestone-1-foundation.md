@@ -152,7 +152,7 @@ Establish the core architecture, rendering engines, and component model for the 
     - Mobile build pipeline
     - Embedded target support
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 - **Core Analysis**
   - 🔴 Implement basic parser for `.orbit` files

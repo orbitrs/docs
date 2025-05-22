@@ -80,7 +80,7 @@
 | Official plugins | Unassigned | 🔴 Not Started | Q4 2025 | |
 | Plugin discovery | Unassigned | 🔴 Not Started | Q4 2025 | |
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 #### Analysis Capabilities
 

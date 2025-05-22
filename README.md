@@ -31,7 +31,7 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
   - orbit core API
   - orbitkit components
   - orbiton CLI
-  - orbit-analyzer
+  - orlint
 
 - **[Examples](./examples/README.md)**
   - Sample applications

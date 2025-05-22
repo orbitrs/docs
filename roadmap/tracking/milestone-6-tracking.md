@@ -112,7 +112,7 @@
 | Audit trail visualization | Unassigned | 🔴 Not Started | Q4 2027 | |
 | Compliance reporting | Unassigned | 🔴 Not Started | Q4 2027 | |
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 #### Enterprise Analysis
 

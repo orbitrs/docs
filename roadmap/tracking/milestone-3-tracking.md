@@ -100,7 +100,7 @@
 | Component auditing | Unassigned | 🔴 Not Started | Q2 2026 | |
 | Theme editor/previewer | Unassigned | 🔴 Not Started | Q2 2026 | |
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 #### Component-specific Rules
 

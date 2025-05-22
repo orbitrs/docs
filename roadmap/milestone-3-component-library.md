@@ -62,7 +62,7 @@ Build a comprehensive library of high-quality, accessible, and customizable comp
   - 🔴 Implement component auditing tools
   - 🔴 Create theme editor/previewer
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 - **Component-specific Rules**
   - 🔴 Implement best practice rules for component usage

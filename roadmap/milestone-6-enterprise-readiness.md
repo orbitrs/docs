@@ -70,7 +70,7 @@ Elevate the Orbit framework to enterprise-grade status by implementing advanced 
   - 🔴 Create audit trail visualization
   - 🔴 Add compliance reporting components
 
-### orbit-analyzer (Static Analysis)
+### orlint (Static Analysis)
 
 - **Enterprise Analysis**
   - 🔴 Implement security vulnerability detection
