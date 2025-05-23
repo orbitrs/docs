@@ -36,6 +36,31 @@ This report summarizes the progress made on the documentation improvement initia
    - Added detailed examples for templates, styles, and scripts
    - Included advanced patterns like multi-file components and server components
 
+7. **Template Syntax Documentation**
+   - Created comprehensive guide in `docs/core-concepts/template-syntax.md`
+   - Covered basic and advanced features, edge cases, and best practices
+   - Included detailed examples for interpolation, directives, and event handling
+
+8. **Component Lifecycle Documentation**
+   - Enhanced documentation in `docs/core-concepts/component-model.md`
+   - Added comprehensive section on advanced lifecycle patterns
+   - Included examples for async initialization, lifecycle hooks, debugging, and optimization
+
+9. **Advanced State Management Patterns**
+   - Enhanced documentation in `docs/core-concepts/state-management.md`
+   - Added detailed sections on state machines, composite state pattern, command pattern, and middleware
+   - Included practical examples for complex state scenarios
+
+10. **Style Scoping Documentation**
+    - Created comprehensive guide in `docs/core-concepts/style-scoping.md`
+    - Covered basic and advanced usage, best practices, and troubleshooting
+    - Included examples for different scoping techniques
+
+11. **VS Code Integration Documentation**
+    - Enhanced guide in `orlint/docs/vscode-integration.md` 
+    - Added screenshots and visual guides for VS Code features
+    - Included detailed setup instructions, configuration options, and troubleshooting
+
 ## Remaining High-Priority Tasks
 
 1. **Component API Reference**

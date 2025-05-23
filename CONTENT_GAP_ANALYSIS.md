@@ -20,17 +20,17 @@ Based on `orbit/orbit-spec.md` and general framework expectations.
 | Feature                      | Current Documentation Status (File/Section) | Gap/Notes                                     | Priority |
 | :--------------------------- | :------------------------------------------ | :-------------------------------------------- | :------- |
 | `.orbit` File Format         | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial), `docs/core-concepts/orbit-file-format.md` (comprehensive) | Enhanced file format documentation with advanced patterns and examples | ✅ Medium  |
-| Template Syntax              | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial) | Needs expansion, more examples, especially for advanced directives and edge cases | High     |
-| Style Scoping                | `orbit/orbit-spec.md`                       | Clear in spec, but needs usage examples and integration into main docs | Medium   |
+| Template Syntax              | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial), `docs/core-concepts/template-syntax.md` (comprehensive) | Created dedicated documentation covering basic and advanced template features, edge cases, and best practices | ✅ High     |
+| Style Scoping                | `orbit/orbit-spec.md`, `docs/core-concepts/style-scoping.md` (comprehensive) | Created dedicated comprehensive documentation covering usage examples, advanced techniques, and best practices | ✅ Medium   |
 | Script Requirements          | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial) | Basic structure covered, but needs more pattern examples | Low      |
 | Multi-file components        | `orbit/orbit-spec.md`                       | Only mentioned in spec, no examples or detailed guide in main docs | Medium   |
 | Compilation Process          | `orbit/orbit-spec.md`                       | High-level in spec only, needs detailed coverage for contributors | Medium   |
-| Component Lifecycle          | `docs/core-concepts/component-model.md`, `docs/core-concepts/README.md` (brief) | Mentioned in README, detailed in component-model.md, but needs more complex examples | High     |
-| State Management             | `docs/core-concepts/state-management.md`    | Review for advanced patterns, best practices  | High     |
+| Component Lifecycle          | `docs/core-concepts/component-model.md` (comprehensive), `docs/core-concepts/README.md` (brief) | Enhanced with comprehensive section on advanced lifecycle patterns, including async initialization, effects, debugging, and optimization | ✅ High     |
+| State Management             | `docs/core-concepts/state-management.md` (comprehensive)    | Enhanced with comprehensive section on advanced state patterns, including state machines, composite state, command pattern, middleware, and type-safe actions | ✅ High     |
 | Event Handling               | `docs/core-concepts/event-handling.md`      | Review for edge cases, custom events          | Medium   |
 | Rendering Architecture       | `docs/core-concepts/rendering-architecture.md`, `docs/core-concepts/README.md` (brief) | Covered at high level in README, detailed in architecture doc, review for clarity | Medium   |
 | Advanced Component Patterns  | `docs/core-concepts/advanced-component-patterns.md` | Needs more examples and use cases         | High     |
-| Performance Optimization     | `orlint/docs/performance-guide.md` (related) | Exists in orlint but needs a dedicated section in core docs | High     |
+| Performance Optimization     | `docs/guides/performance-optimization.md` (comprehensive), `orlint/docs/performance-guide.md` (related) | Comprehensive documentation exists in core docs covering all aspects of application performance | ✅ High     |
 | Testing Strategies           | `docs/guides/testing-strategies.md` (new)   | Created comprehensive testing guide covering unit, integration, and E2E approaches | Medium  |
 | Debugging Orbit Apps         | `docs/guides/debugging-guide.md` (new)      | Created comprehensive debugging guide covering development and production scenarios | Medium  |
 | Internationalization (i18n)  | `docs/guides/internationalization.md` (comprehensive) | Created detailed documentation of planned i18n features with examples and best practices | Medium   |
@@ -63,7 +63,7 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 | Dev Server Details     | `docs/guides/development-server.md` (comprehensive) | Created comprehensive guide covering all advanced features | ✅ High  |
 | Orlint Configuration   | `orlint/docs/sample-config.toml` | Configuration example exists but needs detailed explanation of options | Medium   |
 | Orlint Custom Rules    | `orlint/docs/custom-lint-rules.md` | Technical documentation exists but needs more examples and best practices | Medium   |
-| VS Code Integration    | `orlint/docs/vscode-integration.md` | Basic documentation exists, but needs screenshots and setup troubleshooting | Medium   |
+| VS Code Integration    | `orlint/docs/vscode-integration.md` (comprehensive) | Enhanced with extensive screenshots, detailed setup instructions, and troubleshooting tips | ✅ Medium   |
 
 ## 6. Guides and Tutorials
 
@@ -71,14 +71,14 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 | :-------------------------- | :------------------------------------------ | :-------------------------------------------- | :------- |
 | Getting Started             | `docs/getting-started/getting-started.md` (detailed) | Good basic setup guide, but needs more troubleshooting sections and up-to-date screenshots | High     |
 | Tutorial: Task Manager      | `docs/getting-started/tutorial-task-manager.md` (comprehensive) | Excellent detailed tutorial, would benefit from video accompaniment | Medium   |
-| Deployment Guide            | ? (not found in docs)                      | Missing critical documentation on production deployment approaches | High     |
+| Deployment Guide            | `docs/guides/deployment-guide.md` (comprehensive) | Comprehensive guide covering all deployment scenarios and platforms | ✅ High     |
 | State Management In-Depth   | `docs/core-concepts/state-management.md` (detailed) | Good coverage but needs more complex examples for large applications | Medium   |
 | Creating Reusable Components| `docs/core-concepts/advanced-component-patterns.md` | Existing but could be expanded with more design patterns  | Medium   |
-| Contribution Guide          | Only found `DEVELOPMENT.md` in `orlint` subproject | Need a general contribution guide for the entire `orbitrs` workspace | High     |
+| Contribution Guide          | `/CONTRIBUTING.md` (comprehensive), `orlint/DEVELOPMENT.md` (specialized) | Created comprehensive contribution guide for the entire workspace covering all aspects of contribution workflow | ✅ High     |
 | Monorepo Setup with Orbiton | `orlint/docs/monorepo-ci-guide.md` (specialized) | Exists for orlint but needs a general workspace-level guide        | Medium   |
 | Accessibility Implementation| `docs/guides/accessibility.md` (comprehensive) | Excellent coverage of principles but needs more code examples | Medium   |
-| Testing Best Practices      | ? (not found in docs)                      | Missing completely, critical for production apps | High     |
-| Performance Optimization    | Partially in `orlint/docs/performance-guide.md` | Needs to be generalized and expanded in main docs | High     |
+| Testing Best Practices      | `docs/guides/testing-strategies.md` (comprehensive), `docs/guides/testing.md` (comprehensive) | Comprehensive guides exist covering unit testing, integration testing, rendering tests, and end-to-end testing approaches | ✅ High     |
+| Performance Optimization    | `docs/guides/performance-optimization.md` (comprehensive) | Comprehensive guide exists in main docs covering component optimization, rendering, state management, and advanced techniques | ✅ High     |
 
 ## 7. API Documentation Status
 

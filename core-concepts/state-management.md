@@ -556,3 +556,456 @@ App (Store Provider)
 Orbit provides a flexible state management system that scales from simple component state to complex application-wide state. By understanding the strengths and use cases of each approach, you can choose the right tools for your specific needs, creating maintainable and performant applications.
 
 Remember that the best state management solution is often the simplest one that meets your requirements. Start with local component state and introduce more complex patterns only as your application's needs grow.
+
+## Advanced State Management Patterns
+
+As applications grow in complexity, you'll need more sophisticated approaches to state management. This section covers advanced patterns for handling complex state requirements.
+
+### State Machines for Complex UI Flows
+
+For UIs with multiple steps or complex state transitions, a state machine pattern can be very effective:
+
+```rust
+// Define states and transitions
+enum FormState {
+    Initial,
+    Editing {
+        data: FormData,
+        is_valid: bool,
+    },
+    Submitting {
+        data: FormData,
+    },
+    Success,
+    Error {
+        message: String,
+    },
+}
+
+// Define events/actions
+enum FormAction {
+    StartEdit,
+    UpdateField { name: String, value: String },
+    Submit,
+    SubmitSuccess,
+    SubmitError { message: String },
+    Reset,
+}
+
+struct FormStateMachine {
+    state: FormState,
+}
+
+impl FormStateMachine {
+    fn transition(&mut self, action: FormAction) -> bool {
+        // Return true if state changed
+        let new_state = match (&self.state, action) {
+            (FormState::Initial, FormAction::StartEdit) => {
+                FormState::Editing {
+                    data: FormData::default(),
+                    is_valid: false,
+                }
+            },
+            (FormState::Editing { data, .. }, FormAction::UpdateField { name, value }) => {
+                let mut new_data = data.clone();
+                new_data.set_field(name, value);
+                let is_valid = new_data.validate();
+                
+                FormState::Editing {
+                    data: new_data,
+                    is_valid,
+                }
+            },
+            (FormState::Editing { data, is_valid }, FormAction::Submit) if *is_valid => {
+                FormState::Submitting {
+                    data: data.clone(),
+                }
+            },
+            (FormState::Submitting { data }, FormAction::SubmitSuccess) => {
+                FormState::Success
+            },
+            (FormState::Submitting { .. }, FormAction::SubmitError { message }) => {
+                FormState::Error {
+                    message,
+                }
+            },
+            (_, FormAction::Reset) => {
+                FormState::Initial
+            },
+            // Stay in the current state for invalid transitions
+            _ => return false,
+        };
+        
+        self.state = new_state;
+        true
+    }
+}
+
+// Usage in a component
+impl Component for ComplexForm {
+    // ... other component methods
+
+    fn handle_submit(&mut self) {
+        if self.state_machine.transition(FormAction::Submit) {
+            // State changed to Submitting, start async operation
+            let data = match &self.state_machine.state {
+                FormState::Submitting { data } => data.clone(),
+                _ => unreachable!(), // Should not happen based on our state machine
+            };
+            
+            orbit::tasks::spawn(async move {
+                match submit_form(data).await {
+                    Ok(_) => {
+                        self.state_machine.transition(FormAction::SubmitSuccess);
+                    },
+                    Err(e) => {
+                        self.state_machine.transition(FormAction::SubmitError {
+                            message: e.to_string(),
+                        });
+                    }
+                }
+                self.request_update();
+            });
+            
+            self.request_update();
+        }
+    }
+    
+    fn render(&self) -> RenderResult {
+        match &self.state_machine.state {
+            FormState::Initial => html! { <button @click="handle_start_edit">Start</button> },
+            FormState::Editing { data, is_valid } => {
+                html! {
+                    <form>
+                        <!-- Form fields -->
+                        <button disabled="{{ !is_valid }}" @click="handle_submit">Submit</button>
+                    </form>
+                }
+            },
+            FormState::Submitting { .. } => html! { <LoadingSpinner /> },
+            FormState::Success => html! { <SuccessMessage /> },
+            FormState::Error { message } => html! { <ErrorDisplay message="{{ message }}" /> },
+        }
+    }
+}
+```
+
+### Composite State Pattern
+
+When dealing with multiple related pieces of state, you can use a composite pattern:
+
+```rust
+// Define a composite state object
+struct DashboardState {
+    user_profile: UserProfileState,
+    notifications: NotificationsState,
+    metrics: MetricsState,
+}
+
+// Each sub-state can have its own update logic
+impl DashboardState {
+    fn update_profile(&mut self, update: ProfileUpdate) {
+        self.user_profile.apply_update(update);
+    }
+    
+    fn mark_notification_read(&mut self, notification_id: String) {
+        self.notifications.mark_read(notification_id);
+    }
+    
+    fn refresh_metrics(&mut self) -> impl Future<Output = Result<(), Error>> {
+        self.metrics.refresh()
+    }
+}
+
+// Usage in a component
+impl Component for Dashboard {
+    // ... other component methods
+    
+    fn handle_profile_update(&mut self, update: ProfileUpdate) {
+        self.state.update_profile(update);
+        self.request_update();
+    }
+    
+    fn handle_notification_action(&mut self, notification_id: String) {
+        self.state.mark_notification_read(notification_id);
+        self.request_update();
+    }
+}
+```
+
+### Command Pattern for Actions
+
+For components with many actions, using a command pattern can help organize code:
+
+```rust
+// Define all possible commands
+enum TodoCommand {
+    Add { text: String },
+    Remove { id: String },
+    Toggle { id: String },
+    MarkAllCompleted,
+    ClearCompleted,
+    Filter { filter: TodoFilter },
+}
+
+// State management with commands
+struct TodoState {
+    items: Vec<TodoItem>,
+    filter: TodoFilter,
+}
+
+impl TodoState {
+    fn execute(&mut self, command: TodoCommand) {
+        match command {
+            TodoCommand::Add { text } => {
+                self.items.push(TodoItem {
+                    id: generate_id(),
+                    text,
+                    completed: false,
+                });
+            },
+            TodoCommand::Remove { id } => {
+                self.items.retain(|item| item.id != id);
+            },
+            TodoCommand::Toggle { id } => {
+                if let Some(item) = self.items.iter_mut().find(|i| i.id == id) {
+                    item.completed = !item.completed;
+                }
+            },
+            TodoCommand::MarkAllCompleted => {
+                for item in &mut self.items {
+                    item.completed = true;
+                }
+            },
+            TodoCommand::ClearCompleted => {
+                self.items.retain(|item| !item.completed);
+            },
+            TodoCommand::Filter { filter } => {
+                self.filter = filter;
+            },
+        }
+    }
+    
+    fn visible_items(&self) -> Vec<&TodoItem> {
+        match self.filter {
+            TodoFilter::All => self.items.iter().collect(),
+            TodoFilter::Active => self.items.iter().filter(|i| !i.completed).collect(),
+            TodoFilter::Completed => self.items.iter().filter(|i| i.completed).collect(),
+        }
+    }
+}
+
+// Component using the command pattern
+impl Component for TodoApp {
+    // ... other component methods
+    
+    fn handle_add(&mut self, text: String) {
+        self.state.execute(TodoCommand::Add { text });
+        self.request_update();
+    }
+    
+    fn handle_toggle(&mut self, id: String) {
+        self.state.execute(TodoCommand::Toggle { id });
+        self.request_update();
+    }
+}
+```
+
+### Middleware Pattern for Side Effects
+
+For handling side effects like logging or analytics, you can use a middleware pattern:
+
+```rust
+type Middleware<State, Action> = 
+    Box<dyn Fn(&State, &Action, &mut State) -> Option<Vec<Action>>>;
+
+struct Store<State, Action> {
+    state: State,
+    middleware: Vec<Middleware<State, Action>>,
+}
+
+impl<State: Clone, Action: Clone> Store<State, Action> {
+    fn new(initial_state: State) -> Self {
+        Self {
+            state: initial_state,
+            middleware: Vec::new(),
+        }
+    }
+    
+    fn add_middleware(&mut self, middleware: Middleware<State, Action>) {
+        self.middleware.push(middleware);
+    }
+    
+    fn dispatch(&mut self, action: Action) {
+        let old_state = self.state.clone();
+        let mut new_state = self.state.clone();
+        let mut follow_up_actions = Vec::new();
+        
+        for middleware in &self.middleware {
+            if let Some(actions) = middleware(&old_state, &action, &mut new_state) {
+                follow_up_actions.extend(actions);
+            }
+        }
+        
+        self.state = new_state;
+        
+        // Process any follow-up actions
+        for action in follow_up_actions {
+            self.dispatch(action);
+        }
+    }
+}
+
+// Example middleware for logging
+fn logging_middleware<State: Debug, Action: Debug>(
+    old_state: &State, 
+    action: &Action,
+    _new_state: &mut State
+) -> Option<Vec<Action>> {
+    log::info!("Action: {:?}", action);
+    log::debug!("Old state: {:?}", old_state);
+    None
+}
+
+// Example middleware for analytics
+fn analytics_middleware<State, Action: Debug>(
+    _old_state: &State, 
+    action: &Action,
+    _new_state: &mut State
+) -> Option<Vec<Action>> {
+    match action {
+        UserAction::SignUp { .. } => {
+            // Track sign-up event
+            analytics::track("user_signed_up");
+        },
+        UserAction::Purchase { amount, .. } => {
+            // Track purchase with value
+            analytics::track_with_value("purchase_completed", *amount);
+        },
+        _ => {}
+    }
+    None
+}
+```
+
+### Optimizing State Updates for Large Collections
+
+When working with large collections, naive updates can cause performance issues:
+
+```rust
+// Efficient state updates for large collections
+struct OptimizedListState<T> {
+    items: Vec<T>,
+    indices_to_update: HashSet<usize>,
+}
+
+impl<T: Clone + PartialEq> OptimizedListState<T> {
+    fn update_item(&mut self, index: usize, new_value: T) {
+        if index < self.items.len() && self.items[index] != new_value {
+            self.items[index] = new_value;
+            self.indices_to_update.insert(index);
+        }
+    }
+    
+    fn apply_batch_update(&mut self, updates: HashMap<usize, T>) {
+        for (index, value) in updates {
+            self.update_item(index, value);
+        }
+    }
+    
+    // Only rerender components for the changed indices
+    fn render_items<F>(&self, render_fn: F) -> Vec<RenderResult> 
+    where 
+        F: Fn(&T, usize) -> RenderResult 
+    {
+        self.items.iter().enumerate()
+            .map(|(i, item)| {
+                let key = format!("item-{}", i);
+                html! {
+                    <div key="{{ key }}" :memo="{{ !self.indices_to_update.contains(&i) }}">
+                        {{ render_fn(item, i) }}
+                    </div>
+                }
+            })
+            .collect()
+    }
+    
+    fn after_render(&mut self) {
+        // Clear the change tracking after rendering
+        self.indices_to_update.clear();
+    }
+}
+```
+
+### Typed Action Pattern with Builder
+
+For complex state updates with type safety:
+
+```rust
+struct UserState {
+    profile: UserProfile,
+    preferences: UserPreferences,
+    permissions: UserPermissions,
+}
+
+// Type-safe action builder
+struct UserActionBuilder {
+    profile_update: Option<ProfileUpdate>,
+    preference_update: Option<PreferenceUpdate>,
+    permission_update: Option<PermissionUpdate>,
+}
+
+impl UserActionBuilder {
+    fn new() -> Self {
+        Self {
+            profile_update: None,
+            preference_update: None,
+            permission_update: None,
+        }
+    }
+    
+    fn update_name(mut self, name: String) -> Self {
+        let update = self.profile_update.unwrap_or(ProfileUpdate::default());
+        self.profile_update = Some(ProfileUpdate { 
+            name: Some(name),
+            ..update
+        });
+        self
+    }
+    
+    fn update_theme(mut self, theme: Theme) -> Self {
+        let update = self.preference_update.unwrap_or(PreferenceUpdate::default());
+        self.preference_update = Some(PreferenceUpdate {
+            theme: Some(theme),
+            ..update
+        });
+        self
+    }
+    
+    fn apply_to(self, state: &mut UserState) {
+        if let Some(update) = self.profile_update {
+            state.profile.apply_update(update);
+        }
+        
+        if let Some(update) = self.preference_update {
+            state.preferences.apply_update(update);
+        }
+        
+        if let Some(update) = self.permission_update {
+            state.permissions.apply_update(update);
+        }
+    }
+}
+
+// Usage
+fn handle_profile_form_submit(&mut self, form_data: FormData) {
+    UserActionBuilder::new()
+        .update_name(form_data.name)
+        .update_theme(form_data.preferred_theme)
+        .apply_to(&mut self.state);
+        
+    self.request_update();
+}
+```
+
+These advanced patterns can help manage complex state needs while keeping your code organized and maintainable.

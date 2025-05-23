@@ -614,3 +614,240 @@ fn test_app_integration() {
 6. **Clear Component APIs**: Design intuitive component interfaces
 7. **Documentation**: Document component props, events, and usage examples
 8. **Accessibility**: Ensure components are accessible by default
+
+## Advanced Component Lifecycle Patterns
+
+While the basic component lifecycle (new → mounted → updated → unmounted) covers most use cases, there are advanced patterns that can help manage complex component behavior more effectively.
+
+### Handling Asynchronous Initialization
+
+Components often need to load data from external sources during initialization. Here's a pattern for handling asynchronous initialization:
+
+```rust
+impl Component for DataComponent {
+    type Props = DataComponentProps;
+    
+    fn new(props: Self::Props) -> Self {
+        Self {
+            data: None,
+            loading: true,
+            error: None,
+            props,
+        }
+    }
+    
+    fn mounted(&mut self) {
+        let id = self.props.id.clone();
+        
+        // Start loading data asynchronously
+        orbit::tasks::spawn(async move {
+            match fetch_data(id).await {
+                Ok(data) => {
+                    // Handle successful data fetch
+                    self.data = Some(data);
+                    self.loading = false;
+                    self.request_update(); // Trigger re-render
+                },
+                Err(e) => {
+                    // Handle error case
+                    self.error = Some(e.to_string());
+                    self.loading = false;
+                    self.request_update(); // Trigger re-render
+                }
+            }
+        });
+    }
+}
+```
+
+### Lifecycle Hooks and Effects
+
+For more complex components, you can implement a React-like effects system:
+
+```rust
+pub struct ProfileComponent {
+    user_id: String,
+    user_data: Option<UserData>,
+    subscription: Option<Subscription>,
+}
+
+impl Component for ProfileComponent {
+    // ... other component methods ...
+    
+    fn updated(&mut self, old_props: Option<&Self::Props>) {
+        // Check if a specific prop changed
+        if let Some(old_props) = old_props {
+            if old_props.user_id != self.props.user_id {
+                // User ID changed, reload data
+                self.load_user_data(self.props.user_id.clone());
+            }
+        }
+    }
+    
+    fn unmounted(&mut self) {
+        // Clean up subscription when component is removed
+        if let Some(subscription) = self.subscription.take() {
+            subscription.unsubscribe();
+        }
+    }
+}
+
+impl ProfileComponent {
+    fn load_user_data(&mut self, user_id: String) {
+        // Clean up existing subscription
+        if let Some(subscription) = self.subscription.take() {
+            subscription.unsubscribe();
+        }
+        
+        // Create new subscription
+        self.subscription = Some(
+            UserService::get_user_updates(user_id)
+                .subscribe(|update| {
+                    self.user_data = Some(update);
+                    self.request_update();
+                })
+        );
+    }
+}
+```
+
+### Component Lifecycle Debugging
+
+When debugging component lifecycle issues, you can implement comprehensive logging:
+
+```rust
+impl Component for DebugComponent {
+    // ... other component methods ...
+    
+    fn new(props: Self::Props) -> Self {
+        log::debug!("DebugComponent::new - Creating with props: {:?}", props);
+        Self { /* ... */ }
+    }
+    
+    fn mounted(&mut self) {
+        log::debug!("DebugComponent::mounted - Component ID: {}", self.id());
+        // Profile render performance
+        let start = std::time::Instant::now();
+        
+        // Initialization code
+        
+        let elapsed = start.elapsed();
+        log::debug!("DebugComponent::mounted - Initialization took {:?}", elapsed);
+    }
+    
+    fn updated(&mut self) {
+        log::debug!("DebugComponent::updated - Component state: {:?}", self.state);
+    }
+    
+    fn unmounted(&mut self) {
+        log::debug!("DebugComponent::unmounted - Cleanup for component ID: {}", self.id());
+    }
+}
+```
+
+### Optimizing Re-renders with `should_update`
+
+In performance-critical applications, you can implement `should_update` to prevent unnecessary renders:
+
+```rust
+impl Component for OptimizedComponent {
+    // ... other component methods ...
+    
+    fn should_update(&self, new_props: &Self::Props) -> bool {
+        // Only update if the important props changed
+        self.props.important_value != new_props.important_value ||
+        self.props.another_critical_field != new_props.another_critical_field
+        
+        // Ignore changes to rarely-updated or non-visual props
+        // self.props.metadata != new_props.metadata
+    }
+}
+```
+
+### Managing Complex State Transitions
+
+For components with multiple state transitions:
+
+```rust
+enum ComponentState {
+    Initial,
+    Loading,
+    Loaded(Data),
+    Error(String),
+}
+
+impl Component for StatefulComponent {
+    // ... other component methods ...
+    
+    fn render(&self) -> RenderResult {
+        match &self.state {
+            ComponentState::Initial => html! { <div>Initializing...</div> },
+            ComponentState::Loading => html! { <LoadingSpinner /> },
+            ComponentState::Loaded(data) => html! { 
+                <div>
+                    <h1>{{ data.title }}</h1>
+                    <p>{{ data.description }}</p>
+                </div>
+            },
+            ComponentState::Error(msg) => html! { <ErrorDisplay message={{ msg }} /> },
+        }
+    }
+    
+    fn mounted(&mut self) {
+        self.state = ComponentState::Loading;
+        self.request_update();
+        
+        let task = orbit::tasks::spawn(async move {
+            match load_data().await {
+                Ok(data) => {
+                    self.state = ComponentState::Loaded(data);
+                },
+                Err(e) => {
+                    self.state = ComponentState::Error(e.to_string());
+                }
+            }
+            self.request_update();
+        });
+        
+        self.task = Some(task);
+    }
+    
+    fn unmounted(&mut self) {
+        // Cancel the task if still running
+        if let Some(task) = self.task.take() {
+            task.cancel();
+        }
+    }
+}
+```
+
+### Parent-Child Lifecycle Coordination
+
+When components need to coordinate with their children:
+
+```rust
+impl Component for ParentComponent {
+    // ... other component methods ...
+    
+    fn mounted(&mut self) {
+        // Create a context that children can access
+        let context = Context::new(SharedData {
+            theme: self.props.theme.clone(),
+            user: self.props.user.clone(),
+        });
+        
+        // Register the context for children to find
+        self.register_context(context);
+    }
+    
+    fn unmounted(&mut self) {
+        // Notify children that parent is being unmounted
+        self.children.iter_mut().for_each(|child| {
+            child.parent_unmounting();
+        });
+        
+        // Clear contexts
+        self.clear_contexts();
+    }
+}
+```
