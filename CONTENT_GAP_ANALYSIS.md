@@ -27,14 +27,14 @@ Based on `orbit/orbit-spec.md` and general framework expectations.
 | Compilation Process          | `orbit/orbit-spec.md`                       | High-level in spec only, needs detailed coverage for contributors | Medium   |
 | Component Lifecycle          | `docs/core-concepts/component-model.md` (comprehensive), `docs/core-concepts/README.md` (brief) | Enhanced with comprehensive section on advanced lifecycle patterns, including async initialization, effects, debugging, and optimization | ✅ High     |
 | State Management             | `docs/core-concepts/state-management.md` (comprehensive)    | Enhanced with comprehensive section on advanced state patterns, including state machines, composite state, command pattern, middleware, and type-safe actions | ✅ High     |
-| Event Handling               | `docs/core-concepts/event-handling.md`      | Review for edge cases, custom events          | Medium   |
+| Event Handling               | `docs/core-concepts/event-handling.md` (comprehensive) | Enhanced with advanced event patterns, custom events, edge cases, and performance optimization techniques for event handling | ✅ Medium   |
 | Rendering Architecture       | `docs/core-concepts/rendering-architecture.md`, `docs/core-concepts/README.md` (brief) | Covered at high level in README, detailed in architecture doc, review for clarity | Medium   |
 | Advanced Component Patterns  | `docs/core-concepts/advanced-component-patterns.md` (comprehensive) | Enhanced with comprehensive examples, accessibility considerations, performance optimizations, and responsive patterns | ✅ High     |
 | Performance Optimization     | `docs/guides/performance-optimization.md` (comprehensive), `orlint/docs/performance-guide.md` (related) | Comprehensive documentation exists in core docs covering all aspects of application performance | ✅ High     |
 | Testing Strategies           | `docs/guides/testing-strategies.md` (new)   | Created comprehensive testing guide covering unit, integration, and E2E approaches | Medium  |
 | Debugging Orbit Apps         | `docs/guides/debugging-guide.md` (new)      | Created comprehensive debugging guide covering development and production scenarios | Medium  |
 | Internationalization (i18n)  | `docs/guides/internationalization.md` (comprehensive) | Created detailed documentation of planned i18n features with examples and best practices | Medium   |
-| Accessibility (General)      | `docs/guides/accessibility.md`              | Review for comprehensiveness                  | High     |
+| Accessibility (General)      | `docs/guides/accessibility.md` (comprehensive) | Enhanced with advanced patterns, code examples, progressive enhancement techniques, and responsive considerations | ✅ High     |
 
 ## 4. Core Components Library
 

@@ -403,15 +403,500 @@ Use this checklist to ensure your application meets basic accessibility requirem
 - [ ] Application works with screen readers
 - [ ] All functionality works at 200% zoom
 
-## 🔗 Resources
+## 🔠 Advanced Accessibility Patterns
 
-- [WCAG 2.1 Guidelines](https://www.w3.org/TR/WCAG21/)
-- [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
-- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
-- [Orbit Accessibility API Documentation](../api/accessibility.md)
+These advanced patterns build on the foundation described above to create more complex accessible interfaces. For detailed implementation examples, see the [Advanced Component Patterns](../core-concepts/advanced-component-patterns.md#-accessibility-first-component-design) documentation.
+
+### Composite Role Patterns
+
+When building complex components from simpler ones, it's essential to manage ARIA relationships properly. This pattern helps maintain proper semantic relationships between parent and child components in complex UI elements like menus, tabs, and dialogs.
+
+```rust
+use orbit::prelude::*;
+use orbit::a11y::*;
+
+#[component]
+pub struct AccessibleCombobox {
+    id: Prop<String>,
+    expanded: State<bool>,
+    selected_option: State<Option<String>>,
+    options: Prop<Vec<String>>,
+    label: Prop<String>,
+}
+
+impl AccessibleCombobox {
+    pub fn new() -> Self {
+        Self {
+            id: Prop::with_default(generate_unique_id()),
+            expanded: State::new(false),
+            selected_option: State::new(None),
+            options: Prop::new(),
+            label: Prop::with_default("Select an option".to_string()),
+        }
+    }
+    
+    pub fn input_id(&self) -> String {
+        format!("{}-input", self.id.get())
+    }
+    
+    pub fn listbox_id(&self) -> String {
+        format!("{}-listbox", self.id.get())
+    }
+    
+    pub fn toggle(&self, _: &ClickEvent) {
+        self.expanded.update(|expanded| !expanded);
+    }
+    
+    pub fn select_option(&self, option: String) {
+        self.selected_option.set(Some(option));
+        self.expanded.set(false);
+    }
+}
+
+impl Component for AccessibleCombobox {
+    fn render(&self) -> Node {
+        html! {
+            <div class="combobox-container">
+                <label id={format!("{}-label", self.id.get())} for={self.input_id()}>
+                    {self.label.get().clone()}
+                </label>
+                
+                <input 
+                    type="text"
+                    id={self.input_id()}
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded={self.expanded.get().to_string()}
+                    aria-controls={self.listbox_id()}
+                    aria-labelledby={format!("{}-label", self.id.get())}
+                    :value={self.selected_option.get().clone().unwrap_or_default()}
+                    @click="toggle"
+                />
+                
+                {
+                    if *self.expanded.get() {
+                        html! {
+                            <ul 
+                                id={self.listbox_id()}
+                                role="listbox"
+                                aria-labelledby={format!("{}-label", self.id.get())}
+                                class="options-list"
+                            >
+                                {
+                                    self.options.get().iter().enumerate().map(|(i, option)| {
+                                        let option_clone = option.clone();
+                                        let is_selected = self.selected_option.get().as_ref() == Some(option);
+                                        
+                                        html! {
+                                            <li 
+                                                role="option"
+                                                id={format!("{}-option-{}", self.id.get(), i)}
+                                                class={format!("option {}", if is_selected { "selected" } else { "" })}
+                                                aria-selected={is_selected.to_string()}
+                                                tabindex="0"
+                                                @click={move |_| self.select_option(option_clone.clone())}
+                                                @keydown={move |e: &KeydownEvent| {
+                                                    if e.key() == "Enter" || e.key() == " " {
+                                                        e.prevent_default();
+                                                        self.select_option(option_clone.clone());
+                                                    }
+                                                }}
+                                            >
+                                                {option.clone()}
+                                            </li>
+                                        }
+                                    }).collect::<Vec<_>>()
+                                }
+                            </ul>
+                        }
+                    } else {
+                        html! { <></> }
+                    }
+                }
+            </div>
+        }
+    }
+}
+```
+
+### Focus Management Patterns
+
+Implementing proper focus management is crucial for modal dialogs, expanding panels, and other dynamic UI elements. This pattern ensures keyboard users can navigate your application effectively and aren't trapped in certain UI components.
+
+```rust
+use orbit::prelude::*;
+use orbit::a11y::focus;
+
+// A reusable focus trap hook for modals and other UI that needs focus containment
+pub fn use_focus_trap(root_ref: NodeRef) -> FocusTrapHook {
+    let active = State::new(false);
+    let previous_focus = State::new(None::<NodeRef>);
+    
+    FocusTrapHook {
+        active,
+        activate: Box::new(move || {
+            if !*active.get() {
+                // Store current focus before trapping
+                previous_focus.set(Some(focus::get_active_element()));
+                
+                // Activate trap
+                if let Some(element) = root_ref.get() {
+                    focus::trap_focus(&element);
+                    
+                    // Focus first focusable element
+                    focus::focus_first_element(&element);
+                    
+                    active.set(true);
+                }
+            }
+        }),
+        deactivate: Box::new(move || {
+            if *active.get() {
+                // Release trap
+                focus::release_focus();
+                
+                // Restore previous focus
+                if let Some(prev) = &*previous_focus.get() {
+                    focus::focus_element(prev);
+                }
+                
+                active.set(false);
+            }
+        }),
+    }
+}
+```
+
+### Live Region Updates Pattern
+
+Notify screen reader users of dynamic content changes without shifting focus:
+
+```rust
+use orbit::prelude::*;
+use orbit::a11y::*;
+
+#[component]
+pub struct LiveRegionDemo {
+    search_query: State<String>,
+    results: State<Vec<SearchResult>>,
+    is_loading: State<bool>,
+    result_count: Computed<usize>,
+}
+
+impl LiveRegionDemo {
+    pub fn new() -> Self {
+        Self {
+            search_query: State::new(String::new()),
+            results: State::new(Vec::new()),
+            is_loading: State::new(false),
+            result_count: Computed::new(|self_| {
+                self_.results.get().len()
+            }),
+        }
+    }
+    
+    pub fn update_query(&self, event: &InputEvent) {
+        self.search_query.set(event.target_value());
+    }
+    
+    pub async fn perform_search(&self) {
+        let query = self.search_query.get().clone();
+        if query.is_empty() {
+            return;
+        }
+        
+        self.is_loading.set(true);
+        
+        // Simulate API call
+        delay(500).await;
+        
+        // Update results
+        let new_results = fetch_search_results(&query).await;
+        self.results.set(new_results);
+        self.is_loading.set(false);
+    }
+    
+    pub fn announcement_text(&self) -> String {
+        if *self.is_loading.get() {
+            "Searching, please wait...".to_string()
+        } else {
+            format!("Found {} results for '{}'", 
+                    self.result_count.get(), 
+                    self.search_query.get())
+        }
+    }
+}
+
+impl Component for LiveRegionDemo {
+    fn render(&self) -> Node {
+        html! {
+            <div class="search-container">
+                <h2>Search Example with Live Region</h2>
+                
+                <form @submit.prevent="perform_search">
+                    <label for="search-input">Search:</label>
+                    <input 
+                        id="search-input"
+                        type="search"
+                        :value={*self.search_query.get()}
+                        @input="update_query"
+                        aria-controls="search-results"
+                    />
+                    <button type="submit">Search</button>
+                </form>
+                
+                <!-- Live region for announcing results -->
+                <div 
+                    class="sr-only" 
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    {self.announcement_text()}
+                </div>
+                
+                <div id="search-results" class="search-results" aria-label="Search Results">
+                    {
+                        if *self.is_loading.get() {
+                            html! { <LoadingSpinner aria-label="Loading results" /> }
+                        } else if self.results.get().is_empty() && !self.search_query.get().is_empty() {
+                            html! { <p>No results found.</p> }
+                        } else {
+                            self.results.get().iter().map(|result| {
+                                html! { <SearchResultItem :result={result.clone()} /> }
+                            }).collect::<Vec<_>>()
+                        }
+                    }
+                </div>
+            </div>
+        }
+    }
+}
+```
+
+## 🔄 Progressive Enhancement for Accessibility
+
+Progressive enhancement ensures your application remains functional even when certain features are unavailable or disabled. This is especially important for accessibility, as users may have JavaScript disabled, be using older assistive technology, or have limited browser capabilities.
+
+### Basic HTML First
+
+Start with semantic HTML that works without JavaScript or CSS:
+
+```orbit
+<template>
+  <form method="post" action="/api/submit">
+    <fieldset>
+      <legend>Contact Information</legend>
+      
+      <label for="name">Name:</label>
+      <input id="name" name="name" type="text" required />
+      
+      <label for="email">Email:</label>
+      <input id="email" name="email" type="email" required />
+      
+      <button type="submit">Submit</button>
+    </fieldset>
+  </form>
+</template>
+```
+
+### Enhance with JavaScript
+
+Then add JavaScript enhancements that improve the experience but aren't required:
+
+```orbit
+<template>
+  <form 
+    method="post" 
+    action="/api/submit"
+    @submit.prevent="enhancedSubmit"
+  >
+    <fieldset>
+      <legend>Contact Information</legend>
+      
+      <label for="name">Name:</label>
+      <input 
+        id="name" 
+        name="name" 
+        type="text" 
+        required 
+        :value={form.name}
+        @input="updateName"
+      />
+      
+      <label for="email">Email:</label>
+      <input 
+        id="email" 
+        name="email" 
+        type="email" 
+        required 
+        :value={form.email}
+        @input="updateEmail"
+      />
+      
+      <button 
+        type="submit"
+        :disabled="isSubmitting"
+      >
+        {isSubmitting ? "Submitting..." : "Submit"}
+      </button>
+    </fieldset>
+  </form>
+</template>
+
+<code lang="rust">
+use orbit::prelude::*;
+
+#[component]
+pub struct EnhancedForm {
+    form: State<FormData>,
+    is_submitting: State<bool>,
+}
+
+impl EnhancedForm {
+    pub fn new() -> Self {
+        Self {
+            form: State::new(FormData {
+                name: String::new(),
+                email: String::new(),
+            }),
+            is_submitting: State::new(false),
+        }
+    }
+    
+    pub fn update_name(&self, event: &InputEvent) {
+        self.form.update(|data| {
+            data.name = event.target_value();
+        });
+    }
+    
+    pub fn update_email(&self, event: &InputEvent) {
+        self.form.update(|data| {
+            data.email = event.target_value();
+        });
+    }
+    
+    pub async fn enhanced_submit(&self, _: &SubmitEvent) {
+        self.is_submitting.set(true);
+        
+        // If fetch fails, the form will still submit normally via action attribute
+        if let Ok(response) = fetch_post("/api/submit", &*self.form.get()).await {
+            // Handle response...
+        }
+        
+        self.is_submitting.set(false);
+    }
+}
+</code>
+```
+
+## 📱 Responsive Accessibility
+
+Accessibility needs can vary depending on device and screen size. Consider these techniques for responsive accessibility:
+
+### Touch Target Sizing
+
+Make sure interactive elements are large enough for touch interaction:
+
+```orbit
+<style>
+/* Small screens - increase touch target size */
+@media (max-width: 768px) {
+  button, .interactive {
+    /* Minimum touch target size of 44x44px per WCAG */
+    min-height: 44px;
+    min-width: 44px;
+    /* Add padding for text elements */
+    padding: 8px 12px;
+  }
+  
+  /* Increase spacing between interactive elements */
+  li, button + button, .form-group {
+    margin-bottom: 12px;
+  }
+}
+</style>
+```
+
+### Responsive Navigation Patterns
+
+Implement accessible responsive navigation:
+
+```orbit
+<template>
+  <nav aria-label="Main Navigation">
+    <!-- Desktop navigation -->
+    <ul class="desktop-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    
+    <!-- Mobile navigation (hamburger menu) -->
+    <div class="mobile-nav">
+      <button 
+        aria-expanded={mobileMenuOpen}
+        aria-controls="mobile-menu"
+        @click="toggleMobileMenu"
+        class="menu-toggle"
+        aria-label="Toggle navigation menu"
+      >
+        <span class="hamburger-icon">≡</span>
+      </button>
+      
+      <div 
+        id="mobile-menu" 
+        class="mobile-menu" 
+        :hidden={!mobileMenuOpen}
+      >
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<code lang="rust">
+use orbit::prelude::*;
+
+#[component]
+pub struct ResponsiveNav {
+    mobile_menu_open: State<bool>,
+}
+
+impl ResponsiveNav {
+    pub fn new() -> Self {
+        Self {
+            mobile_menu_open: State::new(false),
+        }
+    }
+    
+    pub fn toggle_mobile_menu(&self, _: &ClickEvent) {
+        self.mobile_menu_open.update(|open| !open);
+    }
+    
+    // Ensure ESC key closes the menu
+    #[lifecycle(mounted)]
+    pub fn setup_key_handler(&self) {
+        let mobile_menu_open = self.mobile_menu_open.clone();
+        
+        document_event_listener("keydown", move |event: KeyboardEvent| {
+            if event.key() == "Escape" && *mobile_menu_open.get() {
+                mobile_menu_open.set(false);
+            }
+        });
+    }
+}
+</code>
+```
 
 ## 🔄 Related Topics
 
+- [Advanced Component Patterns](../core-concepts/advanced-component-patterns.md#-accessibility-first-component-design) - Accessibility-first design patterns
 - [Event Handling](../core-concepts/event-handling.md) - Learn about event handling in Orbit
 - [Component Model](../core-concepts/component-model.md) - Understand how components work
 - [Performance Optimization](./performance-optimization.md) - Optimize your accessible applications
