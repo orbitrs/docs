@@ -11,7 +11,7 @@ The Orbit Framework documentation currently consists of:
 5. **Core Concepts** (`/docs/core-concepts/README.md`) - Fundamental framework concepts
 6. **API Documentation** (Various README files) - Basic API references
 7. **Examples** (`/orbitrs/examples/`) - Sample components and applications
-8. **Component Templates** (`/orbitkit/src/components/COMPONENT_README_TEMPLATE.md`) - Documentation templates
+8. **Component Templates** (`/orbit/src/kit/components/COMPONENT_README_TEMPLATE.md`) - Documentation templates
 
 ## Identified Gaps and Improvement Areas
 
@@ -68,7 +68,7 @@ The Orbit Framework documentation currently consists of:
    - Create API reference guides with proper categorization
 
 2. **Component Library Documentation**
-   - Document all OrbitKit components with props, events, and usage examples
+   - Document all Orbit component library elements with props, events, and usage examples
    - Create visual showcase for component variants
    - Add accessibility guidelines for each component
 

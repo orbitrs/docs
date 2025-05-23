@@ -175,7 +175,7 @@ This creates optimized builds for your target platforms in the `dist/` directory
 - Learn more about [State Management](../core-concepts/state-management.md)
 - Explore [Event Handling](../core-concepts/events.md)
 - Check out the [Component API](../api/component-api.md)
-- Browse the [OrbitKit Component Library](../api/orbitkit-components.md)
+- Browse the [Orbit Component Library](../api/orbit-kit-components.md)
 
 ## Troubleshooting
 

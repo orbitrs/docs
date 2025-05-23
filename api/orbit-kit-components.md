@@ -1,10 +1,10 @@
-# `orbitkit::components` API Reference
+# `orbit::kit::components` API Reference
 
-This document provides a comprehensive reference for the component library included in the OrbitKit package.
+This document provides a comprehensive reference for the component library included in the Orbit framework.
 
 ## Overview
 
-`orbitkit::components` is a collection of pre-built, reusable UI components designed to accelerate application development with the Orbit Framework. These components follow accessibility best practices, support theming, and work across all Orbit-supported platforms.
+`orbit::kit::components` is a collection of pre-built, reusable UI components designed to accelerate application development with the Orbit Framework. These components follow accessibility best practices, support theming, and work across all Orbit-supported platforms.
 
 ## Core Components
 
@@ -42,7 +42,7 @@ pub struct ButtonProps {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::Button;
+use orbit::kit::components::Button;
 
 #[component]
 pub fn MyForm() -> impl View {
@@ -107,7 +107,7 @@ pub struct CardProps {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::Card;
+use orbit::kit::components::Card;
 
 #[component]
 pub fn ProfileCard() -> impl View {
@@ -184,7 +184,7 @@ pub struct InputProps {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::Input;
+use orbit::kit::components::Input;
 
 #[component]
 pub fn LoginForm() -> impl View {
@@ -288,7 +288,7 @@ pub struct GridProps {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::layout::{Stack, Grid};
+use orbit::kit::components::layout::{Stack, Grid};
 
 #[component]
 pub fn PageLayout() -> impl View {
@@ -341,7 +341,7 @@ pub struct AvatarProps {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::Avatar;
+use orbit::kit::components::Avatar;
 
 #[component]
 pub fn UserInfo() -> impl View {
@@ -391,7 +391,7 @@ pub struct ModalProps {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::Modal;
+use orbit::kit::components::Modal;
 
 #[component]
 pub fn App() -> impl View {
@@ -483,7 +483,7 @@ pub struct TabItem {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::tabs::{Tabs, TabItem};
+use orbit::kit::components::tabs::{Tabs, TabItem};
 
 #[component]
 pub fn ProfileTabs() -> impl View {
@@ -583,7 +583,7 @@ pub struct Column {
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::components::table::{Table, Column};
+use orbit::kit::components::table::{Table, Column};
 use serde_json::Value;
 
 #[component]
@@ -882,7 +882,7 @@ OrbitKit components support comprehensive theming using the Orbit theming system
 
 ```rust
 use orbit::prelude::*;
-use orbitkit::theme::{Theme, ThemeProvider};
+use orbit::kit::theme::{Theme, ThemeProvider};
 
 fn custom_theme() -> Theme {
     Theme::default()

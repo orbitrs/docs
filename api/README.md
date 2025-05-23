@@ -5,7 +5,7 @@ This section provides detailed API documentation for the Orbit Framework and its
 ## 📋 Table of Contents
 
 - [orbit](#orbit-core-framework)
-- [orbitkit](#orbitkit-component-library)
+- [Component Library](#orbit-component-library)
 - [orbiton](#orbiton-cli-tools)
 - [orlint](#orlint-static-analysis)
 
@@ -138,7 +138,7 @@ impl<T: Clone + 'static> Store<T> {
 
 ---
 
-## orbitkit (Component Library)
+## Orbit Component Library
 
 ### Layout Components
 

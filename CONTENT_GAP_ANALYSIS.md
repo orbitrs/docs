@@ -19,7 +19,7 @@ This document outlines the process and findings of a content gap analysis for th
 The gap analysis will be conducted by:
 
 1.  **Reviewing Existing Documentation**: Systematically going through all current documentation outlined in `DOCUMENTATION_PLAN.md`.
-2.  **Comparing with Framework Features**: Cross-referencing documentation with the actual features, components, and capabilities of the Orbit framework, OrbitKit, and Orbiton CLI.
+2.  **Comparing with Framework Features**: Cross-referencing documentation with the actual features, components, and capabilities of the Orbit framework, component library, and Orbiton CLI.
 3.  **Analyzing User Needs**: Considering common questions, pain points, and areas where users (developers, designers) would require guidance (e.g., from GitHub issues, community discussions if available).
 4.  **Benchmarking (Optional)**: Comparing with documentation of similar UI frameworks for best practices and common topics.
 
@@ -49,7 +49,7 @@ Based on `orbit/orbit-spec.md` and general framework expectations.
 ## 4. Core Components Library
 
 List of components to be identified from `orbit/src/kit/components/` directory or other relevant sources.
-*Note: The components have been migrated from the separate OrbitKit project directly into the core orbit codebase.*
+*Note: The component library is integrated directly into the core Orbit codebase.*
 
 | Component Name | Current Documentation Status (File/Section) | Gap/Notes (Props, Events, Slots, Examples, Accessibility) | Priority | Status |
 | :------------- | :------------------------------------------ | :-------------------------------------------------------- | :------- | :----- |
@@ -102,9 +102,9 @@ Reference `docs/api/API_DOCUMENTATION_TEMPLATE.md` and `docs/api/README.md`.
 | `orbit::state`       | `docs/api/orbit-state.md` (comprehensive) | Comprehensive API documentation with all methods, detailed examples and advanced patterns | High     | ✅ Completed |
 | `orbit::event`       | Basic coverage in event handling docs       | Needs full API reference with all event types | High     | 🔄 Pending |
 | `orbit::render`      | Basic coverage in renderer architecture     | Missing detailed API docs for render pipeline | High     | 🔄 Pending |
-| `orbitkit::components` | References in API template only           | Need complete component library documentation | High     | 🔄 Pending |
-| `orbitkit::hooks`    | Not found                                   | If exists, needs documentation              | Medium   | 🔄 Pending |
-| `orbitkit::layout`   | Not found                                   | If exists, needs documentation              | Medium   | 🔄 Pending |
+| `orbit::kit::components` | References in API template only           | Need complete component library documentation | High     | 🔄 Pending |
+| `orbit::kit::hooks`    | Not found                                   | If exists, needs documentation              | Medium   | 🔄 Pending |
+| `orbit::kit::layout`   | Not found                                   | If exists, needs documentation              | Medium   | 🔄 Pending |
 | Orbiton Lib API      | Minimal references in CLI docs              | Need programmatic API docs if applicable    | Medium   | 🔄 Pending |
 | Orlint API           | Some coverage in orlint subdocs             | Need consolidated API reference in main docs | Medium   | 🔄 Pending |
 
@@ -154,7 +154,7 @@ This section will be populated with team member assignments. For now, it contain
 | Advanced Component Patterns    | June 30, 2025         | Completed   |
 | Debugging Guide                | July 5, 2025          | Completed   |
 | Core Framework Features Review | June 15, 2025         | In Progress |
-| OrbitKit Components Inventory  | June 5, 2025          | Completed   |
+| Orbit Components Inventory  | June 5, 2025          | Completed   |
 | Renderer Configuration Documentation | May 23, 2025    | Completed   |
 | Orbiton Test Command Documentation | May 23, 2025      | Completed   |
 | Dev Server Advanced Features Documentation | May 23, 2025 | Completed |
@@ -163,10 +163,10 @@ This section will be populated with team member assignments. For now, it contain
 
 ## 10. Next Steps
 
-1.  ~~Populate the "OrbitKit Components" list with a comprehensive inventory of available components.~~ (Completed)
+1.  ~~Populate the "Orbit Components" list with a comprehensive inventory of available components.~~ (Completed)
 2.  Continue reviewing each item in sections 3-7 to address remaining medium and low-priority documentation gaps.
 3.  ~~Begin work on the internationalization (i18n) documentation section.~~ (Completed)
-4.  Create detailed API documentation for each OrbitKit component.
+4.  Create detailed API documentation for each Orbit component.
 5.  ~~Update the Contribution Guide with a focus on documentation contributions.~~ (Completed)
 6.  Consider adding video tutorials to supplement the written documentation.
 7.  Implement cross-references and navigation improvements between documentation sections.
