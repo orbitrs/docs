@@ -4,6 +4,10 @@
 
 This report summarizes the progress made on the documentation improvement initiative for the Orbit UI Framework based on the Content Gap Analysis document. This update focuses on high-priority and medium-priority documentation tasks completed as of May 24, 2025.
 
+## Development Priority Update
+
+> **Important Notice (May 23, 2025)**: The team has decided to prioritize core framework development over SDK improvements. SDK-specific improvements are now considered non-essential as they are primarily used for personal development purposes. Documentation efforts should focus on core components (orbit, orbiton, orlint) rather than SDK enhancement features.
+
 ## Completed High-Priority Tasks
 
 1. **Renderer Configuration Documentation**

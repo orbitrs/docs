@@ -270,6 +270,8 @@ Establish the core architecture, rendering engines, and component model for the 
 
 Upon completion of Milestone 1, the project will have established the foundational architecture and core functionality needed to build simple applications. The next milestone will focus on enhancing the developer experience with improved tooling, documentation, and workflow optimizations.
 
+> **Note**: SDK improvement tasks are considered non-essential for the core project timeline as they are primarily used for personal development purposes. Future work will prioritize core framework development over SDK enhancements.
+
 Key transition areas:
 - Moving from basic rendering to the hybrid renderer architecture
 - Expanding component capabilities with advanced patterns

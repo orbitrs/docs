@@ -19,6 +19,8 @@ The development of the Orbit Framework follows these main phases:
 
 Each project component (orbit, orbiton, orbitkit, orlint) has its own timeline but is synchronized to deliver integrated value at each milestone.
 
+> **Development Priority Note**: SDK-specific improvements are considered non-essential as they're primarily used for personal development purposes. The focus will remain on core framework development rather than SDK enhancements.
+
 ## 🚀 Current Status
 
 The Orbit Framework is currently in the **Foundation Phase**, focusing on the core architecture and initial developer experience. 
