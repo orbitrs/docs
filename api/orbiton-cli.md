@@ -57,148 +57,55 @@ orbiton new quick-test --skip-git
 orbiton dev [options]
 ```
 
-Options:
-- `--port <port>` - Port to run the development server on (default: 3000)
-- `--host <host>` - Host address to bind to (default: "localhost")
-- `--no-open` - Don't automatically open in browser
-- `--renderer <renderer>` - Override the renderer for development
+The `orbiton dev` command starts the development server, enabling features like hot module replacement (HMR), static asset serving, and WebSocket communication for live updates.
 
-Examples:
+**Standard Options:**
 
-```bash
-# Start dev server with default settings
-orbiton dev
+- `--port <port>` - Port to run the HTTP server on (default: 3000). The WebSocket server will run on `<port> + 1`.
+- `--host <host>` - Host address to bind to (default: "localhost" for HTTP, "0.0.0.0" for WebSocket allowing broader network access for testing on other devices).
+- `--no-open` - Don't automatically open the application in your default browser.
+- `--renderer <renderer>` - Override the project's configured renderer for this development session (e.g., "skia", "wgpu").
 
-```bash
-# Start the development server
-orbiton dev
+**Advanced Features & Internals:**
 
-# Start on a custom port and host
-orbiton dev --port 8080 --host 0.0.0.0
+Based on `orbiton/src/dev_server.rs`:
 
-# Start with a specific renderer
-orbiton dev --renderer wgpu
+*   **HTTP Server:**
+    *   Serves static files from your project directory.
+    *   If a requested URL is empty (e.g., `http://localhost:3000/`), it defaults to serving `index.html` from the project root.
+    *   Returns a 404 error if a requested file is not found.
+    *   The HTTP server (using `tiny_http`) listens on the specified `--port`.
+*   **WebSocket Server:**
+    *   Runs on `port + 1` (e.g., if HTTP is on 3000, WebSocket is on 3001).
+    *   Used for Hot Module Replacement (HMR) and other live updates.
+    *   When changes are detected in your project (e.g., saving an `.orbit` file), the server broadcasts an update message to all connected WebSocket clients.
+    *   Clients (your application running in the browser) receive these messages and can react accordingly (e.g., reload a component, refresh the page).
+*   **Hot Module Replacement (HMR):**
+    *   The `broadcast_update` method in `DevServer` is responsible for sending messages that trigger HMR or live reloads in connected clients.
+    *   The exact mechanism of HMR (how components are swapped without a full page reload) depends on the Orbit runtime and client-side HMR logic.
+*   **Project Directory:**
+    *   The dev server serves files relative to the root of your Orbit project.
+*   **Concurrency:**
+    *   The HTTP and WebSocket servers run in separate Tokio tasks, managed within a dedicated thread for the `DevServer`.
 
-# Start and automatically open in the browser
-orbiton dev --open
+**Configuration via `orbit.config.toml`:**
+
+You can set default development server options in your `orbit.config.toml` file:
+
+```toml
+[dev]
+port = 3001       # Default port for orbiton dev
+open = false      # Prevent auto-opening the browser
+hot_reload = true # Ensure HMR is enabled (usually default)
+# host = "0.0.0.0"  # Example: Make server accessible on your local network
 ```
 
-### Development Server Advanced Features
+CLI options (e.g., `orbiton dev --port 3002`) will override settings in `orbit.config.toml` for that specific session.
 
-The Orbit development server provides a rich set of features to enhance your development experience:
+**Debugging the Dev Server:**
 
-#### Hot Module Replacement (HMR)
-
-The development server includes built-in Hot Module Replacement that automatically updates your application when files change, without requiring a full page reload.
-
-```bash
-# Enable detailed HMR logging
-orbiton dev --hmr-verbose
-```
-
-#### Proxy Configuration
-
-You can configure proxy settings to forward API requests to backend servers:
-
-```bash
-# With command line options
-orbiton dev --proxy-target http://localhost:3000 --proxy-path /api
-
-# Using orbit.config.json
-```
-
-```json
-{
-  "dev": {
-    "proxy": [
-      {
-        "path": "/api",
-        "target": "http://localhost:3000"
-      },
-      {
-        "path": "/auth",
-        "target": "http://auth-service:8080"
-      }
-    ]
-  }
-}
-```
-
-#### HTTPS Support
-
-For secure development, the dev server supports HTTPS:
-
-```bash
-# Enable HTTPS with auto-generated certificates
-orbiton dev --https
-
-# Use custom certificates
-orbiton dev --https --cert-file ./certs/cert.pem --key-file ./certs/key.pem
-```
-
-#### WebSocket Server
-
-The development server includes a WebSocket server that enables real-time communication:
-
-- Automatically runs on port+1 (e.g., if HTTP is on 8000, WebSocket is on 8001)
-- Used for HMR and live-reload features
-- Can be used by your application for development-time features
-
-```js
-// Connect to the development WebSocket server from your application
-const socket = new WebSocket(`ws://localhost:8001`);
-
-socket.onmessage = (event) => {
-  const data = JSON.parse(event.data);
-  console.log('Received message:', data);
-};
-```
-
-#### Static File Serving
-
-The dev server automatically serves static files from your project directory:
-
-- Public assets from `/public` directory
-- Built files from `/dist` directory
-- The main `index.html` file
-
-#### Custom Middleware
-
-Advanced users can add custom middleware to the development server by creating a `dev-server.js` file in the project root:
-
-```js
-// dev-server.js
-module.exports = {
-  before(app, server) {
-    // Add custom middleware
-    app.get('/custom', (req, res) => {
-      res.send('Custom middleware response');
-    });
-  },
-  after(app, server) {
-    // Add middleware after built-in middleware
-  }
-};
-```
-
-#### Environment Variables
-
-The development server automatically loads environment variables from `.env` files:
-
-- `.env` - Default environment variables for all environments
-- `.env.development` - Development-specific variables (takes precedence)
-- `.env.local` - Local overrides (highest precedence, not committed to version control)
-
-#### Performance Monitoring
-
-Monitor development server performance:
-
-```bash
-# Enable performance monitoring
-orbiton dev --perf-monitor
-
-# Access the performance dashboard at http://localhost:8000/__performance
-```
+*   Logs from the dev server (e.g., request information, WebSocket connections) can be viewed in the terminal where you ran `orbiton dev`.
+*   Increase log verbosity using the `ORBIT_LOG_LEVEL` environment variable if needed (e.g., `ORBIT_LOG_LEVEL=debug orbiton dev`).
 
 ## Building for Production
 
@@ -442,6 +349,41 @@ port = 3000
 open = true
 hot_reload = true
 ```
+
+## Linting Your Project with Orlint
+
+Orbiton integrates with Orlint, the Orbit Analyzer, to help you maintain code quality, enforce best practices, and catch potential issues in your `.orbit` files. While Orlint is a separate tool with its own comprehensive CLI, you can typically invoke it through Orbiton or run it directly in your project.
+
+**Typical Usage (directly using Orlint):**
+
+```bash
+# Analyze all .orbit files in the src directory
+orlint analyze src/
+
+# Analyze a specific component
+orlint analyze src/components/MyButton.orbit
+
+# Generate an initial Orlint configuration file (.orlint.toml)
+orlint init
+```
+
+**Key Orlint Features:**
+
+*   **Comprehensive Analysis:** Checks for syntax errors, adherence to Orbit best practices, potential performance issues, and more.
+*   **Configurable Rules:** Customize which rules to apply or exclude via an `.orlint.toml` configuration file.
+*   **Multiple Output Formats:** Get reports in text, JSON, or HTML.
+*   **Incremental Analysis:** Speed up linting by only analyzing changed files.
+
+**Integration with Orbiton CLI (Conceptual):**
+
+While `orbiton-cli.md` previously listed an `orbiton lint` command, direct invocation of `orlint` is the standard approach. If an `orbiton lint` command is (re)introduced, it would likely serve as a wrapper around `orlint analyze`.
+
+**Detailed Orlint Documentation:**
+
+For a complete guide to Orlint, including all commands, options, configuration details, and available rules, please refer to the dedicated Orlint documentation:
+
+*   [Orlint CLI Usage Guide](../../orlint/docs/cli-usage.md)
+*   [Orlint Configuration Guide](../../orlint/docs/configuration.md)
 
 ## Environment Variables
 

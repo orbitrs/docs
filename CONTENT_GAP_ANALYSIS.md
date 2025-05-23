@@ -44,9 +44,9 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 | Component Name | Current Documentation Status (File/Section) | Gap/Notes (Props, Events, Slots, Examples, Accessibility) | Priority |
 | :------------- | :------------------------------------------ | :-------------------------------------------------------- | :------- |
 | Button         | `docs/api/component-reference.md` (detailed)| Detailed documentation completed. Corresponds to `button.rs`. | High |
-| Card           | `docs/api/component-reference.md` (UserCard example) | Corresponds to `card.rs`. Needs full documentation: Props, Events, Slots, Examples, Accessibility. The existing UserCard can serve as an example. | Medium |
-| Input          | ?                                           | Corresponds to `input.rs`. Needs full documentation: Props, Events, Slots, Examples, Accessibility | Medium |
-| Layout         | ?                                           | Corresponds to `layout.rs`. Needs full documentation: Props, Events, Slots, Examples, Accessibility | Medium |
+| Card           | `docs/api/component-reference.md` (updated)    | API documented. Examples provided. Style API detailed. Accessibility notes enhanced.                                                | Complete |
+| Input          | `docs/api/component-reference.md` (updated)    | API documented. Examples provided. Style API detailed. Accessibility notes enhanced.                                                | Complete |
+| Layout         | `docs/api/component-reference.md` (updated)    | API documented. Examples provided. Style API detailed. Accessibility notes enhanced. Corresponds to `layout.rs`.                 | Complete |
 
 ## 5. Tooling (Orbiton CLI, Dev Server, Orlint)
 
