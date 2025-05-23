@@ -179,9 +179,60 @@ This creates optimized builds for your target platforms in the `dist/` directory
 
 ## Troubleshooting
 
-If you encounter issues:
+### Common Installation Issues
+
+#### Cargo Install Fails
+
+If you encounter errors when installing the Orbiton CLI:
+
+```
+error: failed to compile `orbiton v0.5.0`, intermediate artifacts can be found at `/tmp/cargo-installiXXXXX`
+```
+
+**Solution**: 
+1. Make sure your Rust toolchain is up to date: `rustup update`
+2. Check for missing dependencies: 
+   - Linux users may need to install additional packages: `sudo apt install build-essential pkg-config libssl-dev`
+   - macOS users may need to install Xcode command line tools: `xcode-select --install`
+3. Try with the `--force` flag: `cargo install orbiton --force`
+
+#### Project Creation Issues
+
+If you encounter errors when creating a new project:
+
+```
+Error: Failed to initialize project template
+```
+
+**Solution**:
+1. Check if the directory already exists or if you have write permissions
+2. Try with a different template: `orbiton new my-app --template basic`
+3. Check internet connectivity as templates might be downloaded from the repository
+
+### Development Server Issues
+
+#### Server Won't Start
+
+If the development server fails to start:
+
+```
+Error: Address already in use (os error 98)
+```
+
+**Solution**:
+1. Check if another process is using port 3000: `lsof -i :3000`
+2. Kill the process or use a different port: `orbiton dev --port 3001`
+
+#### Hot Module Replacement Not Working
+
+**Solution**:
+1. Check browser console for WebSocket errors
+2. Make sure your firewall isn't blocking WebSocket connections
+3. Try disabling HMR: `orbiton dev --no-hmr`
+
+### General Troubleshooting Steps
 
 1. Make sure your Rust toolchain is up to date: `rustup update`
-2. Check the FAQ in the documentation
-3. Search for similar issues on GitHub
-4. Ask for help in the community Discord server
+2. Check the [FAQ in the documentation](../faq.md)
+3. Search for similar issues on [GitHub](https://github.com/orbitrs/orbit/issues)
+4. Ask for help in the community [Discord server](https://discord.gg/orbitframework)
