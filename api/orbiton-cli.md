@@ -69,11 +69,135 @@ Examples:
 # Start dev server with default settings
 orbiton dev
 
+```bash
+# Start the development server
+orbiton dev
+
 # Start on a custom port and host
 orbiton dev --port 8080 --host 0.0.0.0
 
 # Start with a specific renderer
 orbiton dev --renderer wgpu
+
+# Start and automatically open in the browser
+orbiton dev --open
+```
+
+### Development Server Advanced Features
+
+The Orbit development server provides a rich set of features to enhance your development experience:
+
+#### Hot Module Replacement (HMR)
+
+The development server includes built-in Hot Module Replacement that automatically updates your application when files change, without requiring a full page reload.
+
+```bash
+# Enable detailed HMR logging
+orbiton dev --hmr-verbose
+```
+
+#### Proxy Configuration
+
+You can configure proxy settings to forward API requests to backend servers:
+
+```bash
+# With command line options
+orbiton dev --proxy-target http://localhost:3000 --proxy-path /api
+
+# Using orbit.config.json
+```
+
+```json
+{
+  "dev": {
+    "proxy": [
+      {
+        "path": "/api",
+        "target": "http://localhost:3000"
+      },
+      {
+        "path": "/auth",
+        "target": "http://auth-service:8080"
+      }
+    ]
+  }
+}
+```
+
+#### HTTPS Support
+
+For secure development, the dev server supports HTTPS:
+
+```bash
+# Enable HTTPS with auto-generated certificates
+orbiton dev --https
+
+# Use custom certificates
+orbiton dev --https --cert-file ./certs/cert.pem --key-file ./certs/key.pem
+```
+
+#### WebSocket Server
+
+The development server includes a WebSocket server that enables real-time communication:
+
+- Automatically runs on port+1 (e.g., if HTTP is on 8000, WebSocket is on 8001)
+- Used for HMR and live-reload features
+- Can be used by your application for development-time features
+
+```js
+// Connect to the development WebSocket server from your application
+const socket = new WebSocket(`ws://localhost:8001`);
+
+socket.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log('Received message:', data);
+};
+```
+
+#### Static File Serving
+
+The dev server automatically serves static files from your project directory:
+
+- Public assets from `/public` directory
+- Built files from `/dist` directory
+- The main `index.html` file
+
+#### Custom Middleware
+
+Advanced users can add custom middleware to the development server by creating a `dev-server.js` file in the project root:
+
+```js
+// dev-server.js
+module.exports = {
+  before(app, server) {
+    // Add custom middleware
+    app.get('/custom', (req, res) => {
+      res.send('Custom middleware response');
+    });
+  },
+  after(app, server) {
+    // Add middleware after built-in middleware
+  }
+};
+```
+
+#### Environment Variables
+
+The development server automatically loads environment variables from `.env` files:
+
+- `.env` - Default environment variables for all environments
+- `.env.development` - Development-specific variables (takes precedence)
+- `.env.local` - Local overrides (highest precedence, not committed to version control)
+
+#### Performance Monitoring
+
+Monitor development server performance:
+
+```bash
+# Enable performance monitoring
+orbiton dev --perf-monitor
+
+# Access the performance dashboard at http://localhost:8000/__performance
 ```
 
 ## Building for Production
@@ -142,27 +266,156 @@ orbiton analyze --fix
 
 ## Renderer Management
 
+The Orbit Framework supports multiple rendering backends to optimize performance across different platforms and use cases. The `renderer` command helps you manage and configure these renderers for your project.
+
 ```bash
 orbiton renderer [command] [options]
 ```
 
-Commands:
-- `list` - List available renderers
-- `set <renderer>` - Set the default renderer
-- `info <renderer>` - Show information about a renderer
+### Available Commands
 
-Examples:
+- `list` - List all available renderers and their current status
+- `set <renderer>` - Set the default renderer for your project
+- `info <renderer>` - Show detailed information about a specific renderer
+- `config <renderer>` - Configure the renderer with additional options
+
+### Renderer Options
+
+Orbit supports the following rendering backends:
+
+- **skia** - Skia-based renderer, optimized for 2D graphics and UI components with broad platform support
+- **wgpu** - WebGPU-based renderer for high-performance graphics with hardware acceleration
+- **auto** (default) - Automatically selects the best renderer based on the target platform and available hardware
+
+### Command Options
 
 ```bash
-# List all available renderers
+orbiton renderer config --dir <project-directory>
+```
+
+Options:
+- `--dir, -d <path>` - Specify the project directory (defaults to current directory)
+
+### Configuration File
+
+The renderer settings are stored in the `orbit.config.json` file in your project root. This is a JSON file that can be manually edited if needed.
+
+Example configuration file:
+```json
+{
+  "renderer": "wgpu",
+  "rendererOptions": {
+    "antialiasing": true,
+    "hardware-acceleration": "prefer"
+  }
+}
+```
+
+### Renderer Comparison
+
+| Feature | Skia | WebGPU | Notes |
+|---------|------|--------|-------|
+| 2D Graphics | ✅ Excellent | ✅ Good | Skia has more optimized 2D primitives |
+| 3D Support | ⚠️ Limited | ✅ Excellent | WebGPU provides better 3D capabilities |
+| Text Rendering | ✅ Excellent | ✅ Good | Skia has more advanced text features |
+| Platform Support | ✅ Broad | ⚠️ Growing | Skia works on more platforms currently |
+| Performance | ✅ Good | ✅ Excellent | WebGPU has better hardware acceleration |
+| Memory Usage | ✅ Low | ⚠️ Higher | Skia is more memory-efficient for simple UIs |
+
+### Usage Examples
+
+```bash
+# List all available renderers and their status
 orbiton renderer list
 
-# Set the default renderer
+# Set the default renderer for a project
 orbiton renderer set wgpu
 
-# Get information about a renderer
+# Get detailed information about a renderer
 orbiton renderer info skia
+
+# Configure the renderer for a specific project
+orbiton renderer config skia --dir ./my-orbit-project
 ```
+
+### Best Practices
+
+- Use **skia** for:
+  - Applications targeting broad platform support
+  - UI-heavy applications with limited graphics needs
+  - Mobile applications where memory efficiency is critical
+
+- Use **wgpu** for:
+  - Applications with complex visualizations or 3D elements
+  - Games and interactive experiences
+  - Desktop applications where performance is critical
+
+- Use **auto** for:
+  - General-purpose applications
+  - When you want to ensure the best experience across different devices
+
+## Testing
+
+The Orbit framework includes comprehensive testing tools to help ensure your applications are reliable and robust.
+
+```bash
+orbiton test [options]
+```
+
+> **Note**: This feature is currently in development and planned for a future release. The documentation below reflects the planned functionality.
+
+### Options
+
+- `--watch` - Run tests in watch mode, automatically rerunning when files change
+- `--unit` - Run only unit tests
+- `--integration` - Run only integration tests
+- `--performance` - Run performance tests to measure rendering speed and memory usage
+- `--coverage` - Generate test coverage information
+- `--report` - Generate and display a detailed coverage report
+- `--update-snapshots` - Update test snapshots instead of failing on mismatch
+- `--verbose` - Show detailed test output
+
+### Examples
+
+```bash
+# Run all tests
+orbiton test
+
+# Run tests and watch for changes
+orbiton test --watch
+
+# Run only unit tests
+orbiton test --unit
+
+# Run tests with coverage report
+orbiton test --coverage --report
+
+# Update test snapshots
+orbiton test --update-snapshots
+```
+
+### Test Configuration
+
+Tests can be configured in your project's `orbit.config.json` file:
+
+```json
+{
+  "testing": {
+    "coverage": {
+      "threshold": 80,
+      "excludes": ["**/*.test.js", "**/test/**"]
+    },
+    "performance": {
+      "benchmarks": {
+        "renderTime": 16,
+        "memoryUsage": 10
+      }
+    }
+  }
+}
+```
+
+For more detailed information on testing strategies and best practices, refer to the [Testing Guide](/docs/guides/testing.md).
 
 ## Configuration
 

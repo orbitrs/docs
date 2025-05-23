@@ -47,263 +47,519 @@ button {
 <code lang="rust">
 use orbit::prelude::*;
 
-pub struct Greeting {
-    name: String,
-    count: i32,
-}
-
+#[derive(Props)]
 pub struct GreetingProps {
-    pub name: String,
+    name: String,
 }
 
-impl Props for GreetingProps {}
-
-impl Component for Greeting {
-    type Props = GreetingProps;
+#[component]
+pub fn Greeting(props: GreetingProps) -> impl View {
+    let count = use_state(|| 0);
     
-    fn new(props: Self::Props) -> Self {
-        Self {
-            name: props.name,
-            count: 0,
-        }
-    }
+    let increment = use_callback(move |_| {
+        count.update(|c| *c + 1);
+    });
     
-    fn render(&self) -> Node {
-        // In a real implementation, this would be generated from the template
-        node!("div", { class: "greeting" }, [
-            node!("h1", {}, [text!("Hello, {}!", self.name)]),
-            node!("button", { onclick: self.increment }, [text!("Count: {}", self.count)])
-        ])
-    }
-}
-
-impl Greeting {
-    pub fn increment(&mut self) {
-        self.count += 1;
+    html! {
+        <div class="greeting">
+            <h1>Hello, {props.name}!</h1>
+            <button on:click={increment}>Count: {*count}</button>
+        </div>
     }
 }
 </code>
 ```
 
-## Template Syntax
+## Template Section (`<template>`)
 
-The template section uses an HTML-like syntax with added directives and interpolation features for dynamic content.
+The template section defines the structure and layout of your component using an HTML-like syntax with Orbit-specific enhancements.
 
-### Text Interpolation
+### Data Binding
 
-Use double curly braces to interpolate Rust expressions into text content:
+Bind component data to the template using the `{{ expression }}` syntax:
 
-```html
-<p>Hello, {{ user.name }}!</p>
-<div>Total: {{ calculate_total() }}</div>
+```orbit
+<template>
+  <div>
+    <p>Current value: {{ value }}</p>
+    <p>Computed value: {{ compute_value() }}</p>
+  </div>
+</template>
 ```
 
-### Attributes
+### Conditional Rendering
 
-There are several ways to bind values to attributes:
+Use the `o-if`, `o-else-if`, and `o-else` directives for conditional rendering:
 
-- **Static attributes**: `<div class="container">...</div>`
-- **Dynamic attributes** with the `:` prefix: `<div :class="containerClass">...</div>`
-- **Boolean attributes** that are included based on a condition: `<button :disabled="isLoading">...</button>`
-- **Multiple attribute bindings** with object syntax: `<div :class="{ active: isActive, hidden: !isVisible }">...</div>`
+```orbit
+<template>
+  <div>
+    <p o-if="status == 'loading'">Loading...</p>
+    <p o-else-if="status == 'error'">Error: {{ error_message }}</p>
+    <p o-else>Data loaded successfully</p>
+  </div>
+</template>
+```
+
+### List Rendering
+
+Use the `o-for` directive to render lists:
+
+```orbit
+<template>
+  <ul>
+    <li o-for="item in items" key="item.id">{{ item.name }}</li>
+  </ul>
+</template>
+```
 
 ### Event Handling
 
-Event handlers are specified using the `@` prefix:
+Handle DOM events using the `@event` syntax:
 
-```html
-<button @click="increment">Add</button>
-<input @input="updateValue" @focus="highlightField" @blur="validateField" />
+```orbit
+<template>
+  <button @click="handle_click">Click me</button>
+  <input @input="update_value" />
+</template>
 ```
 
-The handlers refer to methods defined in the Rust part of the component.
+You can also pass event data:
 
-### Conditionals
-
-You can conditionally render elements using `v-if`, `v-else-if`, and `v-else` directives:
-
-```html
-<div v-if="count > 0">Positive</div>
-<div v-else-if="count < 0">Negative</div>
-<div v-else>Zero</div>
+```orbit
+<template>
+  <button @click="handle_click($event)">Click me</button>
+</template>
 ```
 
-### Loops
+### Attribute Binding
 
-Use the `v-for` directive for list rendering:
+Bind attributes dynamically:
 
-```html
-<ul>
-  <li v-for="item in items" :key="item.id">{{ item.name }}</li>
-</ul>
+```orbit
+<template>
+  <img :src="image_url" :alt="image_description" />
+  <button :disabled="is_loading">Submit</button>
+</template>
 ```
 
-### Components
+### Class and Style Binding
 
-Reference other components using their PascalCase names:
+Bind classes and styles dynamically:
 
-```html
-<UserProfile :user="currentUser" @updated="handleUserUpdate" />
-<Card title="Information">
-  This is the card content.
-</Card>
+```orbit
+<template>
+  <div :class="{ active: is_active, error: has_error }">Content</div>
+  <div :style="{ color: text_color, fontSize: font_size + 'px' }">Styled content</div>
+</template>
 ```
 
 ### Slots
 
-Define content insertion points using `<slot>`:
+Define slots to allow content injection from parent components:
 
-```html
-<div class="card">
-  <div class="card-header">
-    <slot name="header">Default Header</slot>
+```orbit
+<template>
+  <div class="card">
+    <div class="card-header">
+      <slot name="header">Default header</slot>
+    </div>
+    <div class="card-body">
+      <slot>Default content</slot>
+    </div>
+    <div class="card-footer">
+      <slot name="footer">Default footer</slot>
+    </div>
   </div>
-  <div class="card-body">
-    <slot>Default Content</slot>
-  </div>
-</div>
+</template>
 ```
 
-Parent components can fill these slots:
+## Style Section (`<style>`)
 
-```html
-<Card>
-  <template #header>
-    <h3>Custom Header</h3>
-  </template>
-  
-  <p>This content goes into the default slot.</p>
-</Card>
-```
+The style section contains CSS that is scoped to the component by default.
 
-## Style Section
+### Basic Styling
 
-The `<style>` section contains CSS that applies to the component. By default, styles are automatically scoped to the component to prevent conflicts.
-
-### Scoped Styles
-
-```html
+```orbit
 <style>
-  .button {
-    /* These styles only apply to .button inside this component */
-    background-color: blue;
-    color: white;
-  }
+.button {
+  background-color: #0070f3;
+  color: white;
+  padding: 8px 16px;
+}
+
+.button:hover {
+  background-color: #005bb5;
+}
 </style>
 ```
 
-### Global Styles
+### Scoped vs. Global Styles
 
-To create global styles that apply throughout the application, use `scoped="false"`:
+By default, styles are scoped to the component. For global styles, use the `global` attribute:
 
-```html
-<style scoped="false">
-  /* These styles will apply globally */
-  .global-button {
-    background-color: green;
-  }
+```orbit
+<style global>
+:root {
+  --primary-color: #0070f3;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
 </style>
 ```
 
-## Code Section
+You can also mix scoped and global styles:
 
-The `<code lang="rust">` section contains the Rust implementation of the component.
+```orbit
+<style>
+/* Scoped to this component */
+.component {
+  color: var(--primary-color);
+}
 
-### Component Requirements
+:global(.app-button) {
+  /* Applied globally */
+  background-color: #0070f3;
+}
+</style>
+```
 
-The script section must:
+### Variables and Preprocessors
 
-1. Define a public struct for the component
-2. Implement the `Component` trait for the struct
-3. Define a Props type and implement the `Props` trait for it
-4. Implement required methods like `new` and any others according to the component's needs
+Use CSS variables for dynamic styling:
 
-### Example Implementation
+```orbit
+<style>
+.component {
+  --text-color: v-bind(textColor);
+  color: var(--text-color);
+}
+</style>
+```
+
+Orbit supports CSS preprocessors like SCSS:
+
+```orbit
+<style lang="scss">
+$primary-color: #0070f3;
+
+.button {
+  background-color: $primary-color;
+  
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+  
+  .icon {
+    margin-right: 8px;
+  }
+}
+</style>
+```
+
+## Script Section (`<code lang="rust">`)
+
+The script section contains the Rust code for your component logic.
+
+### Component Structure
+
+Components can be implemented in two ways:
+
+1. **Function Components** (Recommended):
 
 ```rust
 use orbit::prelude::*;
 
-// Component data structure
-pub struct Counter {
-    count: i32,
-    step: i32,
-}
-
-// Props definition
+#[derive(Props)]
 pub struct CounterProps {
-    pub initial: Option<i32>,
-    pub step: Option<i32>,
+    initial: Option<i32>,
 }
 
-impl Props for CounterProps {}
+#[component]
+pub fn Counter(props: CounterProps) -> impl View {
+    let count = use_state(|| props.initial.unwrap_or(0));
+    
+    let increment = use_callback(move |_| {
+        count.update(|c| *c + 1);
+    });
+    
+    let decrement = use_callback(move |_| {
+        count.update(|c| *c - 1);
+    });
+    
+    html! {
+        <div>
+            <button on:click={decrement}>-</button>
+            <span>{*count}</span>
+            <button on:click={increment}>+</button>
+        </div>
+    }
+}
+```
 
-// Component implementation
+2. **Class Components**:
+
+```rust
+use orbit::prelude::*;
+
+pub struct Counter {
+    count: State<i32>,
+}
+
 impl Component for Counter {
     type Props = CounterProps;
     
     fn new(props: Self::Props) -> Self {
         Self {
-            count: props.initial.unwrap_or(0),
-            step: props.step.unwrap_or(1),
+            count: State::new(props.initial.unwrap_or(0)),
         }
     }
     
-    fn mounted(&mut self) {
-        println!("Counter mounted with initial value: {}", self.count);
-    }
-    
-    fn unmounted(&mut self) {
-        println!("Counter unmounted with final value: {}", self.count);
+    fn view(&self) -> impl View {
+        let count = self.count.clone();
+        
+        html! {
+            <div>
+                <button on:click={move |_| count.update(|c| *c - 1)}>-</button>
+                <span>{*self.count}</span>
+                <button on:click={move |_| count.update(|c| *c + 1)}>+</button>
+            </div>
+        }
     }
 }
 
-// Component methods
-impl Counter {
-    pub fn increment(&mut self) {
-        self.count += self.step;
-    }
+#[derive(Props)]
+pub struct CounterProps {
+    initial: Option<i32>,
+}
+```
+
+### State Management
+
+Manage component state with reactive state:
+
+```rust
+use orbit::prelude::*;
+
+#[component]
+pub fn FormExample() -> impl View {
+    let name = use_state(|| String::new());
+    let email = use_state(|| String::new());
     
-    pub fn decrement(&mut self) {
-        self.count -= self.step;
-    }
+    let handle_submit = use_callback(|_| {
+        println!("Submitted: {} <{}>", *name, *email);
+    });
     
-    pub fn reset(&mut self) {
-        self.count = 0;
+    html! {
+        <form on:submit={handle_submit}>
+            <input 
+                type="text" 
+                placeholder="Name" 
+                value={name.to_string()}
+                on:input={move |e: InputEvent| name.set(e.value())}
+            />
+            <input 
+                type="email" 
+                placeholder="Email" 
+                value={email.to_string()}
+                on:input={move |e: InputEvent| email.set(e.value())}
+            />
+            <button type="submit">Submit</button>
+        </form>
     }
 }
 ```
 
-## Multi-file Components
+### Lifecycle Hooks
 
-For larger components, you can split an `.orbit` file into multiple files:
+React to component lifecycle events:
 
-- `Component.orbit` - Main component file with the template and basic structure
-- `Component.orbit.rs` - Additional Rust logic
-- `Component.orbit.css` - Additional CSS styles
+```rust
+use orbit::prelude::*;
 
-The compiler will automatically combine these files during the build process.
+#[component]
+pub fn LifecycleExample() -> impl View {
+    let count = use_state(|| 0);
+    
+    use_effect(move || {
+        println!("Component mounted");
+        
+        // Cleanup function (runs on unmount)
+        || println!("Component unmounted")
+    }, ());
+    
+    use_effect(move || {
+        println!("Count changed to {}", *count);
+        
+        || {}
+    }, *count);
+    
+    html! {
+        <button on:click={move |_| count.update(|c| *c + 1)}>
+            Count: {*count}
+        </button>
+    }
+}
+```
+
+## Advanced Features
+
+### Multi-file Components
+
+For complex components, you can split the implementation across multiple files:
+
+**counter.orbit**
+```orbit
+<template>
+  <div class="counter">
+    <button @click="decrement">-</button>
+    <span>{{ count }}</span>
+    <button @click="increment">+</button>
+  </div>
+</template>
+
+<style>
+@import "./counter.css";
+</style>
+
+<code lang="rust">
+mod logic;
+use logic::*;
+
+#[component]
+pub fn Counter(props: CounterProps) -> impl View {
+    let (count, increment, decrement) = use_counter_logic(props.initial);
+    
+    html! {
+        <div class="counter">
+            <button on:click={decrement}>-</button>
+            <span>{*count}</span>
+            <button on:click={increment}>+</button>
+        </div>
+    }
+}
+
+#[derive(Props)]
+pub struct CounterProps {
+    initial: Option<i32>,
+}
+</code>
+```
+
+**logic.rs**
+```rust
+use orbit::prelude::*;
+
+pub fn use_counter_logic(initial: Option<i32>) -> (State<i32>, Callback<()>, Callback<()>) {
+    let count = use_state(|| initial.unwrap_or(0));
+    
+    let increment = {
+        let count = count.clone();
+        use_callback(move |_| {
+            count.update(|c| *c + 1);
+        })
+    };
+    
+    let decrement = {
+        let count = count.clone();
+        use_callback(move |_| {
+            count.update(|c| *c - 1);
+        })
+    };
+    
+    (count, increment, decrement)
+}
+```
+
+### Custom Directives
+
+Create custom directives for reusable behavior:
+
+```rust
+use orbit::prelude::*;
+
+// Define the directive
+#[directive]
+pub fn tooltip(el: &Element, value: &str) {
+    el.set_attribute("title", value);
+    // Add tooltip behavior
+}
+
+// Use in a component
+#[component]
+pub fn TooltipExample() -> impl View {
+    html! {
+        <button o-tooltip="Click to submit">
+            Submit
+        </button>
+    }
+}
+```
+
+### Server Components
+
+Define server-only components that render on the server:
+
+```orbit
+<template>
+  <div>
+    <p>User profile for {{ user.name }}</p>
+    <p>Email: {{ user.email }}</p>
+  </div>
+</template>
+
+<code lang="rust" server>
+use orbit::prelude::*;
+use crate::db::User;
+
+#[derive(Props)]
+pub struct UserProfileProps {
+    user_id: String,
+}
+
+#[server_component]
+pub async fn UserProfile(props: UserProfileProps) -> ServerResult<impl View> {
+    let user = User::fetch_by_id(&props.user_id).await?;
+    
+    Ok(html! {
+        <div>
+            <p>User profile for {user.name}</p>
+            <p>Email: {user.email}</p>
+        </div>
+    })
+}
+</code>
+```
 
 ## Compilation Process
 
-The `.orbit` file is compiled to Rust code as part of the build process:
+When you save an `.orbit` file, the Orbit compiler:
 
-1. The template section is parsed and converted to a Rust implementation of the `render` method.
-2. Styles are processed and applied with component-specific selectors if scoped.
-3. The Rust code is integrated with the generated code from the template.
+1. Parses the file into its three sections
+2. Processes the template into Rust code
+3. Scopes and processes the CSS
+4. Combines with the script code
+5. Generates a standard Rust module
 
-The `orbiton` CLI tool handles this compilation process, either directly or as part of the standard build workflow.
+The generated code is then compiled as part of your regular Rust build process.
 
 ## Best Practices
 
 - Keep components focused on a single responsibility
-- Use props for data and configuration that comes from parent components
-- Use local state for data that's specific to the component
-- Extract complex logic into separate methods
-- Consider splitting large components into smaller subcomponents
-- Use slots to create flexible, reusable component templates
+- Extract complex logic into separate Rust files
+- Use CSS variables for theme consistency
+- Prefer function components for simpler cases
+- Use slots for flexible composition
+- Document component props and behavior
 
-## Related Resources
+## Debugging
 
-- [Component Model](./component-model.md) - Learn more about the component system
-- [State Management](./state-management.md) - In-depth guide to state management
-- [Event Handling](./event-handling.md) - Working with events in Orbit
+You can debug `.orbit` files by:
+
+1. Inspecting the generated Rust code (located in the target directory)
+2. Using the Orbit DevTools browser extension
+3. Adding console logs or debug statements
+4. Using the Rust debugging tools with breakpoints

@@ -19,7 +19,7 @@ Based on `orbit/orbit-spec.md` and general framework expectations.
 
 | Feature                      | Current Documentation Status (File/Section) | Gap/Notes                                     | Priority |
 | :--------------------------- | :------------------------------------------ | :-------------------------------------------- | :------- |
-| `.orbit` File Format         | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial), `docs/core-concepts/orbit-file-format.md` (new) | Created dedicated file format documentation in core concepts. Still needs examples for advanced usage patterns | Medium  |
+| `.orbit` File Format         | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial), `docs/core-concepts/orbit-file-format.md` (comprehensive) | Enhanced file format documentation with advanced patterns and examples | ✅ Medium  |
 | Template Syntax              | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial) | Needs expansion, more examples, especially for advanced directives and edge cases | High     |
 | Style Scoping                | `orbit/orbit-spec.md`                       | Clear in spec, but needs usage examples and integration into main docs | Medium   |
 | Script Requirements          | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial) | Basic structure covered, but needs more pattern examples | Low      |
@@ -33,7 +33,7 @@ Based on `orbit/orbit-spec.md` and general framework expectations.
 | Performance Optimization     | `orlint/docs/performance-guide.md` (related) | Exists in orlint but needs a dedicated section in core docs | High     |
 | Testing Strategies           | `docs/guides/testing-strategies.md` (new)   | Created comprehensive testing guide covering unit, integration, and E2E approaches | Medium  |
 | Debugging Orbit Apps         | `docs/guides/debugging-guide.md` (new)      | Created comprehensive debugging guide covering development and production scenarios | Medium  |
-| Internationalization (i18n)  | ?                                           | Missing/Unclear                               | Medium   |
+| Internationalization (i18n)  | `docs/guides/internationalization.md` (comprehensive) | Created detailed documentation of planned i18n features with examples and best practices | Medium   |
 | Accessibility (General)      | `docs/guides/accessibility.md`              | Review for comprehensiveness                  | High     |
 
 ## 4. Core Components Library
@@ -54,13 +54,13 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 | :--------------------- | :------------------------------------------ | :------------------------------------------ | :------- |
 | `orbiton new`          | `docs/api/orbiton-cli.md` (detailed), `docs/getting-started/getting-started.md` (basic usage) | Examples and templates are documented, but would benefit from more screenshots of generated projects | Medium   |
 | `orbiton build`        | `docs/api/orbiton-cli.md` | Covers basic flags, but needs more details on production optimizations and build outputs | Medium   |
-| `orbiton dev`          | `docs/api/orbiton-cli.md` | Basic usage documented, needs more on HMR, proxying, HTTPS, and debugging capabilities | Medium   |
+| `orbiton dev`          | `docs/api/orbiton-cli.md`, `docs/guides/development-server.md` (comprehensive) | Comprehensive documentation created covering HMR, proxying, HTTPS, and debugging capabilities | Medium   |
 | `orbiton component`    | `docs/api/orbiton-cli.md` | Mentioned but needs expanded examples and component template options | Medium   |
 | `orbiton analyze`      | `docs/api/orbiton-cli.md` | Mentioned but lacks detailed usage examples and outputs explanation | Medium   |
-| `orbiton renderer`     | `docs/api/orbiton-cli.md` | Brief mention only, needs comprehensive documentation on renderer configuration | High     |
-| `orbiton test`         | ? (not found in docs) | If exists, needs documentation, otherwise should be marked as planned | High     |
+| `orbiton renderer`     | `docs/api/orbiton-cli.md` (detailed) | Comprehensive documentation added covering all rendering options and configuration | ✅ High  |
+| `orbiton test`         | `docs/api/orbiton-cli.md` (documented), `docs/guides/testing.md` (detailed) | Documentation created with note that this feature is planned for future release | ✅ High  |
 | `orbiton lint`         | `orlint/docs/cli-usage.md` | Detailed in orlint docs but needs linking from main docs for discoverability | Medium   |
-| Dev Server Details     | `orbiton/src/dev_server.rs` (code) | Exists in code but needs user-facing documentation on advanced features | High     |
+| Dev Server Details     | `docs/guides/development-server.md` (comprehensive) | Created comprehensive guide covering all advanced features | ✅ High  |
 | Orlint Configuration   | `orlint/docs/sample-config.toml` | Configuration example exists but needs detailed explanation of options | Medium   |
 | Orlint Custom Rules    | `orlint/docs/custom-lint-rules.md` | Technical documentation exists but needs more examples and best practices | Medium   |
 | VS Code Integration    | `orlint/docs/vscode-integration.md` | Basic documentation exists, but needs screenshots and setup troubleshooting | Medium   |
@@ -135,7 +135,7 @@ This section will be populated with team member assignments. For now, it contain
 
 | Section / Task                 | Target Completion Date | Status      |
 | :----------------------------- | :--------------------- | :---------- |
-| `.orbit` File Format Integration | June 10, 2025         | In Progress |
+| `.orbit` File Format Integration | May 23, 2025         | Completed   |
 | Testing Strategies Guide       | June 15, 2025         | Completed   |
 | Deployment Guide               | June 5, 2025          | Completed   |
 | Component API Reference        | June 20, 2025         | Completed   |
@@ -144,12 +144,23 @@ This section will be populated with team member assignments. For now, it contain
 | Debugging Guide                | July 5, 2025          | Completed   |
 | Core Framework Features Review | June 15, 2025         | In Progress |
 | OrbitKit Components Inventory  | June 5, 2025          | Completed   |
+| Renderer Configuration Documentation | May 23, 2025    | Completed   |
+| Orbiton Test Command Documentation | May 23, 2025      | Completed   |
+| Dev Server Advanced Features Documentation | May 23, 2025 | Completed |
+| Internationalization (i18n) Guide | May 23, 2025       | Completed   |
+| Contribution Guide            | May 23, 2025           | Completed   |
 
 ## 10. Next Steps
 
 1.  ~~Populate the "OrbitKit Components" list with a comprehensive inventory of available components.~~ (Completed)
 2.  Continue reviewing each item in sections 3-7 to address remaining medium and low-priority documentation gaps.
-3.  Begin work on the internationalization (i18n) documentation section.
+3.  ~~Begin work on the internationalization (i18n) documentation section.~~ (Completed)
+4.  Create detailed API documentation for each OrbitKit component.
+5.  ~~Update the Contribution Guide with a focus on documentation contributions.~~ (Completed)
+6.  Consider adding video tutorials to supplement the written documentation.
+7.  Implement cross-references and navigation improvements between documentation sections.
+8.  Review and enhance documentation for accessibility best practices.
+9.  Add more code examples to the CLI documentation for various commands.
 4.  Create detailed API documentation for each OrbitKit component.
 5.  Update the Contribution Guide with a focus on documentation contributions.
 6.  Consider adding video tutorials to supplement the written documentation.
