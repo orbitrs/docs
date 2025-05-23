@@ -137,19 +137,139 @@ orbiton build --target desktop --optimize speed
 orbiton component [name] [options]
 ```
 
-Options:
-- `--path <path>` - Custom path for the component (default: "src/components")
-- `--template <template>` - Component template to use (default: "basic")
+The `orbiton component` command helps you create new components following best practices. It generates all the necessary files with boilerplate code, letting you focus on implementation rather than setup.
 
-Examples:
+### Options
+
+- `--path <path>` - Custom path for the component (default: "src/components")
+- `--template <template>` - Component template to use (choices: "basic", "stateful", "layout", "form", "list", "modal", "container", default: "basic")
+- `--style <style>` - Style approach to use (choices: "scoped", "global", "none", default: "scoped")
+- `--test` - Generate accompanying test file
+- `--story` - Generate component story for documentation
+- `--props <props>` - Comma-separated list of props to include (e.g., "name:string,disabled:bool")
+
+### Templates
+
+Orbiton provides several component templates to help you get started quickly:
+
+- **basic** - Minimal component with props
+- **stateful** - Component with internal state management
+- **layout** - Layout component with slots for content
+- **form** - Form component with validation support
+- **list** - Component for rendering lists with virtualization support
+- **modal** - Modal/dialog component with accessibility features
+- **container** - Container component with state management and child context
+
+### Examples
 
 ```bash
-# Generate a basic component
+# Generate a basic button component
 orbiton component button
 
-# Generate a component with a custom template in a specific path
-orbiton component user-profile --template form --path src/features/user
+# Generate a stateful form component in a custom directory
+orbiton component user-form --template form --path src/features/user
+
+# Generate a modal component with test and documentation
+orbiton component confirmation-modal --template modal --test --story
+
+# Generate a component with predefined props
+orbiton component data-table --props "data:Array<Record>,sortable:bool,paginated:bool"
+
+# Generate a layout component with global styles
+orbiton component page-layout --template layout --style global
 ```
+
+### Generated Files
+
+When you generate a component, Orbiton creates the following files (using `button` as an example):
+
+```
+src/components/
+  button/
+    Button.orbit       # Main component file
+    Button.test.ts     # Test file (if --test was specified)
+    Button.story.ts    # Story file (if --story was specified)
+    index.ts           # Re-export file for easier imports
+```
+
+### Component Structure
+
+The generated component follows the Orbit component model with sections for template, style, and script:
+
+```
+<!-- Basic component template -->
+<template>
+  <button class="orbit-button" @click="handleClick">
+    <slot></slot>
+  </button>
+</template>
+
+<style>
+  .orbit-button {
+    /* Default styling */
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--orbit-primary-color, #0066cc);
+    color: white;
+  }
+
+  .orbit-button:hover {
+    background-color: var(--orbit-primary-hover-color, #0052a3);
+  }
+
+  .orbit-button:focus {
+    outline: 2px solid var(--orbit-focus-color, #4d90fe);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+use orbit::prelude::*;
+
+#[derive(Props)]
+pub struct ButtonProps {
+    #[prop(default)]
+    pub disabled: bool,
+    
+    #[prop(default)]
+    pub variant: String,
+    
+    #[prop(event)]
+    pub on_click: Option<EventHandler>,
+}
+
+pub struct Button {
+    props: ButtonProps,
+}
+
+impl Component for Button {
+    type Props = ButtonProps;
+    
+    fn new(props: Self::Props) -> Self {
+        Self { props }
+    }
+    
+    fn handleClick(&mut self, event: ClickEvent) {
+        if !self.props.disabled {
+            if let Some(handler) = &self.props.on_click {
+                handler.emit(event);
+            }
+        }
+    }
+}
+</script>
+```
+
+### Best Practices
+
+- **Naming Convention**: Use PascalCase for component names (e.g., `DataTable` instead of `data-table`)
+- **Directory Structure**: Place related components in feature-specific directories
+- **Reusability**: Design components to be reusable with flexible props
+- **Testing**: Always generate test files for components using the `--test` option
+- **Documentation**: Generate story files with examples using the `--story` option
+- **Props**: Use typed props with defaults where appropriate
 
 ## Project Analysis
 
@@ -157,19 +277,153 @@ orbiton component user-profile --template form --path src/features/user
 orbiton analyze [options]
 ```
 
-Options:
+The `orbiton analyze` command is a powerful tool for examining your Orbit project to identify potential issues, enforce best practices, and optimize performance. It leverages the Orlint analysis engine to provide actionable insights for improving your application.
+
+### Options
+
 - `--fix` - Automatically fix issues when possible
 - `--verbose` - Show detailed analysis information
+- `--format <format>` - Output format (choices: "text", "json", "html", default: "text")
+- `--output <file>` - Write output to file instead of stdout
+- `--include <patterns>` - Glob patterns for files to include (default: "src/**/*.orbit")
+- `--exclude <patterns>` - Glob patterns for files to exclude
+- `--config <path>` - Path to custom analysis configuration (default: ".orlint.toml")
+- `--rules <rules>` - Comma-separated list of rule IDs to include
+- `--ignore-rules <rules>` - Comma-separated list of rule IDs to exclude
+- `--renderer <renderer>` - Analyze with a specific renderer context (e.g., "skia", "wgpu")
 
-Examples:
+### Analysis Categories
+
+`orbiton analyze` examines your project in several key areas:
+
+- **Syntax Validation**: Ensures all `.orbit` files follow the correct syntax
+- **Component Structure**: Verifies components follow Orbit's component model
+- **Performance**: Identifies potential performance bottlenecks
+- **Accessibility**: Flags accessibility issues and suggests improvements
+- **Best Practices**: Enforces Orbit framework conventions and patterns
+- **Dependencies**: Analyzes component dependencies and identifies circular references
+- **Renderer Compatibility**: Validates components work with the configured renderers
+
+### Examples
 
 ```bash
-# Run analysis
+# Run basic analysis on the project
 orbiton analyze
 
-# Run analysis and fix issues
+# Automatically fix issues when possible
 orbiton analyze --fix
+
+# Generate detailed JSON output for CI/CD integration
+orbiton analyze --format json --output analysis-report.json
+
+# Analyze only specific components
+orbiton analyze --include "src/features/dashboard/**/*.orbit"
+
+# Exclude test components from analysis
+orbiton analyze --exclude "**/*.test.orbit,**/*.spec.orbit"
+
+# Focus on accessibility rules
+orbiton analyze --rules "a11y-*"
+
+# Ignore specific performance rules
+orbiton analyze --ignore-rules "perf-no-inline-styles,perf-optimize-loops"
+
+# Run analysis in verbose mode for debugging
+orbiton analyze --verbose
 ```
+
+### Analysis Report
+
+The analysis report contains:
+
+- Summary of files analyzed and issues found
+- Categorized list of issues by severity (error, warning, info)
+- Source locations with line and column numbers
+- Descriptions of issues with links to documentation
+- Suggested fixes for common problems
+
+Example report output:
+
+```
+Analysis Summary:
+- Files analyzed: 42
+- Errors: 3
+- Warnings: 12
+- Info: 5
+
+Errors:
+[E001] src/components/DataTable.orbit:24:5
+  Component missing required accessibility attributes for interactive elements
+  Suggestion: Add aria-label or aria-labelledby attribute to the table element
+
+Warnings:
+[W023] src/features/dashboard/Chart.orbit:56:10
+  Inefficient rendering pattern detected - component may re-render unnecessarily
+  Suggestion: Implement shouldUpdate method or use memoization
+
+Info:
+[I008] src/layouts/MainLayout.orbit:7:3
+  Consider extracting repeated style patterns into shared styles
+  Suggestion: Create a common style file for layout components
+```
+
+### Configuration File
+
+You can customize the analysis with an `.orlint.toml` file in your project root:
+
+```toml
+# .orlint.toml
+[analyzer]
+include = ["src/**/*.orbit"]
+exclude = ["**/test/**", "**/node_modules/**"]
+
+[rules]
+disabled = ["perf-no-inline-styles"] # Rules to disable
+warning = ["a11y-*"] # Rules to treat as warnings instead of errors
+
+[performance]
+rendering_threshold_ms = 16 # Flag components that may render slower than this
+
+[accessibility]
+level = "AA" # WCAG compliance level to enforce (A, AA, or AAA)
+```
+
+### Integration with CI/CD
+
+`orbiton analyze` is designed to integrate with CI/CD pipelines to ensure code quality. For example, in a GitHub Actions workflow:
+
+```yaml
+name: Orbit Analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+    - name: Install Orbiton
+      run: cargo install orbiton
+    - name: Run Analysis
+      run: orbiton analyze --format json --output analysis.json
+    - name: Upload Analysis Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: orbit-analysis
+        path: analysis.json
+```
+
+### Learn More
+
+For more detailed information on analysis rules and configuration options, see the [Orlint Documentation](../../orlint/docs/README.md).
 
 ## Renderer Management
 

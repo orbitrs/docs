@@ -23,7 +23,7 @@ Based on `orbit/orbit-spec.md` and general framework expectations.
 | Template Syntax              | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial), `docs/core-concepts/template-syntax.md` (comprehensive) | Created dedicated documentation covering basic and advanced template features, edge cases, and best practices | ✅ High     |
 | Style Scoping                | `orbit/orbit-spec.md`, `docs/core-concepts/style-scoping.md` (comprehensive) | Created dedicated comprehensive documentation covering usage examples, advanced techniques, and best practices | ✅ Medium   |
 | Script Requirements          | `orbit/orbit-spec.md`, `docs/core-concepts/component-model.md` (partial) | Basic structure covered, but needs more pattern examples | Low      |
-| Multi-file components        | `orbit/orbit-spec.md`                       | Only mentioned in spec, no examples or detailed guide in main docs | Medium   |
+| Multi-file components        | `docs/core-concepts/multi-file-components.md` (comprehensive) | Created comprehensive guide with examples, file structure patterns, and best practices | ✅ Medium   |
 | Compilation Process          | `orbit/orbit-spec.md`                       | High-level in spec only, needs detailed coverage for contributors | Medium   |
 | Component Lifecycle          | `docs/core-concepts/component-model.md` (comprehensive), `docs/core-concepts/README.md` (brief) | Enhanced with comprehensive section on advanced lifecycle patterns, including async initialization, effects, debugging, and optimization | ✅ High     |
 | State Management             | `docs/core-concepts/state-management.md` (comprehensive)    | Enhanced with comprehensive section on advanced state patterns, including state machines, composite state, command pattern, middleware, and type-safe actions | ✅ High     |
@@ -55,8 +55,8 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 | `orbiton new`          | `docs/api/orbiton-cli.md` (detailed), `docs/getting-started/getting-started.md` (basic usage) | Examples and templates are documented, but would benefit from more screenshots of generated projects | Medium   |
 | `orbiton build`        | `docs/api/orbiton-cli.md` | Covers basic flags, but needs more details on production optimizations and build outputs | Medium   |
 | `orbiton dev`          | `docs/api/orbiton-cli.md`, `docs/guides/development-server.md` (comprehensive) | Comprehensive documentation created covering HMR, proxying, HTTPS, and debugging capabilities | Medium   |
-| `orbiton component`    | `docs/api/orbiton-cli.md` | Mentioned but needs expanded examples and component template options | Medium   |
-| `orbiton analyze`      | `docs/api/orbiton-cli.md` | Mentioned but lacks detailed usage examples and outputs explanation | Medium   |
+| `orbiton component`    | `docs/api/orbiton-cli.md` (enhanced) | Enhanced with expanded examples, component templates, and best practices | ✅ Medium   |
+| `orbiton analyze`      | `docs/api/orbiton-cli.md` (enhanced) | Enhanced with detailed usage examples, configuration options, and integration with CI/CD | ✅ Medium   |
 | `orbiton renderer`     | `docs/api/orbiton-cli.md` (detailed) | Comprehensive documentation added covering all rendering options and configuration | ✅ High  |
 | `orbiton test`         | `docs/api/orbiton-cli.md` (documented), `docs/guides/testing.md` (detailed) | Documentation created with note that this feature is planned for future release | ✅ High  |
 | `orbiton lint`         | `orlint/docs/cli-usage.md` | Detailed in orlint docs but needs linking from main docs for discoverability | Medium   |
@@ -64,6 +64,7 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 | Orlint Configuration   | `orlint/docs/sample-config.toml` | Configuration example exists but needs detailed explanation of options | Medium   |
 | Orlint Custom Rules    | `orlint/docs/custom-lint-rules.md` | Technical documentation exists but needs more examples and best practices | Medium   |
 | VS Code Integration    | `orlint/docs/vscode-integration.md` (comprehensive) | Enhanced with extensive screenshots, detailed setup instructions, and troubleshooting tips | ✅ Medium   |
+| Orlint Integration     | `docs/tooling/orlint-integration.md` (comprehensive) | Created comprehensive guide with links to all orlint documentation | ✅ Medium  |
 
 ## 6. Guides and Tutorials
 
@@ -86,9 +87,9 @@ Reference `docs/api/API_DOCUMENTATION_TEMPLATE.md` and `docs/api/README.md`.
 
 | Module/API Area      | Current Documentation Status (File/Section) | Gap/Notes (Completeness, Examples, Clarity) | Priority |
 | :------------------- | :------------------------------------------ | :------------------------------------------ | :------- |
-| `orbit::prelude`     | Partial coverage in `docs/api/README.md`    | Needs complete API reference with all exports | High     |
-| `orbit::component`   | Partial coverage in component model docs    | Needs comprehensive API documentation with all methods | High     |
-| `orbit::state`       | Partial coverage in state management docs   | Needs systematic documentation of all APIs   | High     |
+| `orbit::prelude`     | `docs/api/orbit-prelude.md` (comprehensive) | Complete API reference with all exports, detailed examples and best practices | ✅ High     |
+| `orbit::component`   | `docs/api/orbit-component.md` (comprehensive) | Comprehensive API documentation with all methods, detailed examples and best practices | ✅ High     |
+| `orbit::state`       | `docs/api/orbit-state.md` (comprehensive) | Comprehensive API documentation with all methods, detailed examples and advanced patterns | ✅ High     |
 | `orbit::event`       | Basic coverage in event handling docs       | Needs full API reference with all event types | High     |
 | `orbit::render`      | Basic coverage in renderer architecture     | Missing detailed API docs for render pipeline | High     |
 | `orbitkit::components` | References in API template only           | Need complete component library documentation | High     |
