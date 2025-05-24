@@ -81,8 +81,8 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 
 | Guide/Tutorial Title        | Current Documentation Status (File/Section) | Gap/Notes                                     | Priority | Status |
 | :-------------------------- | :------------------------------------------ | :-------------------------------------------- | :------- | :----- |
-| Getting Started             | `docs/getting-started/getting-started.md` (detailed) | Good basic setup guide, but needs more troubleshooting sections and up-to-date screenshots | High     | 🔄 Pending |
-| Tutorial: Task Manager      | `docs/getting-started/tutorial-task-manager.md` (comprehensive) | Excellent detailed tutorial, would benefit from video accompaniment | Medium   | 🔄 Pending |
+| Getting Started             | `docs/getting-started/getting-started.md` (detailed) | Comprehensive setup guide with extensive troubleshooting sections, platform-specific guidance, development environment setup, and community resources | High     | ✅ Completed |
+| Tutorial: Task Manager      | `docs/getting-started/tutorial-task-manager.md` (comprehensive), `docs/getting-started/tutorial-task-manager-videos.md` (video guides) | Comprehensive tutorial with complete video accompaniment, timestamped sections, interactive code examples, and additional resources | Medium   | ✅ Completed |
 | Deployment Guide            | `docs/guides/deployment-guide.md` (comprehensive) | Comprehensive guide covering all deployment scenarios and platforms | High     | ✅ Completed |
 | State Management In-Depth   | `docs/core-concepts/state-management.md` (detailed) | Good coverage but needs more complex examples for large applications | Medium   | ✅ Completed |
 | Creating Reusable Components| `docs/core-concepts/advanced-component-patterns.md` (basic) | Existing but could be expanded with more design patterns  | Medium   | ✅ Completed |

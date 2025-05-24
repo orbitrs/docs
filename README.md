@@ -13,6 +13,7 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
   - [Building your first Orbit application](./getting-started/tutorial-task-manager.md) ([Video Guide](./getting-started/tutorial-task-manager-videos.md))
   - [Development workflow](./guides/development-server.md)
   - [Project Structure](./core-concepts/project-structure.md)
+  - [Project Templates Visual Guide](./api/orbiton-new-screenshots.md)
 
 - **[Core Concepts](./core-concepts/README.md)**
   - [Component Model](./core-concepts/component-model.md)
@@ -34,13 +35,15 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
   - [API Documentation Template](./api/API_DOCUMENTATION_TEMPLATE.md)
   - orbit core API
   - orbitkit components
-  - orbiton CLI
+  - [orbiton CLI](./api/orbiton-cli.md)
+  - [Project Templates Visual Guide](./api/orbiton-new-screenshots.md)
   - orlint
 
 - **[Examples](./examples/README.md)**
   - Sample applications
   - Component patterns
   - Integration examples
+  - [Video Tutorials](./videos/README.md)
 
 - **[Roadmap](./roadmap/README.md)**
   - [Documentation Improvement Plan](./DOCUMENTATION_PLAN.md)

@@ -4,6 +4,14 @@ This tutorial will guide you through creating a complete Orbit application from 
 
 > **Video Tutorial Available**: For a video walkthrough of this tutorial, see the [Task Manager Tutorial Video Guide](./tutorial-task-manager-videos.md) which provides step-by-step video instructions with timestamped sections and interactive code examples.
 
+## Learning Options
+
+This tutorial offers multiple learning options:
+
+- **Text-Based Tutorial**: Continue reading this document for a comprehensive, text-based guide
+- **[Video Walkthrough](./tutorial-task-manager-videos.md)**: Follow along with our video series (5 episodes, 94 minutes total)
+- **[Interactive Code Examples](https://orbitrs.dev/playground/task-manager-ep1)**: Try each step in our online playground
+
 ## Prerequisites
 
 - Basic knowledge of Rust
@@ -808,7 +816,11 @@ Congratulations! You've built a functional task manager application with the Orb
 ### Additional Resources
 
 - **[Video Tutorial Series](./tutorial-task-manager-videos.md)**: A comprehensive set of video walkthroughs for this tutorial
+- **[Interactive Code Examples](https://orbitrs.dev/playground/task-manager-ep1)**: Try each step in our online playground
 - **[Live Demo](https://orbitrs.dev/demos/task-manager)**: See the completed application in action
+- **[Project Source Code](https://github.com/orbitrs/task-manager-tutorial)**: Complete source code for reference
+- **[Advanced Component Patterns](../core-concepts/advanced-component-patterns.md)**: Learn more sophisticated component techniques
+- **[State Management](../core-concepts/state-management.md)**: Explore advanced state management approaches
 - **[Source Code](https://github.com/orbitrs/task-manager-tutorial)**: The complete code for this tutorial
 - **[Advanced Component Patterns](../core-concepts/advanced-component-patterns.md)**: Learn more advanced component techniques
 

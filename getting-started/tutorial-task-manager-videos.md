@@ -1,10 +1,22 @@
 # Task Manager Tutorial Video Guide
 
-This document provides a video walkthrough of the [Task Manager Tutorial](./tutorial-task-manager.md), with timestamped links to specific sections and key implementation steps.
+This document provides a comprehensive video walkthrough of the [Task Manager Tutorial](./tutorial-task-manager.md), with timestamped links to specific sections, interactive code examples, and implementation guidance.
 
 ## Introduction to the Video Series
 
-The Task Manager Tutorial video series offers a comprehensive, step-by-step guide to building a complete task management application using the Orbit UI Framework. These videos complement the written tutorial by showing real-time coding, explaining design decisions, and demonstrating how components interact.
+The Task Manager Tutorial video series offers a complete, step-by-step guide to building a fully functional task management application using the Orbit UI Framework. These videos complement the written tutorial by showing real-time coding, explaining design decisions, and demonstrating how components interact in a production-quality application.
+
+## Series Overview
+
+The complete series consists of five episodes that guide you through every aspect of building the Task Manager application:
+
+1. **Getting Started with Orbit** - Environment setup and project creation (15:24)
+2. **Building the Task Component** - Core components and UI structure (18:36)
+3. **State Management and Interactions** - App state and user interactions (22:15)
+4. **Filters and Storage** - Filtering tasks and local storage integration (20:42)
+5. **Polishing and Deployment** - Final touches and production build (17:51)
+
+Total runtime: 1 hour 34 minutes
 
 ## Video Episodes
 
@@ -19,9 +31,61 @@ This episode covers setting up your development environment and creating the ini
 - 1:45 - Installing the Orbit toolchain
 - 3:20 - Creating a new project with `orbiton new`
 - 5:08 - Exploring the project structure
-- 8:32 - Running the development server
-- 10:17 - Understanding the component model
-- 13:55 - Summary and preview of next episode
+- 7:30 - Running the development server
+- 10:15 - Understanding the component model
+- 13:40 - Summary and next steps
+
+**Code Examples:**
+```bash
+# Installing Orbiton
+cargo install orbiton
+
+# Creating a new project
+orbiton new task-manager
+
+# Running the development server
+cd task-manager
+orbiton dev
+```
+
+**Interactive Code Snippets:**
+```rust
+// src/components/app.orbit
+<template>
+  <div class="app">
+    <h1>Task Manager</h1>
+    <p>Welcome to your task management application!</p>
+  </div>
+</template>
+
+<style>
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+h1 {
+  color: #2c3e50;
+  text-align: center;
+}
+</style>
+
+<code lang="rust">
+use orbit::prelude::*;
+
+pub struct App;
+
+impl Component for App {
+    type Props = ();
+    
+    fn new(_: Self::Props) -> Self {
+        Self
+    }
+}
+</code>
+```
 
 ### Episode 2: Building the Task Component (18:36)
 
@@ -37,6 +101,29 @@ This episode walks through creating the core Task component and implementing the
 - 10:33 - Implementing the task list component
 - 14:20 - Connecting components
 - 17:08 - Testing and refinement
+
+**Code Examples:**
+```rust
+// Task data model
+#[derive(Clone, Debug, PartialEq)]
+pub struct TaskData {
+    pub id: usize,
+    pub description: String,
+    pub completed: bool,
+}
+
+// TaskItem component
+#[component]
+pub struct TaskItem {
+    task: Prop<TaskData>,
+    on_toggle: EventEmitter<usize>,
+    on_delete: EventEmitter<usize>,
+}
+
+impl Component for TaskItem {
+    // Implementation details shown in video
+}
+```
 
 ### Episode 3: State Management and Interactions (22:15)
 
