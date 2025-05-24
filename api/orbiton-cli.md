@@ -59,6 +59,8 @@ orbiton dev [options]
 
 The `orbiton dev` command starts the development server, enabling features like hot module replacement (HMR), static asset serving, and WebSocket communication for live updates.
 
+Note: When developing a web application, `orbiton dev` will expose an HTTP port (default 3000) and a WebSocket port (default HTTP port +1) to serve the app and enable HMR. CLI-only commands (e.g., `orbiton analyze`, `orbiton component`) run entirely in the terminal and do not open any listening ports. For desktop or embedded GUI applications (when targeting non-web environments), no HTTP or WebSocket ports are exposed unless explicitly configured for maintenance or diagnostic services.
+
 **Standard Options:**
 
 - `--port <port>` - Port to run the HTTP server on (default: 3000). The WebSocket server will run on `<port> + 1`.
@@ -424,6 +426,116 @@ jobs:
 ### Learn More
 
 For more detailed information on analysis rules and configuration options, see the [Orlint Documentation](../../orlint/docs/README.md).
+
+## Orbiton CLI Configuration (`orbiton.toml`)
+
+The Orbiton CLI can be configured using a file named `orbiton.toml` located in the project's root directory. This file allows you to set project-specific defaults for various CLI commands and options, streamlining your development workflow.
+
+If an `orbiton.toml` file is not present, the CLI will use its default settings. Command-line arguments will always override any settings defined in `orbiton.toml`.
+
+### Structure of `orbiton.toml`
+
+The configuration file is organized into sections, each corresponding to an Orbiton CLI command (e.g., `[new]`, `[dev]`, `[build]`).
+
+**Example `orbiton.toml`:**
+
+```toml
+# Global settings (if any, usually command-specific)
+# project_name = "MyDefaultProjectName" # Example, not a standard global option
+
+[new]
+# Default options for `orbiton new`
+template = "library" # Default project template
+renderer = "skia"     # Default renderer for new projects
+skip_git = false      # Initialize a Git repository by default
+skip_install = false  # Install dependencies by default
+
+[dev]
+# Default options for `orbiton dev`
+port = 3001
+host = "0.0.0.0"
+open = true # Automatically open in browser
+# renderer = "wgpu" # Optionally override project's default renderer for dev
+
+[build]
+# Default options for `orbiton build`
+target = "web"    # Default build target
+release = true    # Build in release mode by default
+optimize = "size" # Optimize for size by default
+
+[component]
+# Default options for `orbiton component`
+path = "src/components" # Default path for new components
+template = "basic"
+style = "scoped"
+test = true             # Generate test files by default
+story = false           # Do not generate story files by default
+
+[analyze]
+# Default options for `orbiton analyze`
+fix = false
+verbose = false
+format = "text"
+# config = ".orlint.custom.toml" # Path to a custom Orlint config
+# include = ["src/**/*.orbit", "ui/**/*.orbit"]
+# exclude = ["**/__tests__/**"]
+
+[renderer]
+# Default renderer for the project (can be overridden by `dev.renderer` or `build.renderer` for specific commands)
+# default_renderer = "auto" # Example: 'skia', 'wgpu', 'auto'
+
+# Configuration for specific renderers, if applicable
+# [renderer.skia_options]
+# antialiasing = true
+
+# [renderer.wgpu_options]
+# power_preference = "high-performance"
+```
+
+### Supported Options
+
+Each section in `orbiton.toml` can specify default values for the corresponding command's flags. For example, in the `[dev]` section, you can set `port = 3030` to make `orbiton dev` use port 3030 by default.
+
+*   **`[new]`**: Corresponds to `orbiton new` options.
+    *   `template`: e.g., "app", "library"
+    *   `renderer`: e.g., "skia", "wgpu", "hybrid"
+    *   `skip_git`: true or false
+    *   `skip_install`: true or false
+*   **`[dev]`**: Corresponds to `orbiton dev` options.
+    *   `port`: e.g., 3000
+    *   `host`: e.g., "localhost", "0.0.0.0"
+    *   `open`: true or false
+    *   `renderer`: e.g., "skia", "wgpu" (overrides project default for dev server)
+*   **`[build]`**: Corresponds to `orbiton build` options.
+    *   `target`: e.g., "web", "desktop", "embedded", "all"
+    *   `release`: true or false
+    *   `optimize`: e.g., "size", "speed", "balanced"
+*   **`[component]`**: Corresponds to `orbiton component` options.
+    *   `path`: e.g., "src/components", "app/ui"
+    *   `template`: e.g., "basic", "stateful"
+    *   `style`: e.g., "scoped", "global", "none"
+    *   `test`: true or false
+    *   `story`: true or false
+*   **`[analyze]`**: Corresponds to `orbiton analyze` options.
+    *   `fix`: true or false
+    *   `verbose`: true or false
+    *   `format`: e.g., "text", "json", "html"
+    *   `output`: e.g., "analysis_report.json"
+    *   `include`: e.g., `["src/**/*.orbit"]`
+    *   `exclude`: e.g., `["**/node_modules/**"]`
+    *   `config`: e.g., ".orlint.toml"
+    *   `rules`: e.g., `["a11y-*"]`
+    *   `ignore_rules`: e.g., `["perf-no-inline-styles"]`
+    *   `renderer`: e.g., "skia"
+*   **`[renderer]`**: General renderer configuration for the project.
+    *   `default_renderer`: Sets the primary renderer (e.g., "skia", "wgpu", "auto"). This can be overridden by specific command configurations like `dev.renderer`.
+    *   Specific renderer options can be nested, e.g., `[renderer.skia_options]`. (Actual option names would depend on Orbiton's implementation).
+
+### Validation
+
+The Orbiton CLI will parse `orbiton.toml` when a command is run. If the file contains invalid TOML syntax or unrecognized options, the CLI may issue a warning or error and fall back to default behavior or halt execution, depending on the severity.
+
+It's recommended to refer to the latest Orbiton CLI documentation or use `orbiton help <command>` for the most up-to-date list of configurable options and their valid values.
 
 ## Renderer Management
 

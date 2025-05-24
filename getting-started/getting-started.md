@@ -18,32 +18,43 @@ cargo install orbiton
 
 This will install the `orbiton` command-line tool, which you'll use to create and manage Orbit projects.
 
-## Creating Your First Project
+Verify the installation by checking the version:
+
+```bash
+orbiton --version
+```
+
+<!-- Placeholder for screenshot: Orbiton CLI version output -->
+
+## Creating Your First Orbit Application
 
 Create a new Orbit project:
 
 ```bash
-orbiton new my-first-app
-cd my-first-app
+orbiton new my-app
+cd my-app
 ```
 
-This creates a new directory with a basic Orbit application structure:
+<!-- Placeholder for screenshot: Output of orbiton new command and directory change -->
+
+This will create a new directory called `my-app` with the following structure:
 
 ```
-my-first-app/
+my-app/
+├── .gitignore
 ├── Cargo.toml
+├── orbiton.toml
 ├── src/
 │   ├── main.rs
-│   └── components/
-│       ├── app.orbit
-│       └── counter.orbit
-├── static/
-│   ├── index.html
-│   └── styles.css
-└── .gitignore
+│   └── app.orbit
+└── README.md
 ```
 
-## Running the Application
+<!-- TODO: Add screenshot of project directory structure after `orbiton new` -->
+
+<!-- Placeholder for screenshot: Basic project structure after creating a new app -->
+
+## Running the Development Server
 
 Start the development server:
 
@@ -51,124 +62,66 @@ Start the development server:
 orbiton dev
 ```
 
-This will compile your application and start a development server at `http://localhost:3000`. The server includes hot reloading, so changes to your code will be reflected immediately in the browser.
+<!-- TODO: Add screenshot of browser at http://localhost:3000 showing the running app -->
 
-## Creating Components
+<!-- Placeholder for screenshot: Orbiton dev server running and app accessible in browser -->
 
-Orbit uses a single-file component format with `.orbit` files. Each file contains three sections:
+## Understanding the Project Structure
 
-- `<template>` - HTML-like markup for the component
-- `<style>` - CSS styles for the component
-- `<code lang="rust">` - Rust code for the component logic
+### `Cargo.toml`
 
-Let's create a simple "Hello, World" component:
+This file is the manifest for Rust's package manager, Cargo. It defines the dependencies, scripts, and metadata for your Orbit project.
 
-```bash
-# Create a new component
-orbiton component hello-world
-```
+### `orbiton.toml`
 
-This creates a new file `src/components/hello_world.orbit`:
+This is the configuration file for Orbiton, specifying settings and options for your Orbit application.
 
-```
+### `src/main.rs`
+
+The main entry point for your Orbit application, where the Rust code execution begins.
+
+### `src/app.orbit`
+
+This is your first Orbit component.
+
+```html
 <template>
-  <div class="hello-world">
-    <h1>{{ greeting }}</h1>
-    <p>Welcome to Orbit UI!</p>
+  <div class="container">
+    <h1>{{ message }}</h1>
+    <button @click="greet">Greet</button>
   </div>
 </template>
 
-<style>
-.hello-world {
-  text-align: center;
-  padding: 20px;
-}
+<script>
+export default {
+  data() {
+    return {
+      message: "Hello, Orbit!"
+    };
+  },
+  methods: {
+    greet() {
+      alert("Hello from your Orbit app!");
+    }
+  }
+};
+</script>
 
-h1 {
-  color: #333;
-  font-size: 24px;
-}
-
-p {
-  color: #666;
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: sans-serif;
 }
 </style>
-
-<code lang="rust">
-use orbit::prelude::*;
-
-pub struct HelloWorld {
-    greeting: String,
-}
-
-pub struct HelloWorldProps {
-    pub greeting: String,
-}
-
-impl Props for HelloWorldProps {}
-
-impl Component for HelloWorld {
-    type Props = HelloWorldProps;
-    
-    fn new(props: Self::Props) -> Self {
-        Self {
-            greeting: props.greeting,
-        }
-    }
-    
-    // render() method is auto-generated from the template
-}
-</script>
 ```
 
-## Using the Component
+<!-- TODO: Add screenshot of generated component file in IDE -->
 
-Now let's use our new component in the application. Open `src/components/app.orbit` and replace its contents:
-
-```
-<template>
-  <div class="app">
-    <HelloWorld greeting="Hello, Orbit!" />
-  </div>
-</template>
-
-<style>
-.app {
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-}
-</style>
-
-<code lang="rust">
-use orbit::prelude::*;
-use crate::components::hello_world::HelloWorld;
-
-pub struct App {}
-
-pub struct AppProps {}
-
-impl Props for AppProps {}
-
-impl Component for App {
-    type Props = AppProps;
-    
-    fn new(_props: Self::Props) -> Self {
-        Self {}
-    }
-}
-</script>
-```
-
-## Building for Production
-
-When you're ready to deploy your application, build it for production:
-
-```bash
-orbiton build
-```
-
-This creates optimized builds for your target platforms in the `dist/` directory.
+<!-- Placeholder for screenshot: Example of a simple component and its output in the browser -->
 
 ## Next Steps
 
@@ -183,56 +136,70 @@ This creates optimized builds for your target platforms in the `dist/` directory
 
 #### Cargo Install Fails
 
-If you encounter errors when installing the Orbiton CLI:
+- **Rust Not Found:** Ensure Rust is correctly installed and configured in your system's PATH. You can verify this by running `rustc --version`. If it's not found, visit the [official Rust installation page](https://www.rust-lang.org/tools/install).
+- **Orbiton CLI Installation Fails:**
+  - Check your internet connection.
+  - Ensure `cargo` is working correctly (`cargo --version`).
+  - If you encounter compilation errors during `cargo install orbiton_cli`, ensure you have the necessary build tools for your platform (e.g., C++ build tools on Windows, `build-essential` on Debian/Ubuntu).
+  - Try updating Rust and Cargo to their latest versions: `rustup update`.
+- **`orbiton` command not found after installation:**
+  - Ensure that Cargo's bin directory (usually `~/.cargo/bin/` on Linux/macOS or `%USERPROFILE%\.cargo\bin` on Windows) is in your system's PATH. You might need to restart your terminal or shell session for changes to take effect.
+
+### `orbiton new` Fails
+
+- **Permissions:** Ensure you have write permissions in the directory where you're trying to create the new project.
+- **Invalid Project Name:** Project names should typically be valid Rust crate names (e.g., no spaces, special characters other than hyphens or underscores).
+- **Template Fetching Issues (if applicable in future versions):** If `orbiton new` fetches templates from a remote source, ensure your internet connection is stable.
+
+### `orbiton dev` Issues
+
+- **Port Already in Use:** If the default port (e.g., 3000) is in use, `orbiton dev` might fail to start. You can specify a different port if the CLI supports it (check `orbiton dev --help`).
+  - Example (if supported): `orbiton dev --port 3001`
+- **Compilation Errors:** The terminal running `orbiton dev` will display any Rust or Orbit compilation errors. Address these errors in your `.orbit` files or Rust code.
+- **Websocket Connection Fails (for Hot Module Replacement):**
+  - Check your browser's console for errors.
+  - Ensure no browser extensions are interfering with WebSocket connections.
+  - Firewall or proxy settings might also block WebSocket connections.
+- **Changes Not Reflecting (HMR not working):**
+  - Verify HMR is enabled (usually by default).
+  - Ensure you are editing the correct files within the `src` directory.
+  - Some complex changes, especially in `main.rs` or build configurations, might require a manual restart of the dev server.
+
+### Build Errors and Environment Issues
+
+#### Rust Compiler Errors
+
+If the application fails to compile during `orbiton dev` or `orbiton build`:
 
 ```
-error: failed to compile `orbiton v0.5.0`, intermediate artifacts can be found at `/tmp/cargo-installiXXXXX`
-```
-
-**Solution**: 
-1. Make sure your Rust toolchain is up to date: `rustup update`
-2. Check for missing dependencies: 
-   - Linux users may need to install additional packages: `sudo apt install build-essential pkg-config libssl-dev`
-   - macOS users may need to install Xcode command line tools: `xcode-select --install`
-3. Try with the `--force` flag: `cargo install orbiton --force`
-
-#### Project Creation Issues
-
-If you encounter errors when creating a new project:
-
-```
-Error: Failed to initialize project template
-```
+error[E0382]: use of moved value
+``` 
 
 **Solution**:
-1. Check if the directory already exists or if you have write permissions
-2. Try with a different template: `orbiton new my-app --template basic`
-3. Check internet connectivity as templates might be downloaded from the repository
+1. Ensure your Rust toolchain is up to date: `rustup update`
+2. Verify component code syntax matches the `.orbit` template.
+3. Run `cargo clean` before rebuilding.
 
-### Development Server Issues
+#### Missing Assets or Static Files
 
-#### Server Won't Start
+If resources (CSS, images) are not served:
 
-If the development server fails to start:
+- Check `static/` directory for renamed or missing files.
+- Ensure file paths in `index.html` are correct.
+- Verify your `orbiton dev` run directory is project root.
 
-```
-Error: Address already in use (os error 98)
-```
+### Screenshot Placeholders
 
-**Solution**:
-1. Check if another process is using port 3000: `lsof -i :3000`
-2. Kill the process or use a different port: `orbiton dev --port 3001`
+<!-- TODO: Add screenshot of project directory structure after `orbiton new` -->
 
-#### Hot Module Replacement Not Working
+<!-- TODO: Add screenshot of browser at http://localhost:3000 showing the running app -->
 
-**Solution**:
-1. Check browser console for WebSocket errors
-2. Make sure your firewall isn't blocking WebSocket connections
-3. Try disabling HMR: `orbiton dev --no-hmr`
+<!-- TODO: Add screenshot of generated component file in IDE -->
 
 ### General Troubleshooting Steps
 
-1. Make sure your Rust toolchain is up to date: `rustup update`
-2. Check the [FAQ in the documentation](../faq.md)
-3. Search for similar issues on [GitHub](https://github.com/orbitrs/orbit/issues)
-4. Ask for help in the community [Discord server](https://discord.gg/orbitframework)
+- **Check the Orbiton CLI Version:** Ensure you are using a version of Orbiton CLI compatible with your project or the documentation you are following. Use `orbiton --version`.
+- **Consult `orbiton --help`:** For any command, running `orbiton <command> --help` (e.g., `orbiton new --help`) can provide useful information about its options and usage.
+- **Review `orbiton.toml`:** Your project's `orbiton.toml` file contains configuration that might affect builds and the dev server.
+- **Look for `.log` files:** Orbiton or related tools might generate log files with more detailed error information.
+- **Community and Official Channels:** If you're stuck, consider seeking help from the Orbit community forums, Discord server, or GitHub issues for Orbiton CLI if available.
