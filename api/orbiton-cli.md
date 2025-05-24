@@ -115,23 +115,197 @@ CLI options (e.g., `orbiton dev --port 3002`) will override settings in `orbit.c
 orbiton build [options]
 ```
 
-Options:
-- `--target <target>` - Build target (choices: "web", "desktop", "embedded", "all", default: "all")
-- `--release` - Build in release mode
-- `--optimize <level>` - Optimization level (choices: "size", "speed", "balanced", default: "balanced")
+The `orbiton build` command compiles your Orbit application for production deployment. It performs comprehensive optimizations including code splitting, asset bundling, and platform-specific optimizations to create efficient, deployable artifacts.
 
-Examples:
+### Options
+
+- `--target <target>` - Build target (choices: "web", "desktop", "embedded", "all", default: "all")
+- `--release` - Build in release mode with full optimizations
+- `--optimize <level>` - Optimization level (choices: "size", "speed", "balanced", default: "balanced")
+- `--output <dir>` - Output directory for build artifacts (default: "dist")
+- `--sourcemap` - Generate source maps for debugging (automatically enabled in debug mode)
+- `--minify` - Enable minification (automatically enabled in release mode)
+- `--tree-shake` - Enable dead code elimination (automatically enabled in release mode)
+- `--compress` - Enable asset compression (gzip/brotli)
+- `--watch` - Watch for changes and rebuild automatically
+- `--verbose` - Show detailed build information
+- `--clean` - Clean output directory before building
+
+### Build Modes
+
+#### Debug Mode (Default)
+```bash
+orbiton build
+```
+- Fast compilation for development
+- Includes debug symbols and source maps
+- No code minification
+- Detailed error messages
+- Hot reload support when combined with `--watch`
+
+#### Release Mode
+```bash
+orbiton build --release
+```
+- Full optimizations enabled
+- Code minification and compression
+- Tree shaking to remove unused code
+- Asset optimization (image compression, CSS/JS bundling)
+- Production-ready performance
+
+### Optimization Levels
+
+#### Size Optimization
+```bash
+orbiton build --optimize size
+```
+- Prioritizes smallest bundle size
+- Aggressive dead code elimination
+- Maximum compression
+- Ideal for web deployments with bandwidth constraints
+
+#### Speed Optimization
+```bash
+orbiton build --optimize speed
+```
+- Prioritizes runtime performance
+- Optimized for fast execution
+- May result in larger bundle sizes
+- Ideal for desktop applications
+
+#### Balanced Optimization (Default)
+```bash
+orbiton build --optimize balanced
+```
+- Balances size and speed
+- Suitable for most production deployments
+- Good compromise between bundle size and performance
+
+### Build Targets
+
+#### Web Target
+```bash
+orbiton build --target web
+```
+**Output Structure:**
+```
+dist/web/
+├── index.html          # Entry point
+├── assets/             # Static assets
+│   ├── app-[hash].js   # Main application bundle
+│   ├── vendor-[hash].js # Third-party dependencies
+│   └── style-[hash].css # Compiled styles
+├── icons/              # Application icons
+└── manifest.json       # Web app manifest
+```
+
+**Optimizations:**
+- WebAssembly compilation for performance-critical components
+- Code splitting for lazy loading
+- Service worker generation for offline support
+- Progressive Web App (PWA) features
+
+#### Desktop Target
+```bash
+orbiton build --target desktop
+```
+**Output Structure:**
+```
+dist/desktop/
+├── orbit-app(.exe)     # Executable binary
+├── resources/          # Application resources
+├── assets/             # Static assets
+└── installer/          # Platform-specific installers
+    ├── setup.exe       # Windows installer
+    ├── app.dmg         # macOS disk image
+    └── app.deb         # Linux package
+```
+
+**Optimizations:**
+- Native compilation with platform-specific optimizations
+- Resource bundling for offline operation
+- Icon and metadata embedding
+- Code signing preparation
+
+#### Embedded Target
+```bash
+orbiton build --target embedded
+```
+**Output Structure:**
+```
+dist/embedded/
+├── firmware.bin        # Compiled firmware
+├── resources.pak       # Packed resources
+└── metadata.json       # Build metadata
+```
+
+**Optimizations:**
+- Minimal runtime footprint
+- Aggressive dead code elimination
+- Optimized memory usage
+- Hardware-specific optimizations
+
+### Examples
 
 ```bash
 # Build for all platforms in release mode
 orbiton build --release
 
-# Build optimized for web only
-orbiton build --target web --optimize size
+# Build optimized for web with compression
+orbiton build --target web --optimize size --compress
 
 # Build desktop version with speed optimization
 orbiton build --target desktop --optimize speed
+
+# Build with custom output directory
+orbiton build --output ./build
+
+# Watch mode for development
+orbiton build --watch --sourcemap
+
+# Clean build with verbose output
+orbiton build --clean --verbose --release
+
+# Build with specific configuration
+orbiton build --release --output ./production
 ```
+
+### Build Output Analysis
+
+After building, you can analyze the output using:
+
+```bash
+# Analyze bundle size
+orbiton analyze --format json | grep -E 'bundle|size'
+
+# Check for optimization opportunities
+orbiton analyze --rules "perf-*" --format text
+```
+
+### Integration with CI/CD
+
+Example GitHub Actions workflow:
+
+```yaml
+- name: Build Production
+  run: |
+    orbiton build --release --target web
+    orbiton analyze --format json --output build-analysis.json
+```
+
+### Troubleshooting Build Issues
+
+- **Out of Memory**: Use `--target` to build specific platforms
+- **Slow Builds**: Try `--optimize speed` or disable `--tree-shake` for development
+- **Large Bundles**: Analyze with `orbiton analyze` and enable compression
+- **Missing Assets**: Check asset paths in your components and ensure they're included in the build
+
+### Performance Tips
+
+- Use `--watch` during development for faster incremental builds
+- Combine `--target web --optimize size` for optimal web deployments
+- Enable `--compress` for production deployments to reduce transfer size
+- Use `--sourcemap` during development for better debugging experience
 
 ## Generating Components
 
