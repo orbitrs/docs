@@ -106,8 +106,8 @@ Reference `docs/api/API_DOCUMENTATION_TEMPLATE.md` and `docs/api/README.md`.
 | `orbit::kit::components` | References in API template only           | Need complete component library documentation | High     | ✅ Completed |
 | `orbit::kit::hooks`    | `docs/api/orbit-kit-hooks.md` (comprehensive)                                   | Comprehensive API documentation with all hooks, patterns, examples and best practices              | Medium   | ✅ Completed |
 | `orbit::kit::layout`   | `docs/api/orbit-kit-layout.md` (comprehensive)                                   | Comprehensive layout system documentation with components, patterns and responsive design              | Medium   | ✅ Completed |
-| Orbiton Lib API      | Minimal references in CLI docs              | Need programmatic API docs if applicable    | Medium   | 🔄 Pending |
-| Orlint API           | Some coverage in orlint subdocs             | Need consolidated API reference in main docs | Medium   | 🔄 Pending |
+| Orbiton Lib API      | `docs/api/orbiton-lib-api.md` (comprehensive) | Complete programmatic API documentation with project management, build system integration, development server control, component generation, and Orlint integration examples | Medium   | ✅ Completed |
+| Orlint API           | `docs/api/orlint-api.md` (comprehensive)   | Comprehensive API reference for using Orlint as a library, including analyzer configuration, custom rule development, AST manipulation, visitor patterns, and IDE integration | Medium   | ✅ Completed |
 
 ## 8. Prioritization Matrix
 
