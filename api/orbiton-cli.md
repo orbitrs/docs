@@ -603,113 +603,538 @@ For more detailed information on analysis rules and configuration options, see t
 
 ## Orbiton CLI Configuration (`orbiton.toml`)
 
-The Orbiton CLI can be configured using a file named `orbiton.toml` located in the project's root directory. This file allows you to set project-specific defaults for various CLI commands and options, streamlining your development workflow.
+The Orbiton CLI can be configured using a file named `orbiton.toml` located in the project's root directory. This file allows you to set project-specific defaults for various CLI commands and options, streamlining your development workflow and ensuring consistent behavior across team members and environments.
 
 If an `orbiton.toml` file is not present, the CLI will use its default settings. Command-line arguments will always override any settings defined in `orbiton.toml`.
 
+### Benefits of Configuration
+
+- **Consistency**: Ensure all team members use the same build and development settings
+- **Efficiency**: Reduce repetitive command-line arguments
+- **Project-Specific Defaults**: Tailor behavior to your project's specific needs
+- **Environment Management**: Different configurations for development, staging, and production
+
 ### Structure of `orbiton.toml`
 
-The configuration file is organized into sections, each corresponding to an Orbiton CLI command (e.g., `[new]`, `[dev]`, `[build]`).
+The configuration file is organized into sections, each corresponding to an Orbiton CLI command (e.g., `[new]`, `[dev]`, `[build]`). Each section contains key-value pairs that mirror the command-line options for that command.
 
-**Example `orbiton.toml`:**
+### Global Configuration Options
 
 ```toml
-# Global settings (if any, usually command-specific)
-# project_name = "MyDefaultProjectName" # Example, not a standard global option
+# Global project metadata (optional)
+[project]
+name = "my-orbit-app"
+version = "0.1.0"
+description = "A modern Orbit application"
+authors = ["Your Name <your.email@example.com>"]
 
-[new]
-# Default options for `orbiton new`
-template = "library" # Default project template
-renderer = "skia"     # Default renderer for new projects
-skip_git = false      # Initialize a Git repository by default
-skip_install = false  # Install dependencies by default
-
-[dev]
-# Default options for `orbiton dev`
-port = 3001
-host = "0.0.0.0"
-open = true # Automatically open in browser
-# renderer = "wgpu" # Optionally override project's default renderer for dev
-
-[build]
-# Default options for `orbiton build`
-target = "web"    # Default build target
-release = true    # Build in release mode by default
-optimize = "size" # Optimize for size by default
-
-[component]
-# Default options for `orbiton component`
-path = "src/components" # Default path for new components
-template = "basic"
-style = "scoped"
-test = true             # Generate test files by default
-story = false           # Do not generate story files by default
-
-[analyze]
-# Default options for `orbiton analyze`
-fix = false
-verbose = false
-format = "text"
-# config = ".orlint.custom.toml" # Path to a custom Orlint config
-# include = ["src/**/*.orbit", "ui/**/*.orbit"]
-# exclude = ["**/__tests__/**"]
-
-[renderer]
-# Default renderer for the project (can be overridden by `dev.renderer` or `build.renderer` for specific commands)
-# default_renderer = "auto" # Example: 'skia', 'wgpu', 'auto'
-
-# Configuration for specific renderers, if applicable
-# [renderer.skia_options]
-# antialiasing = true
-
-# [renderer.wgpu_options]
-# power_preference = "high-performance"
+# Workspace settings for monorepos
+[workspace]
+members = ["packages/*", "apps/*"]
+shared_assets = "shared/assets"
 ```
 
-### Supported Options
+### Command-Specific Configuration
 
-Each section in `orbiton.toml` can specify default values for the corresponding command's flags. For example, in the `[dev]` section, you can set `port = 3030` to make `orbiton dev` use port 3030 by default.
+#### `[new]` - Project Creation Defaults
 
-*   **`[new]`**: Corresponds to `orbiton new` options.
-    *   `template`: e.g., "app", "library"
-    *   `renderer`: e.g., "skia", "wgpu", "hybrid"
-    *   `skip_git`: true or false
-    *   `skip_install`: true or false
-*   **`[dev]`**: Corresponds to `orbiton dev` options.
-    *   `port`: e.g., 3000
-    *   `host`: e.g., "localhost", "0.0.0.0"
-    *   `open`: true or false
-    *   `renderer`: e.g., "skia", "wgpu" (overrides project default for dev server)
-*   **`[build]`**: Corresponds to `orbiton build` options.
-    *   `target`: e.g., "web", "desktop", "embedded", "all"
-    *   `release`: true or false
-    *   `optimize`: e.g., "size", "speed", "balanced"
-*   **`[component]`**: Corresponds to `orbiton component` options.
-    *   `path`: e.g., "src/components", "app/ui"
-    *   `template`: e.g., "basic", "stateful"
-    *   `style`: e.g., "scoped", "global", "none"
-    *   `test`: true or false
-    *   `story`: true or false
-*   **`[analyze]`**: Corresponds to `orbiton analyze` options.
-    *   `fix`: true or false
-    *   `verbose`: true or false
-    *   `format`: e.g., "text", "json", "html"
-    *   `output`: e.g., "analysis_report.json"
-    *   `include`: e.g., `["src/**/*.orbit"]`
-    *   `exclude`: e.g., `["**/node_modules/**"]`
-    *   `config`: e.g., ".orlint.toml"
-    *   `rules`: e.g., `["a11y-*"]`
-    *   `ignore_rules`: e.g., `["perf-no-inline-styles"]`
-    *   `renderer`: e.g., "skia"
-*   **`[renderer]`**: General renderer configuration for the project.
-    *   `default_renderer`: Sets the primary renderer (e.g., "skia", "wgpu", "auto"). This can be overridden by specific command configurations like `dev.renderer`.
-    *   Specific renderer options can be nested, e.g., `[renderer.skia_options]`. (Actual option names would depend on Orbiton's implementation).
+```toml
+[new]
+# Default project template (choices: "app", "library", "component")
+template = "app"
+
+# Default renderer (choices: "skia", "wgpu", "hybrid", "auto")
+renderer = "auto"
+
+# Git repository initialization
+skip_git = false
+git_template = "standard"  # Custom git template if supported
+
+# Dependency installation
+skip_install = false
+package_manager = "cargo"  # Preferred package manager
+
+# Default project structure
+create_examples = true     # Include example components
+create_tests = true        # Include test directory structure
+create_docs = false        # Include documentation templates
+```
+
+#### `[dev]` - Development Server Configuration
+
+```toml
+[dev]
+# Server binding options
+port = 3000
+host = "localhost"        # Use "0.0.0.0" for network access
+
+# Browser behavior
+open = true               # Automatically open in browser
+browser = "default"       # Specific browser: "chrome", "firefox", "safari"
+
+# Development features
+hot_reload = true         # Enable hot module replacement
+live_reload = true        # Reload page on non-HMR changes
+source_maps = true        # Generate source maps for debugging
+
+# Proxy configuration for API calls
+[dev.proxy]
+"/api" = "http://localhost:8080"
+"/auth" = "https://auth.example.com"
+
+# HTTPS configuration (optional)
+[dev.https]
+enabled = false
+cert_path = "certs/dev-cert.pem"
+key_path = "certs/dev-key.pem"
+
+# Asset serving
+[dev.assets]
+static_dir = "static"
+cache_control = "no-cache"  # Development cache behavior
+compress = false            # Enable gzip compression
+```
+
+#### `[build]` - Production Build Configuration
+
+```toml
+[build]
+# Build targets (choices: "web", "desktop", "embedded", "all")
+target = ["web", "desktop"]
+
+# Optimization settings
+release = true
+optimize = "balanced"     # Choices: "size", "speed", "balanced"
+minify = true
+tree_shake = true
+compress = true
+
+# Output configuration
+output_dir = "dist"
+clean_before_build = true
+generate_manifest = true
+
+# Asset optimization
+[build.assets]
+optimize_images = true
+image_quality = 85        # JPEG quality (1-100)
+generate_webp = true      # Generate WebP variants
+inline_small_assets = true # Inline assets under 8KB
+
+# Bundle splitting for web builds
+[build.web]
+code_splitting = true
+chunk_size_limit = 500    # KB
+vendor_chunk = true       # Separate vendor dependencies
+
+# Desktop-specific options
+[build.desktop]
+app_name = "My Orbit App"
+app_version = "1.0.0"
+icon_path = "assets/icon.png"
+```
+
+#### `[component]` - Component Generation Defaults
+
+```toml
+[component]
+# Default component location
+path = "src/components"
+nested_directories = true  # Create subdirectories for components
+
+# Template and styling
+template = "stateful"      # Choices: "basic", "stateful", "layout", "form", "list", "modal", "container"
+style = "scoped"          # Choices: "scoped", "global", "none"
+
+# Generated files
+test = true               # Generate test files
+story = true              # Generate story files for documentation
+types = true              # Generate TypeScript definitions
+
+# Naming conventions
+case_style = "PascalCase"  # Choices: "PascalCase", "camelCase", "kebab-case"
+file_extension = ".orbit"
+
+# Default props for new components
+[component.default_props]
+className = "string?"      # Optional className prop
+children = "node?"         # Optional children prop
+```
+
+#### `[analyze]` - Code Analysis Configuration
+
+```toml
+[analyze]
+# Analysis behavior
+fix = false               # Automatically fix issues when possible
+verbose = false           # Show detailed analysis information
+format = "text"           # Choices: "text", "json", "html"
+output = "analysis.json"  # Output file for JSON/HTML formats
+
+# File inclusion/exclusion
+include = ["src/**/*.orbit", "components/**/*.orbit"]
+exclude = ["**/*.test.orbit", "**/node_modules/**", "dist/**"]
+
+# Rule configuration
+config = ".orlint.toml"   # Path to Orlint configuration
+rules = ["accessibility", "performance", "best-practices"]
+ignore_rules = ["experimental-features"]
+
+# Performance settings
+parallel = true           # Run analysis in parallel
+incremental = true        # Only analyze changed files
+cache_results = true      # Cache analysis results
+```
+
+#### `[renderer]` - Rendering Backend Configuration
+
+```toml
+[renderer]
+# Default renderer (choices: "skia", "wgpu", "auto")
+default = "auto"
+
+# Renderer-specific options
+[renderer.skia]
+antialiasing = true
+text_rendering = "subpixel"  # Choices: "pixel", "subpixel", "lcd"
+gpu_acceleration = true
+
+[renderer.wgpu]
+power_preference = "high-performance"  # Choices: "low-power", "high-performance"
+backend = "vulkan"         # Choices: "vulkan", "metal", "dx12", "gl"
+vsync = true
+multisample = 4            # MSAA sample count
+
+# Fallback configuration
+[renderer.fallback]
+enable_fallback = true
+fallback_order = ["wgpu", "skia"]
+```
+
+#### `[test]` - Testing Configuration
+
+```toml
+[test]
+# Test execution
+watch = false             # Run in watch mode
+parallel = true           # Run tests in parallel
+coverage = false          # Generate coverage reports
+
+# Test types
+unit = true               # Run unit tests
+integration = true        # Run integration tests
+performance = false       # Run performance benchmarks
+
+# Coverage settings
+[test.coverage]
+threshold = 80            # Minimum coverage percentage
+output_dir = "coverage"
+format = ["html", "lcov"] # Coverage report formats
+
+# Performance benchmarks
+[test.performance]
+render_threshold_ms = 16  # Maximum render time
+memory_threshold_mb = 50  # Maximum memory usage
+```
+
+### Environment-Specific Configuration
+
+You can create environment-specific configuration files:
+
+- `orbiton.dev.toml` - Development overrides
+- `orbiton.prod.toml` - Production overrides
+- `orbiton.test.toml` - Testing overrides
+
+Use the `ORBITON_ENV` environment variable to specify which configuration to use:
+
+```bash
+ORBITON_ENV=dev orbiton dev    # Uses orbiton.dev.toml
+ORBITON_ENV=prod orbiton build # Uses orbiton.prod.toml
+```
+
+### Configuration Validation and Defaults
+
+The Orbiton CLI validates all configuration options and provides helpful error messages for invalid values. If a required option is missing, sensible defaults are used.
+
+#### Example Validation Messages
+
+```bash
+❌ Error in orbiton.toml: Invalid renderer 'invalid-renderer'
+   Valid options: skia, wgpu, auto
+
+⚠️  Warning: Port 3000 is already in use, falling back to 3001
+
+✅ Configuration loaded successfully from orbiton.toml
+```
+
+### Configuration Inheritance
+
+Configuration follows this precedence order (highest to lowest):
+
+1. **Command-line arguments** - Always take precedence
+2. **Environment variables** - Override configuration files
+3. **Environment-specific config** - `orbiton.<env>.toml`
+4. **Project config** - `orbiton.toml`
+5. **Global user config** - `~/.orbiton/config.toml`
+6. **Built-in defaults** - Framework defaults
+
+### Common Configuration Patterns
+
+#### Development Team Setup
+
+```toml
+# Optimized for team development
+[dev]
+port = 3000
+host = "0.0.0.0"          # Allow network access for device testing
+open = false              # Don't auto-open browser (varies by developer preference)
+hot_reload = true
+
+[build]
+target = ["web"]          # Focus on web deployment
+optimize = "speed"        # Faster builds during development
+
+[component]
+test = true               # Always generate tests
+story = true              # Generate stories for design system
+template = "stateful"     # Most components need state
+
+[analyze]
+fix = true                # Auto-fix when possible
+verbose = true            # Detailed output for CI/CD
+format = "json"           # Machine-readable for CI reporting
+```
+
+#### Production-Focused Setup
+
+```toml
+# Optimized for production deployment
+[build]
+target = ["web", "desktop"]
+release = true
+optimize = "size"         # Minimize bundle size
+minify = true
+tree_shake = true
+compress = true
+
+[analyze]
+fix = false               # Don't auto-modify in CI
+format = "json"
+output = "build-analysis.json"
+rules = ["security", "performance", "accessibility"]
+
+[test]
+coverage = true
+threshold = 90            # High coverage requirement
+performance = true        # Include performance benchmarks
+```
+
+#### Component Library Setup
+
+```toml
+# Optimized for component library development
+[new]
+template = "library"
+
+[component]
+path = "src/components"
+template = "basic"        # Start simple, add complexity as needed
+test = true
+story = true              # Essential for component documentation
+types = true              # Generate TypeScript definitions
+
+[build]
+target = ["web"]
+optimize = "balanced"
+generate_manifest = true  # For package distribution
+
+[dev]
+port = 6006               # Storybook-style port
+open = true
+```
+
+### Configuration Best Practices
+
+#### 1. Environment Separation
+
+```bash
+# Development
+# orbiton.dev.toml
+[dev]
+port = 3000
+hot_reload = true
+source_maps = true
+
+[build]
+optimize = "speed"
+minify = false
+
+# Production
+# orbiton.prod.toml
+[build]
+optimize = "size"
+minify = true
+compress = true
+tree_shake = true
+```
+
+#### 2. Team Consistency
+
+```toml
+# Enforce consistent formatting and analysis
+[analyze]
+fix = true
+format = "text"
+rules = [
+  "accessibility",
+  "performance", 
+  "best-practices",
+  "security"
+]
+
+[component]
+template = "stateful"
+test = true
+style = "scoped"
+```
+
+#### 3. Monorepo Configuration
+
+```toml
+[workspace]
+members = ["packages/*", "apps/*"]
+shared_assets = "shared/assets"
+
+# Shared development configuration
+[dev]
+proxy."/api" = "http://localhost:8080"
+proxy."/shared" = "http://localhost:3001"
+
+# Component generation for shared libraries
+[component]
+path = "packages/ui/src/components"
+```
+
+### Troubleshooting Configuration
+
+#### Common Issues
+
+**Configuration Not Loading**
+```bash
+# Verify configuration file exists and is valid TOML
+orbiton config validate
+
+# Check which configuration file is being used
+orbiton config show
+```
+
+**Port Conflicts**
+```bash
+# Override port in configuration or command line
+orbiton dev --port 3001
+
+# Or set in orbiton.toml:
+[dev]
+port = 3001
+```
+
+**Invalid Configuration Values**
+```
+❌ Error: Invalid optimization level 'ultra'
+   Valid options: size, speed, balanced
+
+   Fix: Update orbiton.toml
+   [build]
+   optimize = "balanced"  # ✅ Valid option
+```
+
+### Advanced Configuration Features
+
+#### Environment Variable Substitution
+
+```toml
+[dev]
+port = "${PORT:-3000}"           # Use PORT env var, default to 3000
+host = "${HOST:-localhost}"      # Use HOST env var, default to localhost
+
+[build]
+output_dir = "${BUILD_DIR:-dist}" # Configurable output directory
+```
+
+#### Conditional Configuration
+
+```toml
+# Different settings based on platform
+[build.web]
+optimize = "size"
+compress = true
+
+[build.desktop]
+optimize = "speed"
+compress = false
+
+# Different settings based on environment
+[dev]
+port = 3000
+
+[dev.ci]
+port = 8080              # Different port in CI
+open = false             # Don't open browser in CI
+```
+
+#### Configuration Includes
+
+```toml
+# Include shared configuration
+include = ["shared/orbiton-base.toml"]
+
+# Override specific settings
+[build]
+target = ["web"]         # Override shared target setting
+```
+
+### Migration and Versioning
+
+#### Configuration Version
+
+```toml
+# Specify configuration format version
+config_version = "1.0"
+
+# Enable forward compatibility warnings
+compatibility_mode = "strict"
+```
+
+#### Migration Helpers
+
+```bash
+# Migrate from older configuration format
+orbiton config migrate --from-version 0.9 --to-version 1.0
+
+# Validate configuration against current version
+orbiton config validate --strict
+
+# Show configuration differences
+orbiton config diff --compare-version 0.9
+```
 
 ### Validation
 
 The Orbiton CLI will parse `orbiton.toml` when a command is run. If the file contains invalid TOML syntax or unrecognized options, the CLI may issue a warning or error and fall back to default behavior or halt execution, depending on the severity.
 
 It's recommended to refer to the latest Orbiton CLI documentation or use `orbiton help <command>` for the most up-to-date list of configurable options and their valid values.
+
+### Configuration Schema Reference
+
+For comprehensive validation and IDE support, you can reference the configuration schema:
+
+```bash
+# Generate JSON schema for IDE validation
+orbiton config schema > orbiton-schema.json
+
+# Validate configuration against schema
+orbiton config validate --schema orbiton-schema.json
+```
 
 ## Renderer Management
 

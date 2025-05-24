@@ -203,3 +203,17 @@ If resources (CSS, images) are not served:
 - **Review `orbiton.toml`:** Your project's `orbiton.toml` file contains configuration that might affect builds and the dev server.
 - **Look for `.log` files:** Orbiton or related tools might generate log files with more detailed error information.
 - **Community and Official Channels:** If you're stuck, consider seeking help from the Orbit community forums, Discord server, or GitHub issues for Orbiton CLI if available.
+
+### Platform-Specific Issues
+
+#### Windows
+
+**Windows Defender or Antivirus Interference:**
+- Some antivirus software may flag the Rust compiler or generated binaries as suspicious.
+- Add your project directory and `~/.cargo/` to your antivirus exclusions.
+- Windows Defender may quarantine `orbiton.exe` during installation - restore it if necessary.
+
+**Visual Studio Build Tools:**
+- Orbiton requires MSVC build tools for Windows.
+- Install "C++ build tools" via Visual Studio Installer.
+- Alternative: Install via `winget install Microsoft.VisualStudio.2022.BuildTools`.
