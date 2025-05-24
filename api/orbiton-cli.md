@@ -51,6 +51,9 @@ orbiton new my-components --template library --renderer skia
 orbiton new quick-test --skip-git
 ```
 
+For detailed examples and screenshots of generated projects with different templates and renderers, see [orbiton new Project Templates](./orbiton-new-screenshots.md)
+```
+
 ## Development Server
 
 ```bash

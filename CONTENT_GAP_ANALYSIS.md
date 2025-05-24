@@ -9,7 +9,7 @@ This document outlines the process and findings of a content gap analysis for th
 | Documentation Item          | Current Status                             | Gap/Notes                                                          | Priority  | Status      |
 | :-------------------------- | :----------------------------------------- | :----------------------------------------------------------------- | :-------- | :---------- |
 | Getting Started             | `docs/getting-started/getting-started.md` (detailed) | Comprehensive setup guide with extensive troubleshooting sections, platform-specific guidance, development environment setup, and community resources | High     | ✅ Completed |
-| Tutorial: Task Manager      | `docs/getting-started/tutorial-task-manager.md` (comprehensive) | Excellent detailed tutorial, would benefit from video accompaniment | Medium   | 🔄 Pending |
+| Tutorial: Task Manager      | `docs/getting-started/tutorial-task-manager.md` (comprehensive), `docs/getting-started/tutorial-task-manager-videos.md` (video guides) | Comprehensive tutorial with complete video accompaniment, timestamped sections, interactive code examples, and additional resources | Medium   | ✅ Completed |
 | Deployment Guide            | `docs/guides/deployment-guide.md` (comprehensive) | Comprehensive guide covering all deployment scenarios and platforms | High     | ✅ Completed |
 | State Management In-Depth   | `docs/core-concepts/state-management.md` (detailed) | Good coverage but needs more complex examples for large applications | Medium   | ✅ Completed |
 | Creating Reusable Components| `docs/core-concepts/advanced-component-patterns.md` | Existing but could be expanded with more design patterns  | Medium   | ✅ Completed |
@@ -62,7 +62,7 @@ List of components to be identified from `orbit/src/kit/components/` directory o
 
 | Tool / Feature         | Current Documentation Status (File/Section) | Gap/Notes                                   | Priority | Status |
 | :--------------------- | :------------------------------------------ | :------------------------------------------ | :------- | :----- |
-| `orbiton new`          | `docs/api/orbiton-cli.md` (detailed), `docs/getting-started/getting-started.md` (basic usage) | Project templates have been enhanced with better documentation. Examples documented. Would benefit from more screenshots of generated projects | Medium   | 🔄 Pending |
+| `orbiton new`          | `docs/api/orbiton-cli.md` (detailed), `docs/getting-started/getting-started.md` (basic usage), `docs/api/orbiton-new-screenshots.md` (comprehensive) | Comprehensive documentation with detailed examples, template files, directory structure visualizations, and screenshots of generated projects. Cross-linked with main CLI documentation | Medium   | ✅ Completed |
 | `orbiton build`        | `docs/api/orbiton-cli.md` (comprehensive) | Extensively enhanced with detailed production optimizations, build modes, platform targets, optimization levels, CI/CD integration, and troubleshooting | Medium   | ✅ Completed |
 | `orbiton dev`          | `docs/api/orbiton-cli.md` (basic), `docs/guides/development-server.md` (comprehensive) | Comprehensive documentation created covering HMR, proxying, HTTPS, and debugging capabilities | Medium   | ✅ Completed |
 | `orbiton component`    | `docs/api/orbiton-cli.md` (enhanced coverage) | Enhanced with expanded examples, component templates, and best practices | Medium   | ✅ Completed |

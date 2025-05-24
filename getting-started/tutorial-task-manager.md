@@ -2,6 +2,8 @@
 
 This tutorial will guide you through creating a complete Orbit application from scratch. By the end, you'll have a solid understanding of the Orbit Framework and be able to build your own applications.
 
+> **Video Tutorial Available**: For a video walkthrough of this tutorial, see the [Task Manager Tutorial Video Guide](./tutorial-task-manager-videos.md) which provides step-by-step video instructions with timestamped sections and interactive code examples.
+
 ## Prerequisites
 
 - Basic knowledge of Rust
@@ -802,6 +804,13 @@ Congratulations! You've built a functional task manager application with the Orb
 - Handling events and state
 - Implementing filters and conditional rendering
 - Adding persistence with local storage
+
+### Additional Resources
+
+- **[Video Tutorial Series](./tutorial-task-manager-videos.md)**: A comprehensive set of video walkthroughs for this tutorial
+- **[Live Demo](https://orbitrs.dev/demos/task-manager)**: See the completed application in action
+- **[Source Code](https://github.com/orbitrs/task-manager-tutorial)**: The complete code for this tutorial
+- **[Advanced Component Patterns](../core-concepts/advanced-component-patterns.md)**: Learn more advanced component techniques
 
 As you continue learning Orbit, explore the documentation for more advanced features and patterns.
 

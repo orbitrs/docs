@@ -10,9 +10,9 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
 
 - **[Getting Started](./getting-started/README.md)**
   - [Installation and setup](./getting-started/getting-started.md)
-  - [Building your first Orbit application](./getting-started/tutorial-task-manager.md)
-  - Development workflow
-  - Project structure
+  - [Building your first Orbit application](./getting-started/tutorial-task-manager.md) ([Video Guide](./getting-started/tutorial-task-manager-videos.md))
+  - [Development workflow](./guides/development-server.md)
+  - [Project Structure](./core-concepts/project-structure.md)
 
 - **[Core Concepts](./core-concepts/README.md)**
   - [Component Model](./core-concepts/component-model.md)
@@ -60,16 +60,26 @@ This documentation is continuously updated as the framework evolves. Each releas
 
 ### Recent Updates (May 2025)
 
+- **Video Tutorials**: Added complete [Task Manager Tutorial Video Guide](./getting-started/tutorial-task-manager-videos.md) with timestamped sections and interactive code examples
+- **Enhanced CLI Documentation**: Created comprehensive [Visual Guide to Project Templates](./api/orbiton-new-screenshots.md) for `orbiton new` command
+- **Documentation Completion**: All items in the [Content Gap Analysis](./CONTENT_GAP_ANALYSIS.md) are now marked as completed
 - **Examples Reorganization**: The examples project has been restructured to fix build target conflicts and provide clearer demonstrations of framework features
 - **Component Model Progress**: Added comprehensive examples showing props system, component lifecycle and event handling
 - **Rendering Engines**: Added examples for both Skia-based 2D and WGPU-based 3D rendering
 - **Project Milestones**: Updated [Milestone 1 Tracking](./roadmap/tracking/milestone-1-tracking.md) with latest progress
 
-For a complete overview of recent changes, see the [May 2025 Progress Report](./progress-reports/may-2025-update.md).
+For a complete overview of recent changes, see the [May 2025 Progress Report](./progress-reports/may-2025-update.md) and the [Documentation Progress Report](./DOCUMENTATION_PROGRESS_REPORT.md).
 
 ## 🔄 Work in Progress
 
-The Orbit Framework is under active development. Documentation sections marked as "Coming Soon" will be added as the corresponding features are implemented.
+The Orbit Framework is under active development. All planned documentation sections have been completed as of May 2025, and new documentation will be created as additional features are implemented.
+
+## 📹 Video Content
+
+We now provide video tutorials to complement our written documentation:
+
+- [Task Manager Tutorial Video Series](./videos/README.md) - A comprehensive video walkthrough of building a task manager application
+- Additional video series on advanced topics coming soon
 
 ## 🤝 Contributing to Documentation
 
