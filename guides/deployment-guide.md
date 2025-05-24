@@ -346,47 +346,86 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
         with:
-          toolchain: stable
+          submodules: recursive
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libgl1-mesa-dev xorg-dev libfontconfig1-dev libfreetype6-dev
       - name: Run tests
-        run: cargo test
+        run: cargo test --workspace --features desktop
 
-  build:
+  build-desktop:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
         with:
-          toolchain: stable
+          submodules: recursive
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libgl1-mesa-dev xorg-dev libfontconfig1-dev libfreetype6-dev
       - name: Install Orbiton
         run: cargo install orbiton
-      - name: Build
-        run: orbiton build --release
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: Build for desktop
+        run: orbiton build --target desktop --release
+      - name: Upload desktop artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: desktop-artifacts
+          path: dist/
+
+  build-web:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - name: Install wasm-pack
+        run: cargo install wasm-pack
+      - name: Install Orbiton
+        run: cargo install orbiton
+      - name: Build for web
+        run: orbiton build --target web --release
+      - name: Upload web artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-artifacts
           path: dist/
 
   deploy:
     if: github.ref == 'refs/heads/main'
-    needs: build
+    needs: [build-desktop, build-web]
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+      - name: Download web artifacts
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
-          path: dist/
+          name: web-artifacts
+          path: dist-web/
+      - name: Download desktop artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: desktop-artifacts
+          path: dist-desktop/
       - name: Deploy to production
         # Use your preferred deployment method here
         run: echo "Deploying to production..."

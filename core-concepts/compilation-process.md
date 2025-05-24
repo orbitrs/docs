@@ -464,10 +464,29 @@ For web deployment (`--target web`):
 
 ```bash
 # Internal pipeline for web builds
-cargo build --target wasm32-unknown-unknown --release
-wasm-bindgen target/wasm32-unknown-unknown/release/app.wasm --out-dir pkg/
+# Step 1: Build for WASM target with web-specific features
+cargo build --target wasm32-unknown-unknown --no-default-features --features="web" --release
+
+# Step 2: Generate JavaScript bindings
+wasm-bindgen target/wasm32-unknown-unknown/release/app.wasm --out-dir pkg/ --target web
+
+# Step 3: Optimize WASM binary (optional)
 wasm-opt pkg/app_bg.wasm -O4 -o pkg/app_bg.wasm
 ```
+
+**Feature Configuration for WASM Builds:**
+
+The Orbit framework uses conditional compilation to ensure only web-compatible dependencies are included in WASM builds:
+
+```toml
+# Key features for WASM builds
+[features]
+default = ["skia", "desktop"]
+web = ["dep:web-sys", "web-gl", "dep:wasm-bindgen-futures"]
+desktop = ["dep:glutin", "dep:glutin-winit", "dep:winit", "dep:tokio", "dep:reqwest"]
+```
+
+Desktop dependencies like `tokio`, `glutin`, and `winit` are automatically excluded when building with `--no-default-features --features="web"`.
 
 #### Asset Processing Pipeline
 
