@@ -4,14 +4,14 @@
 
 The Orbit Framework documentation currently consists of:
 
-1. **Main Overview** (`/orbitrs/README.md`) - Provides vision, philosophy, and high-level architecture 
-2. **Documentation Hub** (`/docs/README.md`) - Entry point to documentation sections
-3. **Architecture Document** (`/docs/architecture.md`) - Technical architecture details
-4. **Getting Started Guide** (`/docs/getting-started/getting-started.md`) - Basic setup and first steps
-5. **Core Concepts** (`/docs/core-concepts/README.md`) - Fundamental framework concepts
+1. **Main Overview** (`/sdk/README.md`) - Provides vision, philosophy, and high-level architecture
+2. **Documentation Hub** (`/sdk/docs/README.md`) - Entry point to documentation sections
+3. **Architecture Document** (`/sdk/docs/architecture.md`) - Technical architecture details
+4. **Getting Started Guide** (`/sdk/docs/getting-started/getting-started.md`) - Basic setup and first steps
+5. **Core Concepts** (`/sdk/docs/core-concepts/README.md`) - Fundamental framework concepts
 6. **API Documentation** (Various README files) - Basic API references
-7. **Examples** (`/orbitrs/examples/`) - Sample components and applications
-8. **Component Templates** (`/orbit/src/kit/components/COMPONENT_README_TEMPLATE.md`) - Documentation templates
+7. **Examples** (`/sdk/examples/`) - Sample components and applications
+8. **Component Templates** (`/sdk/orbit/src/kit/components/COMPONENT_README_TEMPLATE.md`) - Documentation templates
 
 ## Identified Gaps and Improvement Areas
 

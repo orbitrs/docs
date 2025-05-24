@@ -1,22 +1,18 @@
-# 🌟 Examp```rust
-// src/app.orbit
-<template>
-  <div>Hello, Orbit!</div>
-</template>
+# 🌟 Examples
 
-<code lang="rust">
-component App {}
-</code>
+This section contains a variety of examples to help you learn how to use the Orbit Framework effectively. Each example demonstrates specific features and patterns.
 
-// src/main.rs
-use orbit::prelude::*;
+## Example Categories
 
-fn main() {
-    App::new()
-        .with_component::<app::App>()
-        .run();
-}
-``` contains a variety of examples to help you learn how to use the Orbit Framework effectively. Each example demonstrates specific features and patterns.
+- [Rust Examples](./rust-examples.md) - Native Rust examples demonstrating core framework features
+- [Orbit File Examples](#quick-start-examples) - Examples using the Orbit file format
+
+## Recently Added (May 2025)
+
+- Props system examples with validation
+- Component lifecycle demonstrations
+- Advanced rendering with Skia and WGPU
+- Improved project structure with clean builds
 
 ## 🚀 Quick Start Examples
 

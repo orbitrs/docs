@@ -1,10 +1,19 @@
 # Orbit Framework Development Priorities
 
-*Last Updated: May 23, 2025*
+*Last Updated: May 24, 2025*
 
 ## Priority Focus
 
 The Orbit Framework team has established the following priority focus areas for development. These priorities have been updated to reflect the decision to focus on core framework development rather than SDK improvements, which are considered non-essential as they are primarily used for personal development purposes.
+
+## Recent Progress
+
+Significant progress has been made in several key areas:
+
+- **Examples project structure** has been refactored to fix build target conflicts
+- **Props system** implementation is now demonstrated in multiple examples
+- **Component lifecycle** features have been implemented and documented
+- **Rendering engines** now include both Skia and WGPU examples
 
 ## High Priority (Must Complete)
 

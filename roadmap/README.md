@@ -23,9 +23,19 @@ Each project component (orbit, orbiton, orbitkit, orlint) has its own timeline b
 
 ## 🚀 Current Status
 
-The Orbit Framework is currently in the **Foundation Phase**, focusing on the core architecture and initial developer experience. 
+The Orbit Framework is currently in the **Foundation Phase**, focusing on the core architecture and initial developer experience.
 
-Current progress is tracked in the [GitHub Projects board](https://github.com/orbitrs/orbit/projects/1).
+### Recent Progress (May 2025)
+
+- ✅ Fixed build target conflicts in examples project structure
+- ✅ Implemented props system with validation in multiple examples
+- ✅ Created component lifecycle demonstration examples
+- ✅ Added WGPU renderer examples for 3D capabilities
+- ✅ Improved project organization and documentation
+
+For detailed tracking information, see [Milestone 1 Tracking](/docs/roadmap/tracking/milestone-1-tracking.md) and the [May 2025 Progress Report](/docs/progress-reports/may-2025-update.md).
+
+Current progress is also tracked in the [GitHub Projects board](https://github.com/orbitrs/orbit/projects/1).
 
 ---
 

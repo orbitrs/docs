@@ -3,18 +3,18 @@
 **Current Status**: 🟡 In Progress  
 **Target Completion**: Q3 2025  
 **Started**: Q1 2025  
-**Last Updated**: May 20, 2025
+**Last Updated**: May 24, 2025
 
 ## 📈 Overall Progress
 
 | Category | Progress | Status |
 |----------|----------|--------|
-| Component Model | 35% | 🟡 In Progress |
-| Rendering Engines | 25% | 🟡 In Progress |
-| Platform Adapters | 20% | 🟡 In Progress |
-| Core APIs | 10% | 🔴 Just Started |
-| CLI Tooling | 30% | 🟡 In Progress |
-| Static Analysis | 5% | 🔴 Not Started |
+| Component Model | 40% | 🟡 In Progress |
+| Rendering Engines | 30% | 🟡 In Progress |
+| Platform Adapters | 25% | 🟡 In Progress |
+| Core APIs | 15% | 🟡 In Progress |
+| CLI Tooling | 35% | 🟡 In Progress |
+| Static Analysis | 10% | 🟡 In Progress |
 | Component Library | 0% | 🔴 Not Started |
 
 ## 🚀 Recent Achievements
@@ -23,6 +23,10 @@
 - Implemented basic Skia-based 2D rendering prototype
 - Created initial WASM target adapter
 - Established project scaffolding via `orbiton new` command
+- Fixed build target conflicts in examples project structure
+- Implemented props and events system in multiple examples
+- Added component lifecycle demonstration examples
+- Implemented basic WGPU renderer example
 
 ## 🔍 Detailed Task Tracking
 
@@ -34,17 +38,17 @@
 |------|----------|--------|--------|-------|
 | Design `.orbit` file format | @itsalfredakku | 🟢 Complete | Q1 2025 | Format specification v0.1 completed |
 | Create compiler/parser | @itsalfredakku | 🟡 In Progress | Q2 2025 | Basic parsing working, need to handle more complex expressions |
-| Component lifecycle | @itsalfredakku | 🔴 Not Started | Q2 2025 | Pending parser completion |
-| State management | Unassigned | 🔴 Not Started | Q2 2025 | |
-| Props and event handling | Unassigned | 🔴 Not Started | Q3 2025 | |
+| Component lifecycle | @itsalfredakku | 🟡 In Progress | Q2 2025 | Basic implementation complete, examples created |
+| State management | @itsalfredakku | 🟡 In Progress | Q2 2025 | Basic state management implemented in examples |
+| Props and event handling | @itsalfredakku | 🟡 In Progress | Q3 2025 | Props system with validation implemented |
 
 #### Rendering Engines
 
 | Task | Assignee | Status | Target | Notes |
 |------|----------|--------|--------|-------|
-| Skia-based 2D rendering | @itsalfredakku | 🟡 In Progress | Q2 2025 | Basic shapes and text rendering working |
-| WGPU-based 3D capabilities | @itsalfredakku | 🔴 Not Started | Q3 2025 | Research phase |
-| Unified rendering pipeline | Unassigned | 🔴 Not Started | Q3 2025 | |
+| Skia-based 2D rendering | @itsalfredakku | 🟡 In Progress | Q2 2025 | Basic shapes and text rendering working, examples created |
+| WGPU-based 3D capabilities | @itsalfredakku | 🟡 In Progress | Q3 2025 | Initial implementation with example complete |
+| Unified rendering pipeline | @itsalfredakku | 🟡 In Progress | Q3 2025 | Foundation for renderer abstraction established |
 | Layout engine | @itsalfredakku | 🔴 Not Started | Q3 2025 | |
 
 #### Platform Adapters

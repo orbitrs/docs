@@ -58,6 +58,15 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
 
 This documentation is continuously updated as the framework evolves. Each release includes corresponding documentation updates to reflect new features, improvements, and best practices.
 
+### Recent Updates (May 2025)
+
+- **Examples Reorganization**: The examples project has been restructured to fix build target conflicts and provide clearer demonstrations of framework features
+- **Component Model Progress**: Added comprehensive examples showing props system, component lifecycle and event handling
+- **Rendering Engines**: Added examples for both Skia-based 2D and WGPU-based 3D rendering
+- **Project Milestones**: Updated [Milestone 1 Tracking](./roadmap/tracking/milestone-1-tracking.md) with latest progress
+
+For a complete overview of recent changes, see the [May 2025 Progress Report](./progress-reports/may-2025-update.md).
+
 ## 🔄 Work in Progress
 
 The Orbit Framework is under active development. Documentation sections marked as "Coming Soon" will be added as the corresponding features are implemented.
