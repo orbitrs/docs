@@ -52,6 +52,11 @@ Welcome to the official documentation for the Orbit UI Framework - a Rust-first,
   - Feature timeline
   - Long-term vision
 
+- **[Progress Reports](./progress-reports/README.md)**
+  - [Development Efficiency Report](./progress-reports/DEVELOPMENT_EFFICIENCY_REPORT.md)
+  - [Commit-Based Progress Report](./progress-reports/COMMIT_BASED_PROGRESS_REPORT.md)
+  - [Development Dashboard](./progress-reports/DEVELOPMENT_DASHBOARD.md)
+
 - **[Contributing](../CONTRIBUTING.md)**
   - How to contribute
   - Development setup
