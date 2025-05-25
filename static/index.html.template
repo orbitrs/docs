@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orbit Framework Documentation</title>
+    <meta name="description" content="Documentation for the Orbit UI Framework - A cross-platform Rust-based UI framework">    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" type="image/svg+xml" href="./static/favicon.svg">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <img src="./static/orbitrs-logo.svg" alt="Orbit UI Framework" class="logo">
+            <div class="header-text">
+                <h1>Orbit SDK</h1>
+                <p>Cross-platform Rust-based UI Framework Documentation</p>
+            </div>
+        </div>
+        <div class="header-stats">
+            <div class="stat">
+                <span class="stat-label">Version</span>
+                <span class="stat-value">{{VERSION}}</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Built</span>
+                <span class="stat-value">{{BUILD_DATE}}</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Branch</span>
+                <span class="stat-value">{{BRANCH}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="docs-grid">
+        <div class="doc-card featured">
+            <div class="card-header">
+                <div class="card-icon">📚</div>
+                <h2>Core Framework (orbit)</h2>
+                <span class="badge">Essential</span>
+            </div>
+            <p>The core rendering engine, component model, and foundational APIs for the Orbit UI framework. Includes layout engine, state management, and cross-platform abstractions.</p>
+            <div class="card-features">
+                <span class="feature">✨ Component Lifecycle</span>
+                <span class="feature">🎨 Advanced Layout Engine</span>
+                <span class="feature">⚡ Reactive State</span>
+                <span class="feature">🔄 Cross-platform Rendering</span>
+            </div>
+            <a href="./orbit/index.html" class="card-link">View Core Documentation</a>
+        </div>
+
+        <div class="doc-card">
+            <div class="card-header">
+                <div class="card-icon">🛠️</div>
+                <h2>CLI Tool (orbiton)</h2>
+                <span class="badge development">Development</span>
+            </div>
+            <p>Command-line interface for project scaffolding, development server, build tools, and analysis. Your one-stop tool for Orbit development workflow.</p>
+            <div class="card-features">
+                <span class="feature">🚀 Project Scaffolding</span>
+                <span class="feature">🔥 Hot Reload Server</span>
+                <span class="feature">📦 Build Pipeline</span>
+                <span class="feature">📊 Performance Analysis</span>
+            </div>
+            <a href="./orbiton/index.html" class="card-link">View CLI Documentation</a>
+        </div>
+
+        <div class="doc-card">
+            <div class="card-header">
+                <div class="card-icon">🔍</div>
+                <h2>Static Analyzer (orlint)</h2>
+                <span class="badge quality">Quality</span>
+            </div>
+            <p>Static analyzer and linter for .orbit single-file components with advanced diagnostics, best practices enforcement, and IDE integration.</p>
+            <div class="card-features">
+                <span class="feature">🎯 Smart Diagnostics</span>
+                <span class="feature">📝 Best Practices</span>
+                <span class="feature">🔧 Auto-fixes</span>
+                <span class="feature">💡 IDE Integration</span>
+            </div>
+            <a href="./orlint/index.html" class="card-link">View Analyzer Documentation</a>
+        </div>
+
+        <div class="doc-card">
+            <div class="card-header">
+                <div class="card-icon">💡</div>
+                <h2>Examples & Demos</h2>
+                <span class="badge learning">Learning</span>
+            </div>
+            <p>Sample applications, component demos, and practical usage examples for learning Orbit. From basic components to advanced patterns.</p>
+            <div class="card-features">
+                <span class="feature">🏁 Getting Started</span>
+                <span class="feature">🧩 Component Gallery</span>
+                <span class="feature">🎮 Interactive Demos</span>
+                <span class="feature">📖 Tutorials</span>
+            </div>
+            <a href="./examples/index.html" class="card-link">View Examples</a>
+        </div>
+    </div>
+
+    <div class="quick-links">
+        <h2>Quick Links</h2>
+        <div class="links-grid">
+            <div class="link-group">
+                <h3>Getting Started</h3>
+                <a href="./docs/getting-started/installation.html">Installation Guide</a>
+                <a href="./docs/getting-started/quick-start.html">Quick Start</a>
+                <a href="./docs/getting-started/first-component.html">Your First Component</a>
+            </div>
+            <div class="link-group">
+                <h3>Core Concepts</h3>
+                <a href="./docs/core-concepts/components.html">Components</a>
+                <a href="./docs/core-concepts/state-management.html">State Management</a>
+                <a href="./docs/core-concepts/layout-system.html">Layout System</a>
+            </div>
+            <div class="link-group">
+                <h3>API Reference</h3>
+                <a href="./docs/api/component-reference.html">Component API</a>
+                <a href="./docs/api/styling-reference.html">Styling API</a>
+                <a href="./docs/api/event-reference.html">Event API</a>
+            </div>
+            <div class="link-group">
+                <h3>Community</h3>
+                <a href="https://github.com/orbitrs/sdk">GitHub Repository</a>
+                <a href="https://github.com/orbitrs/sdk/issues">Report Issues</a>
+                <a href="https://github.com/orbitrs/sdk/discussions">Discussions</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-section">
+        <h2>Development Status</h2>
+        <div class="status-grid">
+            <div class="status-item">
+                <div class="status-indicator completed"></div>
+                <span>Core Framework</span>
+                <span class="status-label">Stable</span>
+            </div>
+            <div class="status-item">
+                <div class="status-indicator in-progress"></div>
+                <span>Layout Engine</span>
+                <span class="status-label">Enhanced</span>
+            </div>
+            <div class="status-item">
+                <div class="status-indicator completed"></div>
+                <span>CLI Tools</span>
+                <span class="status-label">Beta</span>
+            </div>
+            <div class="status-item">
+                <div class="status-indicator in-progress"></div>
+                <span>Documentation</span>
+                <span class="status-label">Growing</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Framework</h4>
+                <p>
+                    Generated with ❤️ by <a href="https://forge.rust-lang.org/infra/rustdoc.html">rustdoc</a><br>
+                    <strong>Version:</strong> {{VERSION}}<br>
+                    <strong>Built:</strong> {{BUILD_DATE}}
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4>Links</h4>
+                <a href="https://github.com/orbitrs/sdk">GitHub Repository</a><br>
+                <a href="https://github.com/orbitrs/sdk/issues">Report Issues</a><br>
+                <a href="https://github.com/orbitrs/sdk/blob/main/CONTRIBUTING.md">Contributing</a>
+            </div>
+            <div class="footer-section">
+                <h4>Powered by</h4>
+                <p>
+                    <strong><a href="https://devstroop.com">Devstroop Technologies</a></strong><br>
+                    Building the future of UI frameworks
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
