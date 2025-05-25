@@ -81,8 +81,71 @@ gh copilot explain "Error: Component lifecycle hook not called in the correct or
 gh copilot suggest "Debug why my Orbit component isn't rendering"
 ```
 
+## Creating Issues with GitHub Copilot
+
+GitHub Copilot can help you create well-structured issues faster. Instead of manually filling out every field, you can describe the issue in natural language or even upload a screenshot.
+
+### How to Create Issues with Copilot
+
+1. Go to the immersive view of Copilot Chat: [https://github.com/copilot](https://github.com/copilot)
+2. In the "Ask Copilot" box at the bottom of the page, describe the issue you want to create. Specify the repository in `org/repository` format.
+
+**Example prompts:**
+```
+Create a feature request for orbitrs/orbit to add dynamic component loading
+```
+
+```
+Log a bug for orlint showing that linting fails on Windows paths
+```
+
+3. Copilot will draft an issue with a title, formatted body (using your repository's template), and suggest metadata like labels and assignees.
+4. Review the draft and make any necessary edits.
+5. Click "Create" when ready.
+
+### Tips for Issue Creation
+
+- Be specific about the type of issue (bug, feature request, etc.)
+- Mention which component or part of the codebase is affected
+- Include error messages or expected behavior in your description
+- You can add screenshots by pasting them into the prompt box
+
+## Finding Public Code that Matches Copilot Suggestions
+
+GitHub Copilot can show references to public code that matches its suggestions. This helps you:
+
+1. Verify the source and licensing of suggested code
+2. Ensure proper attribution when required
+3. Make informed decisions about using the suggested code
+
+### How Code Referencing Works
+
+When Copilot provides code that matches public repositories on GitHub:
+
+1. **For code completion:** Information about matching code is logged in your editor
+2. **For Copilot Chat:** A link appears at the end of the response to view matching code
+
+### Viewing Code References
+
+#### In VS Code:
+
+1. Open the Output window (View > Output)
+2. Select "GitHub Copilot Log (Code References)" from the dropdown
+3. Accept a suggestion to see if any references appear in the log
+
+#### In Copilot Chat:
+
+When a response includes matching code, you'll see a link like:
+```
+Public code references from n repositories
+```
+
+Click this link to see details about the matching code and its license.
+
 ## Further Resources
 
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
 - [GitHub Copilot CLI Guide](tooling/github-copilot-cli.md)
+- [Using GitHub Copilot to Create Issues](https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-to-create-issues)
+- [Finding Public Code that Matches GitHub Copilot Suggestions](https://docs.github.com/en/copilot/using-github-copilot/finding-public-code-that-matches-github-copilot-suggestions)
 - [Orbit Framework Documentation](https://orbitrs.github.io/docs/)
