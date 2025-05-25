@@ -124,6 +124,16 @@ We follow semantic versioning (SemVer) with:
 - **End-to-end tests**: Complete application workflows
 - **Performance benchmarks**: Track and maintain performance metrics
 - **Compatibility testing**: Ensure cross-platform functionality
+- **Beta compatibility monitoring**: Track compatibility with upcoming Rust releases
+
+#### Beta Toolchain Compatibility
+
+The framework includes automated monitoring of compatibility with Rust beta releases:
+
+- **Non-blocking monitoring**: Beta failures don't block development but provide early warning
+- **Package-level tracking**: Separate monitoring for orbit, orbiton, orlint, and examples
+- **Automated reporting**: CI pipeline provides detailed failure analysis
+- **Proactive preparation**: Allows time to address compatibility issues before stable releases
 
 ### Continuous Integration
 
@@ -131,6 +141,7 @@ We follow semantic versioning (SemVer) with:
 - Regular performance benchmarking
 - Compatibility verification across supported platforms
 - Documentation build and verification
+- **Beta toolchain monitoring**: Non-blocking compatibility tracking for future Rust releases
 
 ## 🛠️ Resource Allocation
 
@@ -161,6 +172,7 @@ Areas where community contributions are especially valuable:
 | Performance regression | Medium | High | Automated benchmarks, performance budgets |
 | API design limitations | Medium | High | Early feedback cycles, experimental feature flags |
 | Documentation debt | High | Medium | Documentation-driven development, dedicated doc sprints |
+| **Beta toolchain compatibility** | **Medium** | **Low** | **Automated CI monitoring, proactive issue tracking, non-blocking development** |
 
 ### Contingency Planning
 
