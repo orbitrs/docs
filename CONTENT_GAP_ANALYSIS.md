@@ -45,6 +45,7 @@ Based on `orbit/orbit-spec.md` and general framework expectations.
 | Debugging Orbit Apps         | `docs/guides/debugging-guide.md` (new)      | Created comprehensive debugging guide covering development and production scenarios | Medium  | ✅ Completed |
 | Internationalization (i18n)  | `docs/guides/internationalization.md` (comprehensive) | Created detailed documentation of planned i18n features with examples and best practices | Medium   | ✅ Completed |
 | Accessibility (General)      | `docs/guides/accessibility.md` (comprehensive) | Enhanced with advanced patterns, code examples, progressive enhancement techniques, and responsive considerations | High     | ✅ Completed |
+| GitHub Copilot Integration   | `docs/guides/using-github-copilot.md` (new), `docs/tooling/github-copilot-cli.md` (new) | Added comprehensive guides for using GitHub Copilot with the Orbit Framework, including CLI integration | Medium   | ✅ Completed |
 
 ## 4. Core Components Library
 
