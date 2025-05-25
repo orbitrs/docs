@@ -119,7 +119,7 @@ impl Component for Counter {
             }
         };
 
-        println!("Counter component initialized with count {}", count);
+        println!("Counter component initialized with count {count}");
 
         // Register lifecycle hooks
         self.context.on_mount(|_| {
