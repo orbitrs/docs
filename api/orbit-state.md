@@ -900,7 +900,7 @@ fn logger_middleware<S: Clone + 'static, A: Action + std::fmt::Debug>(
     action: &A,
     next: &mut dyn FnMut(A),
 ) {
-    println!("Dispatching action: {:?}", action);
+    println!("Dispatching action: {action:?}");
     next(action.clone());
 }
 
