@@ -23,26 +23,45 @@ Each project component (orbit, orbiton, orbitkit, orlint) has its own timeline b
 
 ## 🚀 Current Status
 
-The Orbit Framework is currently in the **Foundation Phase**, focusing on the core architecture and initial developer experience.
+The Orbit Framework is currently in **Week 1 of the MVP Sprint** for the **0.1.0 release**, part of the broader **Foundation Phase (Milestone 1)**.
 
-### Recent Progress (May 2025)
+### Current Sprint: 21-Day MVP Development (May 25 - June 14, 2025)
 
-- ✅ Fixed build target conflicts in examples project structure
-- ✅ Implemented props system with validation in multiple examples
-- ✅ Created component lifecycle demonstration examples
-- ✅ Added WGPU renderer examples for 3D capabilities
-- ✅ Improved project organization and documentation
+**Phase**: Week 1 - Foundation & Core Systems (Days 1-7)  
+**Team Lead**: @itsalfredakku (Technical Lead & Core Architecture)  
+**Target**: 0.1.0 MVP Release
 
-For detailed tracking information, see [Milestone 1 Tracking](/docs/roadmap/tracking/milestone-1-tracking.md) and the [May 2025 Progress Report](/docs/progress-reports/may-2025-update.md).
+#### Recent Achievements (Week 1)
+- ✅ Component lifecycle enhancement in progress
+- ✅ Props and events system implementation
+- ✅ Unified rendering pipeline development
+- ✅ CLI scaffolding and build system improvements
+- ✅ Platform adapter enhancements
 
-Current progress is also tracked in the [GitHub Projects board](https://github.com/orbitrs/orbit/projects/1).
+#### Upcoming Phases
+- **Week 2 (Days 8-14)**: Feature Implementation & Integration
+- **Week 3 (Days 15-21)**: Polish & Release Preparation
+- **Post-MVP (Days 22-35)**: Consolidation & 0.1.1 patch
+- **Milestone 1 Completion (Days 36-56)**: Animation, accessibility, styling
+- **Milestone 2 Prep (Days 57-70)**: Developer experience planning
+
+### Detailed Progress Tracking
+
+For comprehensive tracking information:
+- [Next Phase Development Plan](/docs/roadmap/next-phase-development-plan.md) - Strategic overview and detailed phases
+- [Milestone 1 Tracking](/docs/roadmap/tracking/milestone-1-tracking.md) - Current milestone progress
+- [MVP Team Task Assignments](/docs/progress-reports/MVP_TEAM_TASK_ASSIGNMENTS.md) - Sprint-specific assignments
+- [GitHub Projects board](https://github.com/orbitrs/orbit/projects/1) - Live progress tracking
 
 ---
 
 ## 📅 Milestone Structure
 
-Detailed milestone information is available in separate documents:
+### Strategic Documents
+- [Next Phase Development Plan](/docs/roadmap/next-phase-development-plan.md) - Comprehensive next phases planning
+- [Strategy](/docs/roadmap/strategy.md) - Overall development strategy and approach
 
+### Milestone Specifications
 - [Milestone 1: Foundation](/docs/roadmap/milestone-1-foundation.md)
 - [Milestone 2: Developer Experience](/docs/roadmap/milestone-2-developer-experience.md)
 - [Milestone 3: Component Library](/docs/roadmap/milestone-3-component-library.md)
@@ -50,6 +69,14 @@ Detailed milestone information is available in separate documents:
 - [Milestone 5: Ecosystem Growth](/docs/roadmap/milestone-5-ecosystem-growth.md)
 - [Milestone 6: Enterprise Readiness](/docs/roadmap/milestone-6-enterprise-readiness.md)
 - [Long-term Vision](/docs/roadmap/long-term-vision.md)
+
+### Progress Tracking
+- [Milestone 1 Tracking](/docs/roadmap/tracking/milestone-1-tracking.md) - ✅ Active
+- [Milestone 2 Tracking](/docs/roadmap/tracking/milestone-2-tracking.md) - 🟡 Preparation
+- [Milestone 3 Tracking](/docs/roadmap/tracking/milestone-3-tracking.md) - 🔴 Not Started
+- [Milestone 4 Tracking](/docs/roadmap/tracking/milestone-4-tracking.md) - 🔴 Not Started
+- [Milestone 5 Tracking](/docs/roadmap/tracking/milestone-5-tracking.md) - 🔴 Not Started
+- [Milestone 6 Tracking](/docs/roadmap/tracking/milestone-6-tracking.md) - 🔴 Not Started
 
 ## 📊 Progress Tracking
 

@@ -2,6 +2,29 @@
 
 This document outlines the strategic approach for achieving the milestones defined in the Orbit Framework roadmap, detailing how resources will be allocated, progress tracked, and decisions made throughout the development process.
 
+**Current Strategy Phase**: MVP Sprint Execution (May 25 - June 14, 2025)  
+**Active Framework**: Agile development with 21-day sprint cycles  
+**Team Lead**: @itsalfredakku (Technical Lead & Core Architecture)
+
+## 🚀 Current Execution Mode: MVP Sprint Strategy
+
+### Sprint-Based Development (Active)
+
+Our current development approach utilizes intensive, focused sprints to deliver critical functionality:
+
+**Current Sprint**: 21-Day MVP Development
+- **Week 1 (Days 1-7)**: Foundation & Core Systems
+- **Week 2 (Days 8-14)**: Feature Implementation & Integration  
+- **Week 3 (Days 15-21)**: Polish & Release Preparation
+- **Target**: 0.1.0 MVP Release
+
+### Post-Sprint Strategy Phases
+
+1. **Consolidation Phase** (Days 22-35) - Stabilization and community feedback
+2. **Completion Phase** (Days 36-56) - Milestone 1 feature completion
+3. **Preparation Phase** (Days 57-70) - Milestone 2 planning and setup
+4. **Transition Phase** - Resume milestone-based development
+
 ## 📊 Development Priority Framework
 
 ### Priority Categories
