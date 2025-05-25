@@ -41,6 +41,8 @@ The MCP server enables AI agents to interact with Orbit projects:
 - [Monorepo CI Guide](./monorepo-ci-guide.md)
 - [Beta Compatibility Monitoring](./beta-compatibility-monitoring.md)
 - [Beta Compatibility Status](./beta-compatibility-status.md)
+- [Beta Compatibility Testing Guide](./beta-compatibility-testing.md)
+- [Format String Guidance](./format-string-guidance.md)
 
 ## Performance Tools
 
