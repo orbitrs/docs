@@ -764,6 +764,40 @@ impl Component for OptimizedComponent {
 }
 ```
 
+### Component Composition Implementation Details
+
+When implementing composition patterns like `RenderPropComponent`, `SlottedComponent`, or `FlexibleCompoundComponent`, the framework maintains internal context references that aren't always actively used in the component lifecycle:
+
+```rust
+pub struct RenderPropComponent<T, R>
+where
+    R: RenderProp<T>,
+{
+    component_id: ComponentId,
+    data: T,
+    renderer: R,
+    #[allow(dead_code)]
+    context: Context,  // Maintained for future lifecycle hooks
+}
+```
+
+Similarly, the `MemoComponent` implementation includes a cached render field that's reserved for future optimizations:
+
+```rust
+pub struct MemoComponent<T>
+where
+    T: Component + Memoizable,
+{
+    component: T,
+    last_memo_key: Option<T::MemoKey>,
+    #[allow(dead_code)]
+    cached_render: Option<Vec<Node>>,  // Reserved for future optimizations
+    cache: Arc<MemoCache<T::MemoKey, Vec<Node>>},
+}
+```
+
+These fields are marked with `#[allow(dead_code)]` as they're maintained for API consistency and future enhancements but may not be actively used in all scenarios.
+
 ### Managing Complex State Transitions
 
 For components with multiple state transitions:

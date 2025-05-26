@@ -106,6 +106,23 @@ impl Component for ExpensiveComponent {
 }
 ```
 
+Under the hood, memoization uses the `MemoComponent` wrapper, which tracks component props and prevents re-rendering when they haven't changed:
+
+```rust
+pub struct MemoComponent<T>
+where
+    T: Component + Memoizable,
+{
+    component: T,
+    last_memo_key: Option<T::MemoKey>,
+    #[allow(dead_code)]
+    cached_render: Option<Vec<Node>>, // Reserved for future optimizations
+    cache: Arc<MemoCache<T::MemoKey, Vec<Node>>>,
+}
+```
+
+> **Note**: The `cached_render` field is marked with `#[allow(dead_code)]` as it's reserved for future rendering optimizations but isn't currently used.
+
 ### Custom Shouldupdate Implementation
 
 For more control over when components update:
