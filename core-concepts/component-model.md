@@ -73,51 +73,140 @@ A typical `.orbit` file has three sections:
 
 ## Component Lifecycle
 
-Orbit components follow a predictable lifecycle:
+Orbit components follow a predictable lifecycle with comprehensive hooks:
 
-1. **Creation**: `fn new(props: Self::Props) -> Self`
-   - Component is instantiated with initial props
+1. **Creation**: `fn create(props: Self::Props, context: Context) -> Self`
+   - Component is instantiated with initial props and context
    - Initial state is set up
+   - Component ID is assigned
 
-2. **Mounting**: `fn mounted(&mut self)`
-   - Component is added to the DOM/rendering tree
-   - Good place for initialization that requires DOM access
+2. **Initialization**: `fn initialize(&mut self) -> Result<(), ComponentError>`
+   - Immediately after creation
+   - Set up initial state and register lifecycle hooks
+   - Runs before the component is mounted
+
+3. **Before Mount**: `fn before_mount(&mut self) -> Result<(), ComponentError>`
+   - Just before component is added to the component tree
+   - Preparation for mounting
+
+4. **Mounting**: `fn mount(&mut self) -> Result<(), ComponentError>`
+   - Basic mounting logic
+   - Component is added to the component tree
+
+5. **Enhanced Mount**: `fn on_mount(&mut self, context: &MountContext) -> Result<(), ComponentError>`
+   - Called with detailed mount context information
+   - Access to parent component ID and mounting options
+
+6. **After Mount**: `fn after_mount(&mut self) -> Result<(), ComponentError>`
+   - After component is fully mounted
+   - Good place for initialization that requires DOM/tree access
    - Setup subscriptions or timers
 
-3. **Updating**: `fn updated(&mut self)`
-   - Called after the component re-renders due to state/prop changes
-   - Access to the updated DOM
-   - Opportunity to integrate with non-Orbit libraries
+7. **State Change**: `fn state_changed(&mut self, state_key: &str) -> Result<(), ComponentError>`
+   - When component state changes
+   - Can trigger component updates
 
-4. **Unmounting**: `fn unmounted(&mut self)`
-   - Component is about to be removed from the DOM
-   - Clean up any subscriptions, timers, or resources
+8. **Update**: `fn on_update(&mut self, changes: &StateChanges) -> Result<(), ComponentError>`
+   - Enhanced update with state change information
+   - Runs when state changes are detected
 
-Here's a complete implementation example:
+9. **Before Update**: `fn before_update(&mut self, new_props: &Self::Props) -> Result<(), ComponentError>`
+   - Called before props are updated
+   - Access to both old and new props
+
+10. **Update Props**: `fn update(&mut self, props: Self::Props) -> Result<(), ComponentError>`
+    - Update component with new props
+    - Should update internal state based on props
+
+11. **After Update**: `fn after_update(&mut self) -> Result<(), ComponentError>`
+    - Called after the component has been updated
+    - Access to the updated component state
+
+12. **Before Unmount**: `fn before_unmount(&mut self) -> Result<(), ComponentError>`
+    - Component is about to be removed
+    - Prepare for cleanup
+
+13. **Unmount**: `fn unmount(&mut self) -> Result<(), ComponentError>`
+    - Basic unmount logic
+    - Component is removed from the component tree
+
+14. **Enhanced Unmount**: `fn on_unmount(&mut self, context: &UnmountContext) -> Result<(), ComponentError>`
+    - Called with detailed unmount context (reason, parent, etc)
+    - More controlled unmounting with context
+
+15. **After Unmount**: `fn after_unmount(&mut self) -> Result<(), ComponentError>`
+    - Final cleanup after unmounting
+    - Release resources, unsubscribe from events
+
+16. **Cleanup**: `fn cleanup(&mut self) -> Result<(), ComponentError>`
+    - Automatic framework-provided cleanup
+    - Cleans up state subscriptions, event listeners, etc.
+
+Here's a simplified implementation example:
 
 ```rust
 impl Component for MyComponent {
     type Props = MyComponentProps;
     
-    fn new(props: Self::Props) -> Self {
+    fn component_id(&self) -> orbit::component::ComponentId {
+        orbit::component::ComponentId::new()
+    }
+    
+    fn create(props: Self::Props, context: Context) -> Self {
         Self {
+            context,
             name: props.name,
+            // Initialize other state
         }
     }
     
-    fn mounted(&mut self) {
+    fn initialize(&mut self) -> Result<(), ComponentError> {
+        println!("Component initialized");
+        // Register lifecycle hooks, set up initial state
+        Ok(())
+    }
+    
+    fn mount(&mut self) -> Result<(), ComponentError> {
         println!("Component mounted");
-        // Setup code here
+        // Basic mounting logic
+        Ok(())
     }
     
-    fn updated(&mut self) {
-        println!("Component updated");
-        // Post-update code here
+    fn on_mount(&mut self, context: &MountContext) -> Result<(), ComponentError> {
+        println!("Component mounted with parent {:?}", context.parent_id);
+        // Enhanced mounting with context
+        Ok(())
     }
     
-    fn unmounted(&mut self) {
+    fn update(&mut self, props: Self::Props) -> Result<(), ComponentError> {
+        println!("Component updated with new props");
+        self.name = props.name;
+        Ok(())
+    }
+    
+    fn before_unmount(&mut self) -> Result<(), ComponentError> {
+        println!("Component will unmount soon");
+        // Prepare for cleanup
+        Ok(())
+    }
+    
+    fn unmount(&mut self) -> Result<(), ComponentError> {
         println!("Component unmounted");
-        // Cleanup code here
+        // Cleanup resources
+        Ok(())
+    }
+    
+    fn render(&self) -> Result<Vec<Node>, ComponentError> {
+        // Render the component
+        Ok(vec![])
+    }
+    
+    fn as_any(&self) -> &dyn std::any::Any {
+        self
+    }
+    
+    fn as_any_mut(&mut self) -> &mut dyn std::any::Any {
+        self
     }
 }
 ```
@@ -885,3 +974,72 @@ impl Component for ParentComponent {
     }
 }
 ```
+
+## Component Tree Management
+
+The Orbit Framework manages components in a hierarchical tree structure, providing efficient management of parent-child relationships, lifecycle coordination, and update propagation.
+
+### Component Tree Structure
+
+The `ComponentTree` is responsible for:
+
+1. **Component Registration**: Adding and removing components from the tree
+2. **Relationship Management**: Tracking parent-child relationships between components
+3. **Lifecycle Coordination**: Ensuring proper propagation of lifecycle events through the tree
+4. **Update Scheduling**: Coordinating efficient updates across the tree
+
+### Key Tree Management Features
+
+- **Hierarchical Component Rendering**: Components render in proper dependency order
+- **Efficient Updates**: Only affected components are updated
+- **Parent-Child Communication**: Framework-managed parent-child relationships
+- **Automatic Cleanup**: When parents are removed, children are automatically unmounted
+
+### Component Tree API
+
+```rust
+// Create a component tree with application context
+let tree = ComponentTree::new(context);
+
+// Add a component to the tree
+tree.add_component(component_instance)?;
+
+// Set a component as the root of the tree
+tree.set_root(component_id)?;
+
+// Add child to parent
+tree.add_child(parent_id, child_id)?;
+
+// Mount a component in the tree
+tree.mount_component(component_id)?;
+
+// Get the lifecycle manager for a component
+let lifecycle_manager = tree.get_lifecycle_manager(component_id)?;
+
+// Unmount and remove a component
+tree.remove_component(component_id)?;
+```
+
+### State Change Detection
+
+Components in the tree have automatic state change detection:
+
+1. **State Tracking**: The framework tracks component state automatically
+2. **Batched Updates**: Multiple state changes are batched for efficiency
+3. **Propagation Control**: Updates can be controlled with change priorities
+
+```rust
+// Component code triggering an update
+fn increment_counter(&mut self) {
+    self.counter += 1;
+    // Framework automatically detects the state change
+    // and schedules an update with default priority
+}
+
+// Explicitly requesting an update
+fn force_update(&mut self) -> Result<(), ComponentError> {
+    self.request_update()
+}
+```
+
+The component tree ensures that updates are processed efficiently and in the correct order, with parent components being updated before their children.
